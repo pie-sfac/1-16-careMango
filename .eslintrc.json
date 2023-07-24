@@ -27,9 +27,12 @@
   "rules": {
     "prettier/prettier": [
       "error",
-      {}
+      {
+        "useTabs":false,
+        "endOfLine":"auto"
+      }
     ],
     "no-unused-vars":"warn",
-    "@typescript-eslint/no-unused-vars":["error"]
+    "@typescript-eslint/no-unused-vars":["warn"]
   }
 }

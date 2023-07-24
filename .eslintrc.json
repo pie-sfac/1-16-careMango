@@ -33,6 +33,13 @@
       }
     ],
     "no-unused-vars":"warn",
-    "@typescript-eslint/no-unused-vars":["warn"]
+    "@typescript-eslint/no-unused-vars":["warn"],
+    "react/function-component-definition":[
+      2, 
+      { "namedComponents": [
+        "arrow-function", 
+        "function-declaration"
+      ] }
+    ]
   }
 }

@@ -1,3 +1,12 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply text-text-900 font-pretendard mx-6;
+}
+
+.input-select {
+  @apply rounded p-4 border-2 border-line-300 focus:outline-none focus:border-primary-300;
+}

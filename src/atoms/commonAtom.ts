@@ -10,7 +10,7 @@ interface Common {
   memo: string;
 }
 
-export const commonState = atom<Common>({
+const commonState = atom<Common>({
   key: 'commonState',
   default: {
     instructor: '',
@@ -19,6 +19,8 @@ export const commonState = atom<Common>({
     endTime: '',
     name: '',
     contact: '',
-    memo: ''
+    memo: '',
   },
 });
+
+export default commonState;

@@ -1,8 +1,12 @@
 import React, { ChangeEvent } from 'react';
 import { useRecoilState } from 'recoil';
-import { commonState } from '../../atoms/commonAtom';
+import commonState from '../../atoms/commonAtom';
 
-const InputContact = () => {
+interface InputContactProps {
+  title: string;
+}
+
+const InputContact = ({ title }: InputContactProps) => {
   const [common, setCommon] = useRecoilState(commonState);
 
   // 전화번호 입력시 자동 하이픈
@@ -23,7 +27,8 @@ const InputContact = () => {
   return (
     <label htmlFor="inputContact" className="my-5">
       <p className="small-title">
-        연락처<span className="text-primary-300">*</span>
+        {title}
+        <span className="text-primary-300">*</span>
       </p>
       <input
         id="inputContact"

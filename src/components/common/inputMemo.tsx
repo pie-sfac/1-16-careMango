@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { commonState } from '../../atoms/commonAtom';
+import commonState from '../../atoms/commonAtom';
 
-const InputMemo = () => {
+interface InputMemoProps {
+  title: string;
+}
+
+const InputMemo = ({ title }: InputMemoProps) => {
   const [common, setCommon] = useRecoilState(commonState);
   const [memoLength, setMemoLength] = useState(0);
 
@@ -21,7 +25,7 @@ const InputMemo = () => {
 
   return (
     <label htmlFor="inputMemo" className="my-5">
-      <p className="small-title">일정 메모</p>
+      <p className="small-title">{title}</p>
       <div className="relative">
         <textarea
           id="inputMemo"

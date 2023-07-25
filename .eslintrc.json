@@ -24,7 +24,7 @@
     "createDefaultProgram": true
   },
   "plugins": ["@typescript-eslint", "react", "prettier"],
-  "ignorePatterns": [".eslintrc.cjs", "vite.config.ts"],
+  "ignorePatterns": [".eslintrc.cjs", "vite.config.ts", "tailwind.config.js"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -41,6 +41,7 @@
         "arrow-function", 
         "function-declaration"
       ] }
-    ]
+    ],
+    "react/prop-types": "off"
   }
 }

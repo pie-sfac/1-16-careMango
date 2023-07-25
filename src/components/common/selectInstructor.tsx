@@ -1,8 +1,12 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { commonState } from '../../atoms/commonAtom';
+import commonState from '../../atoms/commonAtom';
 
-const SelectInstructor = () => {
+interface SelectInstructorProps {
+  title: string;
+}
+
+const SelectInstructor = ({ title }: SelectInstructorProps) => {
   const [common, setCommon] = useRecoilState(commonState);
 
   // 내용 업데이트
@@ -21,7 +25,8 @@ const SelectInstructor = () => {
   return (
     <label htmlFor="selectInstructor" className="my-5">
       <p className="small-title">
-        담당 강사 선택<span className="text-primary-300">*</span>
+        {title}
+        <span className="text-primary-300">*</span>
       </p>
       <div className="flex items-center">
         <select

@@ -20,5 +20,13 @@ body {
 }
 
 .base-font {
-  @apply text-sm md:text-base;
+  @apply text-sm lg:text-base;
+}
+
+.card-border {
+  @apply bg-white border border-line-200 rounded-xl
+}
+
+.attendance-btn {
+  @apply px-5 py-2 border rounded border-line-200
 }

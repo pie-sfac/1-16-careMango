@@ -10,3 +10,11 @@ body {
 .input-select {
   @apply rounded p-4 border-2 border-line-300 focus:outline-none focus:border-primary-300;
 }
+
+.main-title {
+  @apply font-bold text-2xl my-3
+}
+
+.small-title {
+  @apply font-bold text-lg mb-1;
+}

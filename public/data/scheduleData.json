@@ -1,0 +1,52 @@
+{
+  "id": 0,
+  "tutor": {
+    "id": 0,
+    "name": "박파이"
+  },
+  "lessonId": 0,
+  "maxGroupMember": 1,
+  "startAt": "2023-07-21T07:12:38.461Z",
+  "endAt": "2023-07-21T07:12:38.461Z",
+  "memo": "string",
+  "issuedTicket": {
+    "id": 0,
+    "lessonType": "SINGLE",
+    "title": "개인 PT 수강권",
+    "startAt": "2023-07-21",
+    "endAt": "2023-07-21",
+    "remainingCount": 35,
+    "defaultCount": 50,
+    "serviceCount": 50,
+    "availableReservationCount": 30,
+    "defaultTerm": 0,
+    "defaultTermUnit": "DAY",
+    "isSuspended": true,
+    "suspendedAt": "2023-07-21T07:12:38.461Z",
+    "isCanceled": true,
+    "canceledAt": "2023-07-21T07:12:38.461Z",
+    "createdAt": "2023-07-21T07:12:38.461Z",
+    "updatedAt": "2023-07-21T07:12:38.461Z"
+  },
+  "attendanceHistories": [
+    {
+      "id": 0,
+      "member": {
+        "id": 0,
+        "name": "서태지황황",
+        "phone": "010-0000-0000"
+      },
+      "status": "WAIT"
+    }
+  ],
+  "createdAt": "2023-07-21T07:12:38.461Z",
+  "createdBy": {
+    "id": 0,
+    "name": "string"
+  },
+  "updatedAt": "2023-07-21T07:12:38.461Z",
+  "updatedBy": {
+    "id": 0,
+    "name": "string"
+  }
+}

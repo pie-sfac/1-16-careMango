@@ -20,11 +20,11 @@ body {
 }
 
 .base-font {
-  @apply text-sm md:text-base;
+  @apply text-sm lg:text-base;
 }
 
 .card-border {
-  @apply text-sm bg-white border border-line-200 rounded-xl
+  @apply bg-white border border-line-200 rounded-xl
 }
 
 .attendance-btn {

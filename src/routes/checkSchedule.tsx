@@ -42,9 +42,9 @@ const CheckSchedule = () => {
           <p className="text-xs text-text-400">생성일 2022년 12월 09일 (금) 13시 30분 김파이</p>
         </div>
 
-        <div className="absolute left-0 w-11/12 top-24">
+        <div className="absolute left-0 w-full top-24">
           <h2 className="small-title">수업 정보</h2>
-          <div className="flex items-center justify-start h-16 p-6 gap-7 card-border">
+          <div className="flex items-center justify-start h-16 p-6 gap-7 card-border base-font">
             <div className="flex gap-4">
               <p className="font-bold">일정</p>
               <p>2022.12.23 (금)</p>
@@ -65,7 +65,7 @@ const CheckSchedule = () => {
         </div>
       </section>
 
-      <section className="mt-20">
+      <section className="mt-20 base-font">
         <h2 className="small-title">참여회원(1)</h2>
         <div className="flex items-center">
           <Card>

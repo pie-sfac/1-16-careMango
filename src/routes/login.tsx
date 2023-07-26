@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import axios from 'axios';
@@ -10,7 +12,9 @@ type UserLoginData = {
 const Login: React.FC = () => {
   const [loginData, setLoginData] = useState<UserLoginData>({ username: '', password: '' });
 
-  const loginMutation = useMutation((loginData: UserLoginData) => axios.post('/api/login', loginData));
+  const loginMutation = useMutation((loginData: UserLoginData) =>
+    axios.post('http://223.130.161.221/api/v1/admins/login', loginData),
+  );
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({
@@ -31,11 +35,11 @@ const Login: React.FC = () => {
 
   return (
     <form onSubmit={handleLogin}>
-      <label>
+      <label htmlFor="username">
         Username:
         <input type="text" name="username" onChange={handleInputChange} />
       </label>
-      <label>
+      <label htmlFor="password">
         Password:
         <input type="password" name="password" onChange={handleInputChange} />
       </label>

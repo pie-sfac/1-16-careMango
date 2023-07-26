@@ -1,51 +1,86 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
-import { useMutation } from 'react-query';
 import axios from 'axios';
+import { useMutation } from 'react-query';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
-type UserLoginData = {
+interface LoginInfo {
   username: string;
   password: string;
-};
+  centerCode: string;
+  isAdmin: boolean;
+}
 
-const Login: React.FC = () => {
-  const [loginData, setLoginData] = useState<UserLoginData>({ username: '', password: '' });
+function Login() {
+  const [loginInfo, setLoginInfo] = useState<LoginInfo>({
+    username: '',
+    password: '',
+    centerCode: '',
+    isAdmin: false,
+  });
 
-  const loginMutation = useMutation((loginData: UserLoginData) =>
-    axios.post('http://223.130.161.221/api/v1/admins/login', loginData),
-  );
+  const mutation = useMutation((info: LoginInfo) => {
+    const apiUrl = info.isAdmin
+      ? `http://223.130.161.221/api/v1/staffs/login?centerCode=${info.centerCode}`
+      : `http://223.130.161.221/api/v1/admins/login`;
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginData({
-      ...loginData,
-      [event.target.name]: event.target.value,
+    return axios.post(apiUrl, {
+      username: info.username,
+      password: info.password,
     });
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      const response = await loginMutation.mutateAsync(loginData);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutation.mutate(loginInfo);
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <label htmlFor="username">
-        Username:
-        <input type="text" name="username" onChange={handleInputChange} />
-      </label>
-      <label htmlFor="password">
-        Password:
-        <input type="password" name="password" onChange={handleInputChange} />
-      </label>
-      <input type="submit" value="Login" />
-    </form>
+    <div>
+      <Tabs>
+        <TabList>
+          <Tab>User Login</Tab>
+          <Tab>Admin Login</Tab>
+        </TabList>
+
+        <TabPanel>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="username">
+              Username:
+              <input type="text" name="username" onChange={handleInputChange} />
+            </label>
+            <label htmlFor="password">
+              Password:
+              <input type="password" name="password" onChange={handleInputChange} />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+        </TabPanel>
+
+        <TabPanel>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="username">
+              Username:
+              <input type="text" name="username" onChange={handleInputChange} />
+            </label>
+            <label htmlFor="password">
+              Password:
+              <input type="password" name="password" onChange={handleInputChange} />
+            </label>
+            <label htmlFor="centerCode">
+              Center Code:
+              <input type="text" name="centerCode" onChange={handleInputChange} />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+        </TabPanel>
+      </Tabs>
+    </div>
   );
-};
+}
 
 export default Login;

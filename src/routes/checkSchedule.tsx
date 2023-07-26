@@ -1,8 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../components/common/Card';
 
+interface scheduleItemData {
+  id: number;
+  tutor: { id: number; name: string };
+  lessonId: number;
+  maxGroupMember: number;
+  startAt: string;
+  endAt: string;
+  memo: string;
+  issuedTicket: {
+    id: number;
+    lessonType: 'SINGLE' | 'DUET' | 'TRIPLE' | 'GROUP';
+    title: string;
+    startAt: string;
+    endAt: string;
+    remainingCount: number;
+    defaultCount: number;
+    serviceCount: number;
+    availableReservationCount: number;
+    defaultTerm: number;
+    defaultTermUnit: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
+    isSuspended: boolean;
+    suspendedAt: string;
+    isCanceled: boolean;
+    canceledAt: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  attendanceHistories: [
+    {
+      id: number;
+      member: {
+        id: number;
+        name: string;
+        phone: string;
+      };
+      status: 'WAIT' | 'PRESENT' | 'ABSENT';
+    },
+  ];
+  createdAt: string;
+  createdBy: {
+    id: number;
+    name: string;
+  };
+  updatedAt: string;
+  updatedBy: {
+    id: number;
+    name: string;
+  };
+}
+
 const CheckSchedule = () => {
-  const [itemData, setItemData] = useState();
+  const [itemData, setItemData] = useState<scheduleItemData | null>();
 
   useEffect(() => {
     fetch('http://localhost:5173/data/scheduleData.json', {
@@ -17,6 +67,7 @@ const CheckSchedule = () => {
   if (!itemData) return <p>loading...</p>;
   return (
     <>
+      {console.log(itemData)}
       <header className="flex justify-between py-3">
         <div className="flex">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

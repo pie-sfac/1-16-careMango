@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import InputMemo from '../../components/common/InputMemo';
-import { counselingRecordsState } from '../../atoms/checkCounselingAtom'; // 경로는 해당 파일 위치에 따라 다를 수 있습니다.
-import Modal from './Modal';
+import { showModalState } from '../../atoms/counselingAtom';
+import CounselingModal from '../../components/counseling/CounselingModal';
+// import { counselingRecordsState } from '../../atoms/checkCounselingAtom'; // 경로는 해당 파일 위치에 따라 다를 수 있습니다.
+// import Modal from './Modal';
 
 type CounselingData = {
   startAt: string;
@@ -33,6 +35,12 @@ const CheckCounseling = () => {
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
+  };
+
+  const [showModal, setShowModal] = useRecoilState(showModalState);
+
+  const handleOpenModal = () => {
+    setShowModal(true);
   };
 
   if (!itemData) return <p>loading...</p>;
@@ -122,10 +130,16 @@ const CheckCounseling = () => {
                 </div>
               </div>
               <div className="flex gap-1">
-                <button type="button" className="px-5 py-2 border border-[#E7E7E7] rounded text-primary-300">
+                <button
+                  type="button"
+                  className="px-5 py-2 border border-[#E7E7E7] rounded text-primary-300 active:bg-gray-200"
+                  onClick={handleOpenModal}>
                   상담기록
                 </button>
-                <button type="button" className="px-5 py-2 border border-[#E7E7E7] rounded text-primary-300">
+
+                <button
+                  type="button"
+                  className="px-5 py-2 border border-[#E7E7E7] rounded text-primary-300 active:bg-gray-200">
                   회원 정보 등록
                 </button>
               </div>
@@ -137,6 +151,8 @@ const CheckCounseling = () => {
       <section className="w-11/12 m-auto mt-10">
         <InputMemo title="일정 메모" />
       </section>
+
+      <CounselingModal />
     </>
   );
 };

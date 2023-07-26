@@ -2,12 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import commonState from '../../atoms/commonAtom';
-import InputMemo from '../../components/common/inputMemo';
-import InputContact from '../../components/common/inputContact';
-import SelectDate from '../../components/common/selectDate';
-import SelectTime from '../../components/common/selectTime';
-import InputName from '../../components/common/inputName';
-import SelectInstructor from '../../components/common/selectInstructor';
+import SelectInstructor from '../../components/common/SelectInstructor';
+import SelectDate from '../../components/common/SelectDate';
+import SelectTime from '../../components/common/SelectTime';
+import InputName from '../../components/common/InputName';
+import InputContact from '../../components/common/InputContact';
+import InputMemo from '../../components/common/InputMemo';
 
 function CreateCounseling() {
   const common = useRecoilValue(commonState);

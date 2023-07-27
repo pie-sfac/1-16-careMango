@@ -23,7 +23,7 @@
     "project": "./tsconfig.json",
     "createDefaultProgram": true
   },
-  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "plugins": ["@typescript-eslint", "react", "prettier", "html"],
   "ignorePatterns": [".eslintrc.cjs", "vite.config.ts", "tailwind.config.js"],
   "rules": {
     "prettier/prettier": [

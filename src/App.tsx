@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import './index.css';
 import InputMemo from './components/common/InputMemo';
@@ -7,18 +8,20 @@ import SelectDate from './components/common/SelectDate';
 import SelectTime from './components/common/SelectTime';
 import InputName from './components/common/InputName';
 import SelectInstructor from './components/common/SelectInstructor';
+import CheckSchedule from './routes/checkSchedule';
+import CreateCounseling from './routes/counseling/createCounseling';
+import CheckCounseling from './routes/counseling/checkCounseling';
 
 function App() {
   return (
     <RecoilRoot>
-      <div className="App">
-        <SelectInstructor title="담당 강사 선택" />
-        <SelectDate title="날짜 선택" />
-        <SelectTime title="시간 선택" />
-        <InputName title="이름" />
-        <InputContact title="전화번호" />
-        <InputMemo title="일정 메모" />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/schedule/:scheduleId" element={<CheckSchedule />} />
+          <Route path="/schedule/:counselingId" element={<CheckCounseling />} />
+          <Route path="/schedule/createCounseling" element={<CreateCounseling />} />
+        </Routes>
+      </BrowserRouter>
     </RecoilRoot>
   );
 }

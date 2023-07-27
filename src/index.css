@@ -4,9 +4,29 @@
 @tailwind utilities;
 
 body {
-  @apply text-text-900 font-pretendard mx-6;
+  @apply mx-6 lg:mx-12 text-text-900 font-pretendard;
 }
 
 .input-select {
-  @apply rounded p-4 border-2 border-line-300 focus:outline-none focus:border-primary-300;
+  @apply p-4 border-2 rounded border-line-300 focus:outline-none focus:border-primary-300;
+}
+
+.main-title {
+  @apply font-bold text-base lg:text-2xl my-3
+}
+
+.small-title {
+  @apply mb-1 text-sm font-bold lg:text-lg;
+}
+
+.base-font {
+  @apply text-sm lg:text-base;
+}
+
+.card-border {
+  @apply bg-white border border-line-200 rounded-xl
+}
+
+.attendance-btn {
+  @apply px-5 py-2 border rounded border-line-200
 }

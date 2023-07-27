@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getDay, getTime } from '../utils/date';
 import Card from '../components/common/Card';
 
@@ -55,13 +55,15 @@ interface ScheduleItemData {
 
 const CheckSchedule = () => {
   const [itemData, setItemData] = useState<ScheduleItemData | null>();
+  const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
+  const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
 
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const goEditSchedule = (scheduleId: string) => {
+  const goEditSchedule = () => {
     navigate(`/edit/${scheduleId}`);
   };
 
@@ -72,6 +74,7 @@ const CheckSchedule = () => {
       .then((res) => res.json())
       .then((data) => {
         setItemData(data);
+        setAttendanceHistoryId(data.attendanceHistories[0].id);
       });
   }, []);
 
@@ -91,7 +94,7 @@ const CheckSchedule = () => {
           <p className="text-base">11시 서태지</p>
         </div>
         <div>
-          <button className="pl-5 text-base" type="button" onClick={() => goEditSchedule('scheduleId')}>
+          <button className="pl-5 text-base" type="button" onClick={() => goEditSchedule()}>
             변경
           </button>
           <button className="pl-5 text-base" type="button">

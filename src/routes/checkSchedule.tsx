@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { getDay, getTime } from '../utils/date';
 import Card from '../components/common/Card';
 
@@ -58,6 +59,41 @@ const CheckSchedule = () => {
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
 
+  const fetchCheckSchedule = async () => {
+    const res = await axios.get('http://localhost:5173/data/scheduleData.json');
+    // const res = await axios.get(`schedules/private-lesson/${scheduleId}`);
+    const scheduleData = res.data;
+    setItemData(scheduleData);
+    setAttendanceHistoryId(scheduleData.attendanceHistories[0].id);
+  };
+
+  useEffect(() => {
+    fetchCheckSchedule();
+  }, []);
+
+  // 페이지 변경
+  // 출석 버튼 이벤트
+  const onClickPresent = () => {
+    axios.post(`/attendance-histories/${attendanceHistoryId}/check-present`);
+    const isConfirmed = confirm('출석처리를 진행하시겠습니까?');
+    if (isConfirmed) {
+      alert('출석 처리되었습니다.');
+      fetchCheckSchedule();
+    }
+  };
+
+  // 결석 버튼 이벤트
+  const onClickAbsent = () => {
+    axios.post(`/attendance-histories/${attendanceHistoryId}/check-absent`);
+    const isConfirmed = confirm('결석처리를 진행하시겠습니까?');
+    if (isConfirmed) {
+      alert('결석 처리되었습니다.');
+      fetchCheckSchedule();
+    }
+  };
+
+  // 출결 status에 따라 text 다르게 적용 함수
+
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
@@ -66,17 +102,6 @@ const CheckSchedule = () => {
   const goEditSchedule = () => {
     navigate(`/edit/${scheduleId}`);
   };
-
-  useEffect(() => {
-    fetch('http://localhost:5173/data/scheduleData.json', {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItemData(data);
-        setAttendanceHistoryId(data.attendanceHistories[0].id);
-      });
-  }, []);
 
   if (!itemData) return <p>loading...</p>;
   return (
@@ -164,10 +189,10 @@ const CheckSchedule = () => {
                 </div>
               </div>
               <div className="flex gap-1">
-                <button type="button" className="attendance-btn">
+                <button type="button" className="attendance-btn" onClick={onClickPresent}>
                   출석
                 </button>
-                <button type="button" className="attendance-btn">
+                <button type="button" className="attendance-btn" onClick={onClickAbsent}>
                   결석
                 </button>
               </div>

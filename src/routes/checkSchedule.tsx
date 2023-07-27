@@ -71,28 +71,33 @@ const CheckSchedule = () => {
     fetchCheckSchedule();
   }, []);
 
-  // 페이지 변경
-  // 출석 버튼 이벤트
   const onClickPresent = () => {
     axios.post(`/attendance-histories/${attendanceHistoryId}/check-present`);
-    const isConfirmed = confirm('출석처리를 진행하시겠습니까?');
+    const isConfirmed = window.confirm('출석처리를 진행하시겠습니까?');
     if (isConfirmed) {
       alert('출석 처리되었습니다.');
       fetchCheckSchedule();
     }
   };
 
-  // 결석 버튼 이벤트
   const onClickAbsent = () => {
     axios.post(`/attendance-histories/${attendanceHistoryId}/check-absent`);
-    const isConfirmed = confirm('결석처리를 진행하시겠습니까?');
+    const isConfirmed = window.confirm('결석처리를 진행하시겠습니까?');
     if (isConfirmed) {
       alert('결석 처리되었습니다.');
       fetchCheckSchedule();
     }
   };
 
-  // 출결 status에 따라 text 다르게 적용 함수
+  const attendanceStatus = (status: string) => {
+    if (status === 'PRESENT') {
+      return '출석';
+    }
+    if (status === 'ABSENT') {
+      return '결석';
+    }
+    return '예약';
+  };
 
   const navigate = useNavigate();
   const handleBackClick = () => {
@@ -206,7 +211,7 @@ const CheckSchedule = () => {
                 <li>예약 가능</li>
               </ul>
               <ul className="flex flex-col gap-2 font-bold">
-                <li>{itemData.attendanceHistories[0].status === 'WAIT' ? '예약' : '출석/결석'}</li>
+                <li>{attendanceStatus(itemData.attendanceHistories[0].status)}</li>
                 <li>{itemData.issuedTicket.title}</li>
                 <li>
                   {itemData.issuedTicket.remainingCount}회 (총 {itemData.issuedTicket.defaultCount}회)

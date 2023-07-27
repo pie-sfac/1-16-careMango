@@ -1,56 +1,157 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { getDay, getTime } from '../utils/date';
+import Card from '../components/common/Card';
+
+interface ScheduleItemData {
+  id: number;
+  tutor: { id: number; name: string };
+  lessonId: number;
+  maxGroupMember: number;
+  startAt: string;
+  endAt: string;
+  memo: string;
+  issuedTicket: {
+    id: number;
+    lessonType: 'SINGLE' | 'DUET' | 'TRIPLE' | 'GROUP';
+    title: string;
+    startAt: string;
+    endAt: string;
+    remainingCount: number;
+    defaultCount: number;
+    serviceCount: number;
+    availableReservationCount: number;
+    defaultTerm: number;
+    defaultTermUnit: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
+    isSuspended: boolean;
+    suspendedAt: string;
+    isCanceled: boolean;
+    canceledAt: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  attendanceHistories: [
+    {
+      id: number;
+      member: {
+        id: number;
+        name: string;
+        phone: string;
+      };
+      status: 'WAIT' | 'PRESENT' | 'ABSENT';
+    },
+  ];
+  createdAt: string;
+  createdBy: {
+    id: number;
+    name: string;
+  };
+  updatedAt: string;
+  updatedBy: {
+    id: number;
+    name: string;
+  };
+}
 
 const CheckSchedule = () => {
-  const [itemData, setItemData] = useState();
+  const [itemData, setItemData] = useState<ScheduleItemData | null>();
+  const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
+  const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
+
+  const fetchCheckSchedule = async () => {
+    const res = await axios.get('http://localhost:5173/data/scheduleData.json');
+    // const res = await axios.get(`schedules/private-lesson/${scheduleId}`);
+    const scheduleData = res.data;
+    setItemData(scheduleData);
+    setAttendanceHistoryId(scheduleData.attendanceHistories[0].id);
+  };
 
   useEffect(() => {
-    fetch('http://localhost:5173/data/scheduleData.json', {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItemData(data);
-      });
+    fetchCheckSchedule();
   }, []);
+
+  const onClickPresent = () => {
+    axios.post(`/attendance-histories/${attendanceHistoryId}/check-present`);
+    const isConfirmed = window.confirm('출석처리를 진행하시겠습니까?');
+    if (isConfirmed) {
+      alert('출석 처리되었습니다.');
+      fetchCheckSchedule();
+    }
+  };
+
+  const onClickAbsent = () => {
+    axios.post(`/attendance-histories/${attendanceHistoryId}/check-absent`);
+    const isConfirmed = window.confirm('결석처리를 진행하시겠습니까?');
+    if (isConfirmed) {
+      alert('결석 처리되었습니다.');
+      fetchCheckSchedule();
+    }
+  };
+
+  const attendanceStatus = (status: string) => {
+    if (status === 'PRESENT') {
+      return '출석';
+    }
+    if (status === 'ABSENT') {
+      return '결석';
+    }
+    return '예약';
+  };
+
+  const navigate = useNavigate();
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  const goEditSchedule = () => {
+    navigate(`/edit/${scheduleId}`);
+  };
 
   if (!itemData) return <p>loading...</p>;
   return (
     <>
-      <header className="flex justify-between px-4 py-3">
+      <header className="flex justify-between py-3 border-b border-line-200">
         <div className="flex">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M16.7071 3.29289C17.0976 3.68342 17.0976 4.31658 16.7071 4.70711L9.41421 12L16.7071 19.2929C17.0976 19.6834 17.0976 20.3166 16.7071 20.7071C16.3166 21.0976 15.6834 21.0976 15.2929 20.7071L7.29289 12.7071C6.90237 12.3166 6.90237 11.6834 7.29289 11.2929L15.2929 3.29289C15.6834 2.90237 16.3166 2.90237 16.7071 3.29289Z"
-              fill="#505050"
-            />
-          </svg>
-          <p>11시 서태지</p>
+          <button onClick={handleBackClick} type="submit" className="focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M16.7071 3.29289C17.0976 3.68342 17.0976 4.31658 16.7071 4.70711L9.41421 12L16.7071 19.2929C17.0976 19.6834 17.0976 20.3166 16.7071 20.7071C16.3166 21.0976 15.6834 21.0976 15.2929 20.7071L7.29289 12.7071C6.90237 12.3166 6.90237 11.6834 7.29289 11.2929L15.2929 3.29289C15.6834 2.90237 16.3166 2.90237 16.7071 3.29289Z"
+                fill="#505050"
+              />
+            </svg>
+          </button>
+          <p className="text-base">11시 서태지</p>
         </div>
         <div>
-          <button className="pl-5" type="button">
+          <button className="pl-5 text-base" type="button" onClick={() => goEditSchedule()}>
             변경
           </button>
-          <button className="pl-5" type="button">
+          <button className="pl-5 text-base" type="button">
             취소
           </button>
         </div>
       </header>
-      <section className="bg-[#F4F4F4] w-full h-40 relative">
-        <div className="flex items-center justify-between w-11/12 py-4 m-auto">
-          <h1 className="text-base font-bold">개인수업일정</h1>
-          <p className="text-[#AEAEAE] text-xs">생성일 2022년 12월 09일 (금) 13시 30분 김파이</p>
+      <section className="relative h-40 bg-bg-100">
+        <div className="flex items-center justify-between py-4">
+          <h1 className="main-title">개인수업일정</h1>
+          <p className="text-xs text-text-400">
+            생성일 {getDay(itemData.createdAt)} {getTime(itemData.createdAt)} {itemData.createdBy.name}
+          </p>
         </div>
 
         <div className="absolute left-0 w-full top-24">
-          <h2 className="w-11/12 py-2 m-auto text-sm font-bold">수업 정보</h2>
-          <div className="text-sm m-auto w-11/12 h-16 p-6 bg-white border border-[#E7E7E7] rounded-xl flex justify-start items-center gap-7">
+          <h2 className="small-title">수업 정보</h2>
+          <div className="flex items-center justify-start h-16 p-6 gap-7 card-border base-font">
             <div className="flex gap-4">
               <p className="font-bold">일정</p>
-              <p>2022.12.23 (금)</p>
+              <p>{getDay(itemData.startAt)}</p>
             </div>
             <div className="flex gap-4">
               <p className="font-bold">시간</p>
-              <p>16:30 ~ 17:30</p>
+              <p>
+                {getTime(itemData.startAt)} ~ {getTime(itemData.endAt)}
+              </p>
             </div>
             <div className="flex gap-4">
               <p className="font-bold">정원</p>
@@ -64,11 +165,11 @@ const CheckSchedule = () => {
         </div>
       </section>
 
-      <section className="w-11/12 m-auto mt-20">
-        <h2 className="my-2 text-sm font-bold">참여회원(1)</h2>
-        <div className="flex items-center text-sm">
-          <div className="border border-line-200 rounded-xl">
-            <div className="flex items-center gap-28 p-5 border-b border-[#E7E7E7]">
+      <section className="mt-20 base-font">
+        <h2 className="small-title">참여회원(1)</h2>
+        <div className="flex items-center">
+          <Card>
+            <div className="flex items-center p-5 border-b gap-28 border-line-200">
               <div className="flex gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <g clipPath="url(#clip0_18_8567)">
@@ -88,15 +189,15 @@ const CheckSchedule = () => {
                 </svg>
 
                 <div className="flex flex-col">
-                  <p className="font-bold">서태지황황</p>
-                  <p>(010-0000-0000)</p>
+                  <p className="font-bold">{itemData.attendanceHistories[0].member.name}</p>
+                  <p>{itemData.attendanceHistories[0].member.phone}</p>
                 </div>
               </div>
               <div className="flex gap-1">
-                <button type="button" className="px-5 py-2 border border-[#E7E7E7] rounded">
+                <button type="button" className="attendance-btn" onClick={onClickPresent}>
                   출석
                 </button>
-                <button type="button" className="px-5 py-2 border border-[#E7E7E7] rounded">
+                <button type="button" className="attendance-btn" onClick={onClickAbsent}>
                   결석
                 </button>
               </div>
@@ -110,13 +211,12 @@ const CheckSchedule = () => {
                 <li>예약 가능</li>
               </ul>
               <ul className="flex flex-col gap-2 font-bold">
-                <li>{itemData.attendanceHistories[0].status === 'WAIT' ? '예약' : '출석/결석'}</li>
-                <li>개인 PT 수강권(50분)</li>
+                <li>{attendanceStatus(itemData.attendanceHistories[0].status)}</li>
+                <li>{itemData.issuedTicket.title}</li>
                 <li>
                   {itemData.issuedTicket.remainingCount}회 (총 {itemData.issuedTicket.defaultCount}회)
                 </li>
                 <li>
-                  {' '}
                   {itemData.issuedTicket.availableReservationCount}회 (총 {itemData.issuedTicket.defaultCount}회)
                 </li>
               </ul>
@@ -124,16 +224,16 @@ const CheckSchedule = () => {
             <div className="mb-6 px-14">
               <button
                 type="button"
-                className="mr-2 text-xs px-3 py-2 text-[#6691FF] inline-flex border border-[#E7E7E7] rounded-xl">
+                className="inline-flex px-3 py-2 mr-2 text-xs border text-primary-300 border-line-200 rounded-xl">
                 기록 작성하기
               </button>
               <button
                 type="button"
-                className="text-xs px-3 py-2 text-[#6691FF] inline-flex border border-[#E7E7E7] rounded-xl">
+                className="inline-flex px-3 py-2 text-xs border text-primary-300 border-line-200 rounded-xl">
                 퍼스널 레포트 보내기
               </button>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
     </>

@@ -1,0 +1,47 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json",
+    "createDefaultProgram": true
+  },
+  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "ignorePatterns": [".eslintrc.cjs", "vite.config.ts", "tailwind.config.js"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "useTabs":false,
+        "endOfLine":"auto"
+      }
+    ],
+    "no-unused-vars":"warn",
+    "@typescript-eslint/no-unused-vars":["warn"],
+    "react/function-component-definition":[
+      2, 
+      { "namedComponents": [
+        "arrow-function", 
+        "function-declaration"
+      ] }
+    ],
+    "react/prop-types": "off"
+  }
+}

@@ -1,35 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { RecoilRoot } from 'recoil';
+import './index.css';
+import InputMemo from './components/common/inputMemo';
+import InputContact from './components/common/inputContact';
+import SelectDate from './components/common/selectDate';
+import SelectTime from './components/common/selectTime';
+import InputName from './components/common/inputName';
+import SelectInstructor from './components/common/selectInstructor';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <RecoilRoot>
+      <div className="App">
+        <SelectInstructor title="담당 강사 선택" />
+        <SelectDate title="날짜 선택" />
+        <SelectTime title="시간 선택" />
+        <InputName title="이름" />
+        <InputContact title="전화번호" />
+        <InputMemo title="일정 메모" />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </RecoilRoot>
+  );
 }
 
-export default App
+export default App;

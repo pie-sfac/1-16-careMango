@@ -1,0 +1,41 @@
+{
+  "id": 0,
+  "startAt": "2022-12-23T16:30:00",
+  "endAt": "2022-12-23T17:30:00",
+  "memo": "일정 메모메모 메모의 나라로 떠나용",
+  "isCanceled": true,
+  "canceledAt": "2023-07-26T06:39:57.959Z",
+  "counselor": {
+    "id": 0,
+    "name": "박직원"
+  },
+  "client": {
+    "memberId": 0,
+    "name": "서태지황황",
+    "phone": "010-0000-0000"
+  },
+  "counselingRecord": {
+    "id": 0,
+    "content": "string",
+    "createdBy": {
+      "id": 0,
+      "name": "string"
+    },
+    "updatedBy": {
+      "id": 0,
+      "name": "string"
+    },
+    "createdAt": "2023-07-26T06:39:57.959Z",
+    "updatedAt": "2023-07-26T06:39:57.959Z"
+  },
+  "createdAt": "2023-07-26T06:39:57.959Z",
+  "createdBy": {
+    "id": 0,
+    "name": "string"
+  },
+  "updatedAt": "2023-07-26T06:39:57.959Z",
+  "updatedBy": {
+    "id": 0,
+    "name": "string"
+  }
+}

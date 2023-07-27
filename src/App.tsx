@@ -7,7 +7,6 @@ import SelectDate from './components/common/SelectDate';
 import SelectTime from './components/common/SelectTime';
 import InputName from './components/common/InputName';
 import SelectInstructor from './components/common/SelectInstructor';
-import PersonalClass from './routes/PersonalClass/PersonalClass'
 
 function App() {
   return (
@@ -19,10 +18,6 @@ function App() {
         <InputName title="이름" />
         <InputContact title="전화번호" />
         <InputMemo title="일정 메모" />
-        
-
-         {/* jihyo */}
-         <PersonalClass/>
       </div>
     </RecoilRoot>
   );

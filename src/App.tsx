@@ -12,7 +12,7 @@ function App() {
     <RecoilRoot>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />}></Route>
+          <Route path="/" element={<Login />} />
           <Route path="/schedule/:scheduleId" element={<CheckSchedule />} />
           <Route path="/schedule/:counselingId" element={<CheckCounseling />} />
           <Route path="/schedule/createCounseling" element={<CreateCounseling />} />

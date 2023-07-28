@@ -11,6 +11,7 @@ import SelectInstructor from './components/common/SelectInstructor';
 import CheckSchedule from './routes/checkSchedule';
 import CreateCounseling from './routes/counseling/createCounseling';
 import CheckCounseling from './routes/counseling/checkCounseling';
+import Login from './routes/login';
 
 function App() {
   return (

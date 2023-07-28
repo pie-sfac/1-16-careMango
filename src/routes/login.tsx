@@ -20,7 +20,7 @@ function Login() {
   });
 
   const mutation = useMutation((info: LoginInfo) => {
-    const apiUrl = info.isAdmin
+    const apiUrl = !info.isAdmin
       ? `http://223.130.161.221/api/v1/staffs/login?centerCode=${info.centerCode}`
       : `http://223.130.161.221/api/v1/admins/login`;
 

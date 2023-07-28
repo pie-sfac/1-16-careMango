@@ -8,7 +8,7 @@ import SelectDate from './components/common/SelectDate';
 import SelectTime from './components/common/SelectTime';
 import InputName from './components/common/InputName';
 import SelectInstructor from './components/common/SelectInstructor';
-import CheckSchedule from './routes/checkSchedule';
+// import CheckSchedule from './routes/checkSchedule';
 import CreateCounseling from './routes/counseling/createCounseling';
 import CheckCounseling from './routes/counseling/checkCounseling';
 import Login from './routes/login';
@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/schedule/:scheduleId" element={<CheckSchedule />} />
+          {/* <Route path="/schedule/:scheduleId" element={<CheckSchedule />} /> */}
           <Route path="/schedule/:counselingId" element={<CheckCounseling />} />
           <Route path="/schedule/createCounseling" element={<CreateCounseling />} />
         </Routes>

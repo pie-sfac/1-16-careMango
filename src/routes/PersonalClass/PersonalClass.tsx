@@ -1,9 +1,9 @@
-import React from "react";
-import SelectInstructor from "../../components/common/SelectInstructor";
-import SelectClass from "../../components/SelectClass";
-import SelectDate from "../../components/common/SelectDate";
-import SelectTime from "../../components/common/SelectTime";
-import ButtonComplete from "../../components/ButtonComplete";
+import React from 'react';
+import SelectInstructor from '../../components/common/SelectInstructor';
+import SelectClass from '../../components/createSchedule/SelectClass';
+import SelectDate from '../../components/common/SelectDate';
+import SelectTime from '../../components/common/SelectTime';
+import ButtonComplete from '../../components/createSchedule/ButtonComplete';
 
 const PersonalClass = () => {
   return (
@@ -18,7 +18,7 @@ const PersonalClass = () => {
       <SelectTime title="시간 선택" />
       <ButtonComplete />
     </>
-  )
-}
+  );
+};
 
-export default PersonalClass
+export default PersonalClass;

@@ -20,19 +20,22 @@ function Login() {
   });
 
   const mutation = useMutation((info: LoginInfo) => {
-    const apiUrl = !info.isAdmin
+    const apiUrl = info.isAdmin
       ? `http://223.130.161.221/api/v1/staffs/login?centerCode=${info.centerCode}`
       : `http://223.130.161.221/api/v1/admins/login`;
-
+    const encodedString = btoa(`${info.username}:${info.password}`);
     return axios
-      .post(apiUrl, {
-        username: info.username,
-        password: info.password,
-      })
+      .post(
+        apiUrl,
+        {},
+        {
+          headers: { Authorization: `Basic ${encodedString}` },
+        },
+      )
       .then((res) => {
-        console.log(res);
-        localStorage.setItem('accessToken', res.headers.accessToken);
-        localStorage.setItem('refreshToken', res.headers.refreshToken);
+        console.log(res.data.accessToken);
+        localStorage.setItem('accessToken', res.data.accessToken);
+        localStorage.setItem('refreshToken', res.data.refreshToken);
         console.log(res.headers.message);
       });
   });

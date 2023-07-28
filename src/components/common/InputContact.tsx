@@ -1,27 +1,22 @@
-import React, { ChangeEvent } from 'react';
-import { useRecoilState } from 'recoil';
-import commonState from '../../atoms/commonAtom';
+import React, { ChangeEvent, useState } from 'react';
 
 interface InputContactProps {
   title: string;
 }
 
 const InputContact = ({ title }: InputContactProps) => {
-  const [common, setCommon] = useRecoilState(commonState);
+  const [state, setState] = useState<string>('');
 
   // 전화번호 입력시 자동 하이픈
   const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value: rawValue } = event.target;
-    let value = rawValue.replace(/\D/g, ''); // 모든 숫자가 아닌 문자를 제거
+    let value = rawValue.replace(/\D/g, '');
 
     if (value.length > 11) return;
     if (value.length > 3) {
       value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     }
-    setCommon((prev) => ({
-      ...prev,
-      contact: value,
-    }));
+    setState(value);
   };
 
   return (
@@ -35,7 +30,7 @@ const InputContact = ({ title }: InputContactProps) => {
         className="input-select"
         type="tel"
         name="contact"
-        value={common.contact}
+        value={state}
         onChange={numberChange}
         placeholder="010-1234-5678"
       />

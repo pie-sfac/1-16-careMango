@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 interface SelectDateProps {
   title: string;
+  defaultState?: string;
 }
 
-const SelectDate = ({ title }: SelectDateProps) => {
-  const [state, setState] = useState<string>('');
+const SelectDate = ({ title, defaultState }: SelectDateProps) => {
+  const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState(event.target.value);
   };

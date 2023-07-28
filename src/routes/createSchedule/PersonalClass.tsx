@@ -4,13 +4,14 @@ import SelectClass from '../../components/createSchedule/SelectClass';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
 import ButtonComplete from '../../components/createSchedule/ButtonComplete';
+import ButtonAddMembers from '../../components/createSchedule/ButtonAddMembers';
 
 const PersonalClass = () => {
   return (
     <>
       <h1 className="font-bold">개인 수업</h1>
       <SelectInstructor title="강사 선택" />
-
+      <ButtonAddMembers />
       <SelectClass title="수업(수강권) 선택" flag={true} count={3} />
       <h2>참여 회원</h2>
       {/* 참여 회원 목록은 강사/회원 선택 시 자동으로 입력됨 */}

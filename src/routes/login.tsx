@@ -24,10 +24,17 @@ function Login() {
       ? `http://223.130.161.221/api/v1/staffs/login?centerCode=${info.centerCode}`
       : `http://223.130.161.221/api/v1/admins/login`;
 
-    return axios.post(apiUrl, {
-      username: info.username,
-      password: info.password,
-    });
+    return axios
+      .post(apiUrl, {
+        username: info.username,
+        password: info.password,
+      })
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem('accessToken', res.headers.accessToken);
+        localStorage.setItem('refreshToken', res.headers.refreshToken);
+        console.log(res.headers.message);
+      });
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

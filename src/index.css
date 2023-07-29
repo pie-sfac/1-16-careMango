@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 body {
-  @apply mx-6 lg:mx-12 text-text-900 font-pretendard;
+  @apply mx-6 lg:mx-12 text-text-900 font-pretendard base-font;
 }
 
 .input-select {

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import axiosInstance from '../utils/apiInstance';
 import Card from '../components/common/Card';
@@ -7,21 +8,23 @@ import Header from '../components/common/Header';
 import { ScheduleItemData } from '../types/schedule';
 import ScheduleBox from '../components/ScheduleBox';
 import ScheduleDetail from '../components/ScheduleDetail';
+import { itemDataState } from '../atoms/itemDataAtom';
 
 const CheckSchedule = () => {
-  const [itemData, setItemData] = useState<ScheduleItemData | null>();
+  const [itemData, setItemData] = useRecoilState(itemDataState);
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
   const navigate = useNavigate();
 
   const fetchCheckSchedule = useCallback(async () => {
-    // const res = await axios.get('http://localhost:5173/data/scheduleData.json');
-    const res = await axiosInstance.get(`schedules/private-lesson/${scheduleId}`);
+    const res = await axios.get('http://localhost:5173/data/scheduleData.json');
+    // const res = await axiosInstance.get(`schedules/private-lesson/${scheduleId}`);
     const scheduleData = res.data;
     console.log(scheduleData);
     setItemData(scheduleData);
     setAttendanceHistoryId(scheduleData.attendanceHistories[0].id);
-  }, [scheduleId]);
+    // }, [scheduleId, setItemData]);
+  }, [setItemData]);
 
   const goEditSchedule = () => {
     navigate(`/schedule/personal/edit/${scheduleId}`);

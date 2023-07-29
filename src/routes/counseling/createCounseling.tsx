@@ -33,6 +33,12 @@ function CreateCounseling() {
     navigate(-1);
   };
 
+  // 일정관리 메인 페이지로
+  const handleCompleteClick = () => {
+    console.log(state);
+    navigate('/schedule');
+  };
+
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = (): boolean => {
     return !!(state.instructor && state.date && state.startAt && state.endAt && state.clientName && state.clientPhone);
@@ -92,7 +98,7 @@ function CreateCounseling() {
             allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
           }`}
           type="submit"
-          onClick={() => console.log(state)}>
+          onClick={handleCompleteClick}>
           완료
         </button>
       </div>

@@ -34,7 +34,7 @@ function CreateCounseling() {
   };
 
   // 일정관리 메인 페이지로
-  const handleCompleteClick = () => {
+  const goMainSchedule = () => {
     console.log(state);
     navigate('/schedule');
   };
@@ -98,7 +98,7 @@ function CreateCounseling() {
             allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
           }`}
           type="submit"
-          onClick={handleCompleteClick}>
+          onClick={goMainSchedule}>
           완료
         </button>
       </div>

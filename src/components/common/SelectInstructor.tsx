@@ -4,17 +4,20 @@ import NameTag from './NameTag';
 interface SelectInstructorProps {
   title: string;
   defaultState?: string;
+  onSelect?: (selectedInstructor: string) => void;
 }
 
-const SelectInstructor = ({ title, defaultState }: SelectInstructorProps) => {
+const SelectInstructor = ({ title, defaultState, onSelect }: SelectInstructorProps) => {
   const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState(event.target.value);
+    onSelect?.(event.target.value);
   };
 
   // 강사 선택 취소
   const handleRemoveInstructor = () => {
     setState('');
+    onSelect?.('');
   };
 
   return (

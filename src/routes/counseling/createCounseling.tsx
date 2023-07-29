@@ -7,14 +7,23 @@ import InputName from '../../components/common/InputName';
 import InputContact from '../../components/common/InputContact';
 import InputMemo from '../../components/common/InputMemo';
 
+interface CounselingState {
+  instructor: string;
+  date: string;
+  startAt: string;
+  endAt: string;
+  clientName: string;
+  clientPhone: string;
+}
+
 function CreateCounseling() {
-  const [state, setState] = useState({
+  const [state, setState] = useState<CounselingState>({
     // 강사와 날짜는 api에 나와있지 않음
     instructor: '', // ?????
     date: '', // ?????
     startAt: '',
     endAt: '',
-    clinetName: '',
+    clientName: '',
     clientPhone: '',
   });
 
@@ -25,8 +34,9 @@ function CreateCounseling() {
   };
 
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
-  const allFieldsCompleted = () =>
-    state.instructor && state.date && state.startAt && state.endAt && state.clinetName && state.clientPhone;
+  const allFieldsCompleted = (): boolean => {
+    return !!(state.instructor && state.date && state.startAt && state.endAt && state.clientName && state.clientPhone);
+  };
 
   return (
     <>
@@ -51,12 +61,32 @@ function CreateCounseling() {
       </header>
       <div className="flex flex-col">
         <h1 className="main-title">상담</h1>
-        <SelectInstructor title="담당 강사 선택" />
-        <SelectDate title="날짜 선택" />
-        <SelectTime title="시간 선택" />
-        <InputName title="이름" />
-        <InputContact title="전화번호" />
-        <InputMemo title="일정 메모" />
+        <SelectInstructor
+          title="담당 강사 선택"
+          onSelect={(selectedInstructor) => setState((prev) => ({ ...prev, instructor: selectedInstructor }))}
+        />
+        <SelectDate
+          title="날짜 선택"
+          onSelect={(selectedDate) => setState((prev) => ({ ...prev, date: selectedDate }))}
+        />
+        <SelectTime
+          title="시간 선택"
+          onSelect={(selectedTime) =>
+            setState((prev) => ({ ...prev, startAt: selectedTime.startTime, endAt: selectedTime.endTime }))
+          }
+        />
+        <InputName
+          title="이름"
+          onSelect={(selectedName) => setState((prev) => ({ ...prev, clientName: selectedName }))}
+        />
+        <InputContact
+          title="연락처"
+          onSelect={(selectedPhone) => setState((prev) => ({ ...prev, clientPhone: selectedPhone }))}
+        />
+        <InputMemo
+          title="일정 메모"
+          onSelect={(selectedMemo) => setState((prev) => ({ ...prev, memo: selectedMemo }))}
+        />
         <button
           className={`my-5 py-3 rounded ${
             allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

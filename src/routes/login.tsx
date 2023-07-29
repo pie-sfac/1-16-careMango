@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginInfo {
   username: string;
@@ -19,27 +20,38 @@ function Login() {
     isAdmin: false,
   });
 
-  const mutation = useMutation((info: LoginInfo) => {
-    const apiUrl = info.isAdmin
-      ? `http://223.130.161.221/api/v1/staffs/login?centerCode=${info.centerCode}`
-      : `http://223.130.161.221/api/v1/admins/login`;
-    const encodedString = btoa(`${info.username}:${info.password}`);
-    return axios
-      .post(
-        apiUrl,
-        {},
-        {
-          headers: { Authorization: `Basic ${encodedString}` },
-        },
-      )
-      .then((res) => {
-        // console.log(res.data.accessToken);
-        localStorage.setItem('accessToken', res.data.accessToken);
-        localStorage.setItem('refreshToken', res.data.refreshToken);
-        // console.log(res.headers.message);
-      });
-  });
+  const navigate = useNavigate();
 
+  const mutation = useMutation(
+    (info: LoginInfo) => {
+      const apiUrl = info.isAdmin
+        ? `${import.meta.env.VITE_API_URL}/staffs/login?centerCode=${info.centerCode}`
+        : `${import.meta.env.VITE_API_URL}/admins/login`;
+      const encodedString = btoa(`${info.username}:${info.password}`);
+      return axios
+        .post(
+          apiUrl,
+          {},
+          {
+            headers: { Authorization: `Basic ${encodedString}` },
+          },
+        )
+        .then((res) => {
+          // console.log(res.data.accessToken);
+          localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('refreshToken', res.data.refreshToken);
+          // console.log(res.headers.message);
+        });
+    },
+    {
+      onSuccess: () => {
+        navigate('/main'); // 로그인 성공 후 메인 페이지로 이동
+      },
+      onError: (error) => {
+        console.log(error); // 에러 처리는 여기에서...
+      },
+    },
+  );
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };

@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import './index.css';
@@ -17,8 +17,9 @@ function App() {
         <Routes>
           <Route path="/" element={accessToken ? <Navigate to="/main" /> : <Login />} />
           <Route path="/main" element={accessToken ? <Main /> : <Navigate to="/" />} />
-          <Route path="/schedule/:scheduleId" element={<CheckSchedule />} />
-          <Route path="/schedule/:counselingId" element={<CheckCounseling />} />
+          <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
+          <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
+          <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
           <Route path="/schedule/createCounseling" element={<CreateCounseling />} />
         </Routes>
       </BrowserRouter>

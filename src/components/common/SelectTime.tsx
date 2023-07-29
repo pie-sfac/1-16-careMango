@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+
 interface SelectTimeProps {
   title: string;
+  defaultState?: {
+    startTime: string;
+    endTime: string;
+  };
 }
 
-const SelectTime = ({ title }: SelectTimeProps) => {
+const SelectTime = ({ title, defaultState }: SelectTimeProps) => {
   const [state, setState] = useState<{ startTime: string; endTime: string }>({
-    startTime: '',
-    endTime: '',
+    startTime: defaultState?.startTime || '',
+    endTime: defaultState?.endTime || '',
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+
 interface SelectInstructorProps {
   title: string;
+  defaultState?: string;
 }
 
-const SelectInstructor = ({ title }: SelectInstructorProps) => {
-  const [state, setState] = useState<string>('');
+const SelectInstructor = ({ title, defaultState }: SelectInstructorProps) => {
+  const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState(event.target.value);
   };

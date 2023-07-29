@@ -33,10 +33,10 @@ function Login() {
         },
       )
       .then((res) => {
-        console.log(res.data.accessToken);
+        // console.log(res.data.accessToken);
         localStorage.setItem('accessToken', res.data.accessToken);
         localStorage.setItem('refreshToken', res.data.refreshToken);
-        console.log(res.headers.message);
+        // console.log(res.headers.message);
       });
   });
 

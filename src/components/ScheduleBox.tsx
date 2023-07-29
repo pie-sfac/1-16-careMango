@@ -16,7 +16,7 @@ const ScheduleBox = ({ itemData }: { itemData: ScheduleItemData }) => (
       <div className="flex items-center justify-start h-16 p-6 gap-7 card-border base-font">
         <div className="flex gap-4">
           <p className="font-bold">일정</p>
-          <p>{getDay(itemData.startAt)}</p>
+          <p>{getDay(itemData.startAt, 'weekday')}</p>
         </div>
         <div className="flex gap-4">
           <p className="font-bold">시간</p>

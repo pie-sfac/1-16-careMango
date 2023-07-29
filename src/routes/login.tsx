@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useNavigate } from 'react-router-dom';
+import { SetterOrUpdater } from 'recoil';
 
 interface LoginInfo {
   username: string;
@@ -12,7 +13,11 @@ interface LoginInfo {
   isAdmin: boolean;
 }
 
-function Login() {
+interface LoginProps {
+  setAccessToken: SetterOrUpdater<string>;
+}
+
+function Login({ setAccessToken }: LoginProps) {
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
     username: '',
     password: '',
@@ -22,36 +27,28 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const mutation = useMutation(
-    (info: LoginInfo) => {
-      const apiUrl = info.isAdmin
-        ? `${import.meta.env.VITE_API_URL}/staffs/login?centerCode=${info.centerCode}`
-        : `${import.meta.env.VITE_API_URL}/admins/login`;
-      const encodedString = btoa(`${info.username}:${info.password}`);
-      return axios
-        .post(
-          apiUrl,
-          {},
-          {
-            headers: { Authorization: `Basic ${encodedString}` },
-          },
-        )
-        .then((res) => {
-          // console.log(res.data.accessToken);
-          localStorage.setItem('accessToken', res.data.accessToken);
-          localStorage.setItem('refreshToken', res.data.refreshToken);
-          // console.log(res.headers.message);
-        });
-    },
-    {
-      onSuccess: () => {
-        navigate('/main'); // 로그인 성공 후 메인 페이지로 이동
-      },
-      onError: (error) => {
-        console.log(error); // 에러 처리는 여기에서...
-      },
-    },
-  );
+  const mutation = useMutation((info: LoginInfo) => {
+    const apiUrl = info.isAdmin
+      ? `${import.meta.env.VITE_API_URL}/staffs/login?centerCode=${info.centerCode}`
+      : `${import.meta.env.VITE_API_URL}/admins/login`;
+    const encodedString = btoa(`${info.username}:${info.password}`);
+    return axios
+      .post(
+        apiUrl,
+        {},
+        {
+          headers: { Authorization: `Basic ${encodedString}` },
+        },
+      )
+      .then((res) => {
+        // console.log(res.data.accessToken);
+        // console.log(res.headers.message);
+        localStorage.setItem('accessToken', res.data.accessToken);
+        localStorage.setItem('refreshToken', res.data.refreshToken);
+        setAccessToken(res.data.accessToken);
+        navigate('/main');
+      });
+  });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SelectInstructor from '../../components/common/SelectInstructor';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import SelectCounselor from '../../components/common/SelectCounselor';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
 import InputName from '../../components/common/InputName';
@@ -8,23 +9,25 @@ import InputContact from '../../components/common/InputContact';
 import InputMemo from '../../components/common/InputMemo';
 
 interface CounselingState {
-  instructor: string;
+  counselor: string;
   date: string;
-  startAt: string;
-  endAt: string;
   clientName: string;
   clientPhone: string;
+  memo: string;
+  startAt: string;
+  endAt: string;
 }
 
 function CreateCounseling() {
   const [state, setState] = useState<CounselingState>({
     // 강사와 날짜는 api에 나와있지 않음
-    instructor: '', // ?????
+    counselor: '', // ?????
     date: '', // ?????
-    startAt: '',
-    endAt: '',
     clientName: '',
     clientPhone: '',
+    memo: '',
+    startAt: '',
+    endAt: '',
   });
 
   // 이전 페이지로
@@ -32,6 +35,26 @@ function CreateCounseling() {
   const handleBackClick = () => {
     navigate(-1);
   };
+
+  // 조회 페이지에서 변경 버튼 클릭 시 기존 데이터 로드하여 수정
+  const { counselingId } = useParams<{ counselingId?: string }>();
+  useEffect(() => {
+    if (counselingId) {
+      // 기존 상담 데이터 로드(axios 사용하여 API에서 해당 상담 데이터 가져오기)
+      axios.get(`http://localhost:5173/schedule/counseling/createCounseling/${counselingId}`).then((res) => {
+        const data = res.data;
+        setState({
+          counselor: data.counselor,
+          date: data.date,
+          clientName: data.clientName,
+          clientPhone: data.clientPhone,
+          memo: data.memo,
+          startAt: data.startAt,
+          endAt: data.endAt,
+        });
+      });
+    }
+  }, [counselingId]);
 
   // 일정관리 메인 페이지로
   const goMainSchedule = () => {
@@ -41,7 +64,7 @@ function CreateCounseling() {
 
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = (): boolean => {
-    return !!(state.instructor && state.date && state.startAt && state.endAt && state.clientName && state.clientPhone);
+    return !!(state.counselor && state.date && state.startAt && state.endAt && state.clientName && state.clientPhone);
   };
 
   return (
@@ -67,9 +90,9 @@ function CreateCounseling() {
       </header>
       <div className="flex flex-col">
         <h1 className="main-title">상담</h1>
-        <SelectInstructor
+        <SelectCounselor
           title="담당 강사 선택"
-          onSelect={(selectedInstructor) => setState((prev) => ({ ...prev, instructor: selectedInstructor }))}
+          onSelect={(selectedCounselor) => setState((prev) => ({ ...prev, counselor: selectedCounselor }))}
         />
         <SelectDate
           title="날짜 선택"

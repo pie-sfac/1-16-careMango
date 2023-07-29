@@ -13,19 +13,20 @@ const CheckCounseling = () => {
   const { counselingId } = useParams<{ counselingId: string | undefined }>();
   const navigate = useNavigate();
 
-  const fetchCheckSchedule = async () => {
+  const fetchCheckCounseling = async () => {
     const res = await axios.get('http://localhost:5173/data/counselingData.json');
     // const res = await axios.get(`schedules/counseling-lesson/${counselingId}`);
     const counselingData = res.data;
+    console.log(counselingData);
     setItemData(counselingData);
   };
 
   const goEditSchedule = () => {
-    navigate(`/counseling/edit/${counselingId}`);
+    navigate(`/schedule/counseling/edit/${counselingId}`);
   };
 
   useEffect(() => {
-    fetchCheckSchedule();
+    fetchCheckCounseling();
   }, []);
 
   if (!itemData) return <p>loading...</p>;

@@ -25,7 +25,8 @@ function App() {
         <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
         <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
         <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
-        <Route path="/schedule/createCounseling" element={<CreateCounseling />} />
+        <Route path="/schedule/counseling/createCounseling" element={<CreateCounseling />} />
+        <Route path="/schedule/counseling/edit/:createCounseling" element={<CreateCounseling />} />
       </Routes>
     </BrowserRouter>
   );

@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 interface SelectDateProps {
   title: string;
   defaultState?: string;
+  onSelect?: (selectedDate: string) => void;
 }
 
-const SelectDate = ({ title, defaultState }: SelectDateProps) => {
+const SelectDate = ({ title, defaultState, onSelect }: SelectDateProps) => {
   const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState(event.target.value);
+    onSelect?.(event.target.value);
   };
 
   return (

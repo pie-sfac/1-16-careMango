@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 
 interface InputNameProps {
   title: string;
+  onSelect?: (selectedName: string) => void;
 }
 
-const InputName = ({ title }: InputNameProps) => {
+const InputName = ({ title, onSelect }: InputNameProps) => {
   const [state, setState] = useState<string>('');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState(event.target.value);
+    onSelect?.(event.target.value);
   };
 
   return (

@@ -6,16 +6,20 @@ interface SelectTimeProps {
     startTime: string;
     endTime: string;
   };
+  onSelect?: (selectedTime: { startTime: string; endTime: string }) => void;
 }
 
-const SelectTime = ({ title, defaultState }: SelectTimeProps) => {
+const SelectTime = ({ title, defaultState, onSelect }: SelectTimeProps) => {
   const [state, setState] = useState<{ startTime: string; endTime: string }>({
     startTime: defaultState?.startTime || '',
     endTime: defaultState?.endTime || '',
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setState((prev) => ({ ...prev, [name]: value }));
+    const updatedState = { ...state, [name]: value };
+    setState(updatedState);
+
+    onSelect?.(updatedState);
   };
 
   return (

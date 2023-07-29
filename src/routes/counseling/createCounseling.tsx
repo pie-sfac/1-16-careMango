@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import SelectCounselor from '../../components/common/SelectCounselor';
@@ -42,7 +42,7 @@ function CreateCounseling() {
     if (counselingId) {
       // 기존 상담 데이터 로드(axios 사용하여 API에서 해당 상담 데이터 가져오기)
       axios.get(`http://localhost:5173/schedule/counseling/createCounseling/${counselingId}`).then((res) => {
-        const data = res.data;
+        const { data } = res;
         setState({
           counselor: data.counselor,
           date: data.date,
@@ -63,9 +63,8 @@ function CreateCounseling() {
   };
 
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
-  const allFieldsCompleted = (): boolean => {
-    return !!(state.counselor && state.date && state.startAt && state.endAt && state.clientName && state.clientPhone);
-  };
+  const allFieldsCompleted = (): boolean =>
+    !!(state.counselor && state.date && state.startAt && state.endAt && state.clientName && state.clientPhone);
 
   return (
     <>

@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { sleep } from 'react-query/types/core/utils';
+import React, { useEffect, useState } from 'react';
 
 interface Member {
   id: number;
@@ -39,12 +38,29 @@ function Main() {
   const [memberList, setMemberList] = useState<Member[] | null>(null);
 
   useEffect(() => {
-    sleep(1000);
-    setMemberList(memberDatas);
-    return () => {};
+    const timer = setTimeout(() => {
+      setMemberList(memberDatas);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
-  return memberList && memberList.map();
+  return (
+    <div>
+      {memberList &&
+        memberList.map((member, index) => (
+          <div key={member.id}>
+            <p>ID: {member.id}</p>
+            <p>Name: {member.name}</p>
+            <p>Phone: {member.phone}</p>
+            <p>Sex: {member.sex}</p>
+            <p>Birth Date: {member.birthDate}</p>
+            <p>Created At: {member.createdAt}</p>
+            <p>Updated At: {member.updatedAt}</p>
+            <p>Visited At: {member.visitedAt}</p>
+          </div>
+        ))}
+    </div>
+  );
 }
 
 export default Main;

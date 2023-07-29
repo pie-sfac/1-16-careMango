@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import commonState from '../../atoms/commonAtom';
 import SelectInstructor from '../../components/common/SelectInstructor';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
@@ -10,20 +8,30 @@ import InputContact from '../../components/common/InputContact';
 import InputMemo from '../../components/common/InputMemo';
 
 function CreateCounseling() {
-  const common = useRecoilValue(commonState);
+  const [state, setState] = useState({
+    // 강사와 날짜는 api에 나와있지 않음
+    instructor: '', // ?????
+    date: '', // ?????
+    startAt: '',
+    endAt: '',
+    clinetName: '',
+    clientPhone: '',
+  });
 
+  // 이전 페이지로
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
   };
+
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = () =>
-    common.instructor && common.date && common.startTime && common.endTime && common.name && common.contact;
+    state.instructor && state.date && state.startAt && state.endAt && state.clinetName && state.clientPhone;
 
   return (
     <>
       <header className="flex justify-between py-3 mb-2 text-xl font-bold border-b-2 border-gray-300">
-        <p className="flex">
+        <div className="flex">
           <button onClick={handleBackClick} type="submit" className="focus:outline-none">
             <svg
               className="mr-2"
@@ -39,7 +47,7 @@ function CreateCounseling() {
             </svg>
           </button>
           <p>일정 생성</p>
-        </p>
+        </div>
       </header>
       <div className="flex flex-col">
         <h1 className="main-title">상담</h1>
@@ -54,7 +62,7 @@ function CreateCounseling() {
             allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
           }`}
           type="submit"
-          onClick={() => console.log(common)}>
+          onClick={() => console.log(state)}>
           완료
         </button>
       </div>

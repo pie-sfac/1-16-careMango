@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import './index.css';
@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/schedule/:scheduleId" element={<CheckSchedule />} />
-          <Route path="/schedule/:counselingId" element={<CheckCounseling />} />
+          <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
           <Route path="/schedule/createCounseling" element={<CreateCounseling />} />
         </Routes>
       </BrowserRouter>

@@ -15,7 +15,7 @@ const SelectSex = ({ title, defaultState, onSelect }: SelectSexProps) => {
   };
 
   return (
-    <div>
+    <div className="my-5">
       <p className="small-title">
         {title}
         <span className="text-primary-300">*</span>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { membersListState, searchQueryState } from '../../atoms/members/membersAtom';
+import { searchQueryState } from '../../atoms/members/membersAtom';
 
-type MembersData = {
+interface MembersData {
   meta: {
     totalCount: number;
     size: number;
@@ -23,10 +24,10 @@ type MembersData = {
     },
   ];
   message: 'string';
-};
+}
 
 function ShowMembers() {
-  const [members, setMembers] = useRecoilState(membersListState);
+  // const [members, setMembers] = useRecoilState(membersListState);
   const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const [itemData, setItemData] = useState<MembersData | undefined>();
   useEffect(() => {
@@ -46,6 +47,12 @@ function ShowMembers() {
   } else {
     displayedMembers = itemData?.datas;
   }
+
+  // 등록하기 누르면 회원 생성 페이지로
+  const navigate = useNavigate();
+  const goCreateMembers = () => {
+    navigate('/members/createMembers');
+  };
 
   return (
     <div className="p-5 bg-bg-100">
@@ -73,7 +80,10 @@ function ShowMembers() {
           <h1 className="mr-2">나의 회원</h1>
           <p>{itemData?.datas.length || 0}</p>
         </div>
-        <button className="px-2 py-1 bg-white border-2 border-solid border-line-300 rounded-xl" type="button">
+        <button
+          className="px-2 py-1 bg-white border-2 border-solid border-line-300 rounded-xl"
+          type="button"
+          onClick={goCreateMembers}>
           등록하기
         </button>
       </div>

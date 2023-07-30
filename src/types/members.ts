@@ -20,3 +20,12 @@ export interface MembersItemData {
   datas: MemberItemData[];
   message: string;
 }
+
+export interface CreateMembersItemData {
+  name: string;
+  birthDate: string;
+  phone: string;
+  sex: string;
+  job: string;
+  visitRoute: string;
+}

@@ -1,20 +1,16 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
-import commonState from '../../atoms/commonAtom';
+import React, { useState } from 'react';
 
 interface SelectDateProps {
   title: string;
+  defaultState?: string;
+  onSelect?: (selectedDate: string) => void;
 }
 
-const SelectDate = ({ title }: SelectDateProps) => {
-  const [common, setCommon] = useRecoilState(commonState);
-
-  // 내용 업데이트
-  const handleChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
-    const { name, value } = event.target;
-    if (name) {
-      setCommon((prev) => ({ ...prev, [name]: value }));
-    }
+const SelectDate = ({ title, defaultState, onSelect }: SelectDateProps) => {
+  const [state, setState] = useState<string>(defaultState || '');
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState(event.target.value);
+    onSelect?.(event.target.value);
   };
 
   return (
@@ -23,14 +19,7 @@ const SelectDate = ({ title }: SelectDateProps) => {
         {title}
         <span className="text-primary-300">*</span>
       </p>
-      <input
-        id="selectDate"
-        className="input-select"
-        type="date"
-        name="date"
-        value={common.date}
-        onChange={handleChange}
-      />
+      <input id="selectDate" className="input-select" type="date" name="date" value={state} onChange={handleChange} />
     </label>
   );
 };

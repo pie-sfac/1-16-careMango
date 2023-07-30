@@ -1,34 +1,38 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { atom, useRecoilState } from 'recoil';
 import './index.css';
-import InputMemo from './components/common/InputMemo';
-import InputContact from './components/common/InputContact';
-import SelectDate from './components/common/SelectDate';
-import SelectTime from './components/common/SelectTime';
-import InputName from './components/common/InputName';
-import SelectInstructor from './components/common/SelectInstructor';
-// import CheckSchedule from './routes/checkSchedule';
+import CheckSchedule from './routes/checkSchedule';
 import CreateCounseling from './routes/counseling/createCounseling';
 import CheckCounseling from './routes/counseling/checkCounseling';
 import Login from './routes/login';
-import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
-import PersonalClass from './routes/createSchedule/PersonalClass';
+import Main from './routes/main';
+import ChangeSchedule from './routes/changeSchedule';
+import CenterTicket from './routes/ticket/centerTicket';
+import CreateTicket from './routes/ticket/createTicket';
+
+export const accessTokenState = atom({
+  key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
+  default: localStorage.getItem('accessToken') || '', // default value (aka initial value)
+});
 
 function App() {
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+
   return (
-    <RecoilRoot>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          {/* <Route path="/schedule/:scheduleId" element={<CheckSchedule />} /> */}
-          <Route path="/schedule/:counselingId" element={<CheckCounseling />} />
-          <Route path="/schedule/createCounseling" element={<CreateCounseling />} />
-          <Route path="/schedule/personalClass" element={<PersonalClass />} />
-          <Route path="/schedule/searchMembers" element={<SearchMembers />} />
-        </Routes>
-      </BrowserRouter>
-    </RecoilRoot>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={accessToken ? <Navigate to="/main" /> : <Login setAccessToken={setAccessToken} />} />
+        <Route path="/main" element={accessToken ? <Main /> : <Navigate to="/" />} />
+        <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
+        <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
+        <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
+        <Route path="/schedule/counseling/createCounseling" element={<CreateCounseling />} />
+        <Route path="/schedule/counseling/edit/:createCounseling" element={<CreateCounseling />} />
+        <Route path="/tickets/centerTicket" element={<CenterTicket />} />
+        <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

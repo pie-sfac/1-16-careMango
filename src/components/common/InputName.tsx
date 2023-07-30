@@ -1,20 +1,15 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
-import commonState from '../../atoms/commonAtom';
+import React, { useState } from 'react';
 
 interface InputNameProps {
   title: string;
+  onSelect?: (selectedName: string) => void;
 }
 
-const InputName = ({ title }: InputNameProps) => {
-  const [common, setCommon] = useRecoilState(commonState);
-
-  // 내용 업데이트
-  const handleChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
-    const { name, value } = event.target;
-    if (name) {
-      setCommon((prev) => ({ ...prev, [name]: value }));
-    }
+const InputName = ({ title, onSelect }: InputNameProps) => {
+  const [state, setState] = useState<string>('');
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState(event.target.value);
+    onSelect?.(event.target.value);
   };
 
   return (
@@ -23,14 +18,7 @@ const InputName = ({ title }: InputNameProps) => {
         {title}
         <span className="text-primary-300">*</span>
       </p>
-      <input
-        id="inputName"
-        className="input-select"
-        type="text"
-        name="name"
-        value={common.name}
-        onChange={handleChange}
-      />
+      <input id="inputName" className="input-select" type="text" name="name" value={state} onChange={handleChange} />
     </label>
   );
 };

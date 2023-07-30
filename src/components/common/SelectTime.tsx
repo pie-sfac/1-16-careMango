@@ -1,20 +1,25 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
-import commonState from '../../atoms/commonAtom';
+import React, { useState } from 'react';
 
 interface SelectTimeProps {
   title: string;
+  defaultState?: {
+    startTime: string;
+    endTime: string;
+  };
+  onSelect?: (selectedTime: { startTime: string; endTime: string }) => void;
 }
 
-const SelectTime = ({ title }: SelectTimeProps) => {
-  const [common, setCommon] = useRecoilState(commonState);
-
-  // 내용 업데이트
-  const handleChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
+const SelectTime = ({ title, defaultState, onSelect }: SelectTimeProps) => {
+  const [state, setState] = useState<{ startTime: string; endTime: string }>({
+    startTime: defaultState?.startTime || '',
+    endTime: defaultState?.endTime || '',
+  });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (name) {
-      setCommon((prev) => ({ ...prev, [name]: value }));
-    }
+    const updatedState = { ...state, [name]: value };
+    setState(updatedState);
+
+    onSelect?.(updatedState);
   };
 
   return (
@@ -29,7 +34,7 @@ const SelectTime = ({ title }: SelectTimeProps) => {
           type="time"
           id="startTime"
           name="startTime"
-          value={common.startTime}
+          value={state.startTime}
           onChange={handleChange}
         />
       </label>
@@ -40,7 +45,7 @@ const SelectTime = ({ title }: SelectTimeProps) => {
           type="time"
           id="endTime"
           name="endTime"
-          value={common.endTime}
+          value={state.endTime}
           onChange={handleChange}
         />
       </label>

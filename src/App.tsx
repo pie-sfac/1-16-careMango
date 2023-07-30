@@ -10,6 +10,8 @@ import Main from './routes/main';
 import ChangeSchedule from './routes/changeSchedule';
 import CenterTicket from './routes/ticket/centerTicket';
 import CreateTicket from './routes/ticket/createTicket';
+import ShowMembers from './routes/members/showMembers';
+import CreateMembers from './routes/members/createMembers';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
@@ -31,6 +33,8 @@ function App() {
         <Route path="/schedule/counseling/edit/:createCounseling" element={<CreateCounseling />} />
         <Route path="/tickets/centerTicket" element={<CenterTicket />} />
         <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />
+        <Route path="/members" element={<ShowMembers />} />
+        <Route path="/members/createMembers" element={<CreateMembers />} />
       </Routes>
     </BrowserRouter>
   );

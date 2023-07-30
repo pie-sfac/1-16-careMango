@@ -11,7 +11,7 @@ interface SelectProps {
 const Select: React.FC<SelectProps> = ({ name, options, value, onChange, label }) => (
   <>
     {label && <label htmlFor={name}>{label}</label>}
-    <select id={name} value={value} onChange={onChange}>
+    <select id={name} name={name} value={value} onChange={onChange}>
       {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}

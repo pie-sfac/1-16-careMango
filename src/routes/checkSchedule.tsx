@@ -5,7 +5,7 @@ import axios from 'axios';
 import axiosInstance from '../utils/apiInstance';
 import Card from '../components/common/Card';
 import Header from '../components/common/Header';
-import { ScheduleItemData } from '../types/schedule';
+import { ScheduleItemData } from '../types/schedule/schedule';
 import ScheduleBox from '../components/ScheduleBox';
 import ScheduleDetail from '../components/ScheduleDetail';
 import { itemDataState } from '../atoms/itemDataAtom';

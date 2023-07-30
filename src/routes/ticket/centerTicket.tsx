@@ -64,11 +64,11 @@ const CenterTicket = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTicketList(ticketsData);
-    }, 500);
-    return () => clearTimeout(timer);
-    // getTickets();
+    // const timer = setTimeout(() => {
+    //   setTicketList(ticketsData);
+    // }, 500);
+    // return () => clearTimeout(timer);
+    getTickets();
   }, []);
 
   return (

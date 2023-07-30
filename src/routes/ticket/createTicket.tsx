@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
 import Select from '../../components/centerTicket/Select';
 import Input from '../../components/centerTicket/Input';
+import axiosInstance from '../../utils/apiInstance';
 
 const CreateTicket = () => {
-  const handleSubmit = () => {};
-
   interface StateType {
     lessonType: string;
     title: string;
@@ -27,17 +27,31 @@ const CreateTicket = () => {
   };
 
   const [state, setState] = useState<StateType>(initialState);
+  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = event.target;
-    console.log(event.target.value);
     setState((prev): StateType => ({ ...prev, [name]: value }));
   };
 
   const inputs = Object.values(state);
-  const allFieldsCompleted = () => {
-    console.log('실행', inputs);
-    return inputs.every((input) => input !== '' && input !== 0);
+  const allFieldsCompleted = () => inputs.every((input) => input !== '' && input !== 0);
+
+  const createTicket = async (ticketData: StateType): Promise<StateType | undefined> => {
+    try {
+      const res = await axiosInstance.post('/tickets', ticketData);
+      const createdTicket = res.data;
+      navigate('/tickets/centerTicket');
+      return createdTicket;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log(state);
+    createTicket(state);
   };
 
   return (

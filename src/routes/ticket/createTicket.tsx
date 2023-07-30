@@ -27,6 +27,7 @@ const CreateTicket = () => {
   };
 
   const [state, setState] = useState<StateType>(initialState);
+  const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -54,6 +55,13 @@ const CreateTicket = () => {
     createTicket(state);
   };
 
+  const decreaseCount = () => {
+    if (count > 0) setCount((prev) => prev - 1);
+  };
+
+  const increaseCount = () => {
+    setCount((prev) => prev + 1);
+  };
   return (
     <>
       <Header title="수강권 추가" />
@@ -112,6 +120,7 @@ const CreateTicket = () => {
           onChange={handleChange}
           label="시간"
           placeholder={initialState.duration}
+          unit="분"
         />
         <br />
 
@@ -122,25 +131,26 @@ const CreateTicket = () => {
           onChange={handleChange}
           label="기본횟수"
           placeholder={initialState.defaultCount}
+          unit="회"
         />
         <br />
 
         <Input
           name="maxServiceCount"
           type="number"
-          value={state.maxServiceCount}
+          value={count}
           onChange={handleChange}
           label="서비스 횟수"
-          placeholder={initialState.maxServiceCount}
+          placeholder={count}
           leftBtn={
-            <button type="button">
+            <button type="button" onClick={decreaseCount}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M6 12H18" stroke="#505050" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </button>
           }
           rightBtn={
-            <button type="button">
+            <button type="button" onClick={increaseCount}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                   fillRule="evenodd"
@@ -151,6 +161,7 @@ const CreateTicket = () => {
               </svg>
             </button>
           }
+          align="text-center"
         />
 
         <button

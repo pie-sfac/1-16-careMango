@@ -6,13 +6,13 @@ const ButtonAddMembers = () => {
 
   // 회원 검색 페이지 이동
   const goMemberSearch = () => {
-    navigate('/searchMembers', { replace: true });
+    navigate('/schedule/searchMembers');
   };
 
   return (
     <div>
-      <h2>
-        회원 선택<p className="small-title">*</p>
+      <h2 className="small-title">
+        회원 선택<span className="text-primary-300">*</span>
       </h2>
       <button onClick={goMemberSearch}>선택하기</button>
     </div>

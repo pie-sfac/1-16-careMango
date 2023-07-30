@@ -12,6 +12,8 @@ import SelectInstructor from './components/common/SelectInstructor';
 import CreateCounseling from './routes/counseling/createCounseling';
 import CheckCounseling from './routes/counseling/checkCounseling';
 import Login from './routes/login';
+import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
+import PersonalClass from './routes/createSchedule/PersonalClass';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           {/* <Route path="/schedule/:scheduleId" element={<CheckSchedule />} /> */}
           <Route path="/schedule/:counselingId" element={<CheckCounseling />} />
           <Route path="/schedule/createCounseling" element={<CreateCounseling />} />
+          <Route path="/schedule/personalClass" element={<PersonalClass />} />
+          <Route path="/schedule/searchMembers" element={<SearchMembers />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

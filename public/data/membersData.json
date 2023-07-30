@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "totalCount": 100,
+    "size": 0,
+    "count": 10,
+    "page": 0,
+    "hasMore": true
+  },
+  "datas": [
+    {
+      "id": 0,
+      "name": "김회원",
+      "phone": "010-1234-5678",
+      "sex": "여",
+      "birthDate": "2023-07-29",
+      "createdAt": "2022-00-00",
+      "updatedAt": "2023-07-29T13:40:18.684Z",
+      "visitedAt": "2023-07-29T13:40:18.684Z"
+    },
+    {
+      "id": 1,
+      "name": "박회원",
+      "phone": "010-1234-5678",
+      "sex": "여",
+      "birthDate": "2023-07-29",
+      "createdAt": "2022-00-00",
+      "updatedAt": "2023-07-29T13:40:18.684Z",
+      "visitedAt": "2023-07-29T13:40:18.684Z"
+    },
+    {
+      "id": 2,
+      "name": "이회원",
+      "phone": "010-1234-5678",
+      "sex": "여",
+      "birthDate": "2023-07-29",
+      "createdAt": "2022-00-00",
+      "updatedAt": "2023-07-29T13:40:18.684Z",
+      "visitedAt": "2023-07-29T13:40:18.684Z"
+    }
+  ],
+  "message": "string"
+}

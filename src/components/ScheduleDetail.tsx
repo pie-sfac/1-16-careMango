@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { ScheduleItemData } from '../types/schedule';
+import { ScheduleItemData } from '../types/schedule/schedule';
 
 interface ScheduleDetailProps {
   itemData: ScheduleItemData;

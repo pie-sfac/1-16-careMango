@@ -22,14 +22,14 @@ const SelectSex = ({ title, defaultState, onChange }: SelectSexProps) => {
       </p>
       <button
         type="button"
-        className={`mr-1 attendance-btn ${state === '여' ? 'bg-primary-300 text-white' : ''}`}
-        onClick={() => handleClick('여')}>
+        className={`mr-1 attendance-btn ${state === 'FEMALE' ? 'bg-primary-300 text-white' : ''}`}
+        onClick={() => handleClick('FEMALE')}>
         여
       </button>
       <button
         type="button"
-        className={`attendance-btn ${state === '남' ? 'bg-primary-300 text-white' : ''}`}
-        onClick={() => handleClick('남')}>
+        className={`attendance-btn ${state === 'MALE' ? 'bg-primary-300 text-white' : ''}`}
+        onClick={() => handleClick('MALE')}>
         남
       </button>
     </div>

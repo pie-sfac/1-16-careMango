@@ -2,7 +2,7 @@ export interface Member {
   id: number;
   name: string;
   phone: string;
-  sex: '남' | '여';
+  sex: 'MALE' | 'FEMALE';
   birthDate: string;
   createdAt: string;
   updatedAt: string;

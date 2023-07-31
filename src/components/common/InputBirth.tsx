@@ -16,7 +16,7 @@ const InputBirth = ({ title, onChange }: InputBirthProps) => {
 
     if (value.length > 8) return;
     if (value.length > 4) {
-      value = value.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3');
+      value = value.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
     }
     setState(value);
     onChange?.(value);

@@ -1,56 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-
-interface Member {
-  id: number;
-  name: string;
-  phone: string;
-  sex: string;
-  birthDate: string;
-  createdAt: string;
-  updatedAt: string;
-  visitedAt: string;
-}
-
-const memberDatas: Member[] = [
-  {
-    id: 1,
-    name: '김회원',
-    phone: '01012341234',
-    sex: 'MALE',
-    birthDate: '2023-07-28',
-    createdAt: '2023-07-28T07:38:08.832Z',
-    updatedAt: '2023-07-28T07:38:08.832Z',
-    visitedAt: '2023-07-28T07:38:08.832Z',
-  },
-  {
-    id: 2,
-    name: '박회원',
-    phone: '01012341234',
-    sex: 'FEMALE',
-    birthDate: '2023-07-28',
-    createdAt: '2023-07-28T07:38:08.832Z',
-    updatedAt: '2023-07-28T07:38:08.832Z',
-    visitedAt: '2023-07-28T07:38:08.832Z',
-  },
-  {
-    id: 3,
-    name: '최회원',
-    phone: '01012341234',
-    sex: 'FEMALE',
-    birthDate: '2023-07-28',
-    createdAt: '2023-07-28T07:38:08.832Z',
-    updatedAt: '2023-07-28T07:38:08.832Z',
-    visitedAt: '2023-07-28T07:38:08.832Z',
-  },
-];
+import membersData from '../../../../public/data/membersData.json';
 
 const SearchMembers = () => {
   // input에 입력된 문자열 state
   const [memberInput, setMemberInput] = useState('');
   // 검색된 결과를 담을 state
-  const [members, setMembers] = useState(memberDatas);
+  const [members, setMembers] = useState(membersData.datas);
 
   // TODO: axios get 요청으로 회원 데이터 수신
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScheduleItemData } from '../types/schedule';
+import { ScheduleItemData } from '../types/schedule/schedule';
 import { getDay, getTime } from '../utils/date';
 
 const ScheduleBox = ({ itemData }: { itemData: ScheduleItemData }) => (

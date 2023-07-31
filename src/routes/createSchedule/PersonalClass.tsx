@@ -8,7 +8,7 @@ import SelectTime from '../../components/common/SelectTime';
 import ButtonComplete from '../../components/createSchedule/ButtonComplete';
 import ButtonAddMembers from '../../components/createSchedule/ButtonAddMembers';
 
-interface ClassState {
+interface Class {
   instructor: string;
   member: string;
   ticket: string;
@@ -18,7 +18,7 @@ interface ClassState {
 }
 
 const PersonalClass = () => {
-  const [state, setState] = useState<ClassState>({
+  const [state, setState] = useState<Class>({
     instructor: '',
     member: '',
     ticket: '',

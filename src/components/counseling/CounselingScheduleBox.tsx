@@ -1,4 +1,5 @@
-import { CounselingScheduleItemData } from '../../types/counselingSchedule';
+import React from 'react';
+import { CounselingScheduleItemData } from '../../types/counseling/counselingSchedule';
 import { getDay, getTime } from '../../utils/date';
 
 const CounselingScheduleBox = ({ itemData }: { itemData: CounselingScheduleItemData }) => (

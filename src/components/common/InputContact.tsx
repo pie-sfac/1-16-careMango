@@ -2,10 +2,11 @@ import React, { ChangeEvent, useState } from 'react';
 
 interface InputContactProps {
   title: string;
-  onSelect?: (selectedContact: string) => void;
+  onChange: (value: string) => void;
+  // onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputContact = ({ title, onSelect }: InputContactProps) => {
+const InputContact = ({ title, onChange }: InputContactProps) => {
   const [state, setState] = useState<string>('');
 
   // 전화번호 입력시 자동 하이픈
@@ -18,7 +19,7 @@ const InputContact = ({ title, onSelect }: InputContactProps) => {
       value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     }
     setState(value);
-    onSelect?.(value);
+    onChange?.(value);
   };
 
   return (

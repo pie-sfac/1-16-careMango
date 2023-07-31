@@ -4,14 +4,14 @@ import NameTag from './NameTag';
 interface SelectVisitRouteProps {
   title: string;
   defaultState?: string;
-  onSelect?: (selectedInstructor: string) => void;
+  onChange?: (selectedInstructor: string) => void;
 }
 
-const SelectVisitRoute = ({ title, defaultState, onSelect }: SelectVisitRouteProps) => {
+const SelectVisitRoute = ({ title, defaultState, onChange }: SelectVisitRouteProps) => {
   const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState(event.target.value);
-    onSelect?.(event.target.value);
+    onChange?.(event.target.value);
   };
 
   return (

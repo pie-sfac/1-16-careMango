@@ -5,7 +5,7 @@ import Card from '../../components/common/Card';
 import Header from '../../components/common/Header';
 import CounselingScheduleBox from '../../components/counseling/CounselingScheduleBox';
 import InputMemo from '../../components/common/InputMemo';
-import { CounselingScheduleItemData } from '../../types/counselingSchedule';
+import { CounselingScheduleItemData } from '../../types/counseling/counselingSchedule';
 import CounselingScheduleDetail from '../../components/counseling/CounselingScheduleDetail';
 
 const CheckCounseling = () => {

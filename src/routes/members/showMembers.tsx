@@ -1,55 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { searchQueryState } from '../../atoms/members/membersAtom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axiosInstance from '../../utils/apiInstance';
+import { MembersData } from '../../types/members/members';
+import NoMembers from '../../components/members/Nomembers';
+import MembersItem from '../../components/members/MembersItem';
 
-interface MembersData {
-  meta: {
-    totalCount: number;
-    size: number;
-    count: number;
-    page: number;
-    hasMore: boolean;
-  };
-  datas: [
-    {
-      id: number;
-      name: string;
-      phone: string;
-      sex: string;
-      birthDate: string;
-      createdAt: string;
-      updatedAt: string;
-      visitedAt: string;
+// test data
+const membersData: MembersData[] = [
+  {
+    meta: {
+      totalCount: 100,
+      size: 1,
+      count: 10,
+      page: 2,
+      hasMore: true,
     },
-  ];
-  message: 'string';
-}
+    datas: [
+      {
+        id: 0,
+        name: 'yunie',
+        phone: '010-1111-1111',
+        sex: '여',
+        birthDate: '2023-01-01',
+        createdAt: '2023-02-02',
+        updatedAt: '2023-03-03',
+        visitedAt: '2023-04-04',
+      },
+    ],
+    message: 'string',
+  },
+];
 
-function ShowMembers() {
-  // const [members, setMembers] = useRecoilState(membersListState);
-  const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
-  const [itemData, setItemData] = useState<MembersData | undefined>();
-  useEffect(() => {
-    fetch('http://localhost:5173/data/membersData.json', {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItemData(data);
-      });
+const ShowMembers = () => {
+  const [memberList, setMemberList] = useState<MembersData[] | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const getMembers = useCallback(async () => {
+    const res = await axiosInstance.get('members');
+    setMemberList(res.data.members);
   }, []);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.refetch) {
+      getMembers();
+    }
+  }, [location, getMembers]);
+
   // 검색
-  let displayedMembers;
+  let displayedMembers = memberList?.[0]?.datas || [];
   if (searchQuery) {
-    displayedMembers = itemData?.datas.filter((data) => data.name.includes(searchQuery));
-  } else {
-    displayedMembers = itemData?.datas;
+    displayedMembers = displayedMembers.filter((data) => data.name.includes(searchQuery));
   }
 
   // 등록하기 누르면 회원 생성 페이지로
-  const navigate = useNavigate();
   const goCreateMembers = () => {
     navigate('/members/createMembers');
   };
@@ -78,7 +84,7 @@ function ShowMembers() {
       <div className="flex justify-between my-3 font-bold">
         <div className="flex items-center justify-center">
           <h1 className="mr-2">나의 회원</h1>
-          <p>{itemData?.datas.length || 0}</p>
+          <p>{displayedMembers?.length || 0}</p>
         </div>
         <button
           className="px-2 py-1 bg-white border-2 border-solid border-line-300 rounded-xl"
@@ -92,66 +98,14 @@ function ShowMembers() {
       <ul>
         {/* 등록된 회원이 있는 경우 */}
         {displayedMembers && displayedMembers.length > 0 ? (
-          displayedMembers.map((data) => (
-            <li key={data.id} className="flex items-center justify-between p-3 my-1 bg-white rounded-md base-font">
-              <div className="flex">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <g clipPath="url(#clip0_581_12363)">
-                    <circle cx="12" cy="12" r="11.625" fill="#F4F4F4" stroke="#CFCFCF" strokeWidth="0.75" />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12.9062 12.64C14.54 12.2351 15.7511 10.759 15.7511 9C15.7511 6.92893 14.0721 5.25 12.0011 5.25C9.93001 5.25 8.25108 6.92893 8.25108 9C8.25108 10.8022 9.52234 12.3074 11.217 12.6679C6.63602 13.1599 3.19545 16.4669 3.48146 20.3516C9.83744 26.114 18.6859 22.3474 20.7921 19.9672C20.5261 16.3544 17.0914 12.9812 12.9062 12.64Z"
-                      fill="#CFCFCF"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_581_12363">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-                <p className="ml-4 font-bold">{data.name}</p>
-              </div>
-              <div className="flex">
-                <p className="mr-5">{data.sex}</p>
-                <p>22.00.00~22.00.00</p>
-                {/* <p>{itemData.meta.count}회 / {itemData.meta.totalCount}회</p> */}
-              </div>
-              <div className="flex">
-                <p className="mr-5">김파이</p>
-                <p>{data.createdAt}</p>
-              </div>
-            </li>
-          ))
+          displayedMembers.map((members) => <MembersItem key={members.id} members={members} />)
         ) : (
           // 등록된 회원이 없는 경우
-          <div>
-            <div className="flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="42" height="50" viewBox="0 0 42 50" fill="none">
-                <g clipPath="url(#clip0_20_35022)">
-                  <path
-                    d="M21 24C27.6274 24 33 18.6274 33 12C33 5.37258 27.6274 0 21 0C14.3726 0 9 5.37258 9 12C9 18.6274 14.3726 24 21 24Z"
-                    fill="#CFCFCF"
-                  />
-                  <path
-                    d="M42 42.1174C42 35.6952 32.5932 26.7539 21.0061 26.7539C9.41907 26.7539 0 35.6952 0 42.1174C0 48.5397 9.40682 49.9987 20.9939 49.9987C32.5809 49.9987 41.9877 48.5397 41.9877 42.1174H42Z"
-                    fill="#CFCFCF"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_20_35022">
-                    <rect width="42" height="50" fill="white" />
-                  </clipPath>
-                </defs>
-              </svg>
-            </div>
-            <p className="flex items-center justify-center p-3 my-1 base-font">+ 회원을 등록하세요</p>
-          </div>
+          <NoMembers />
         )}
       </ul>
     </div>
   );
-}
+};
 
 export default ShowMembers;

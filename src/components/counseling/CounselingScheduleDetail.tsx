@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CounselingModal from './CounselingModal';
-import { CounselingScheduleItemData } from '../../types/counselingSchedule';
+import { CounselingScheduleItemData } from '../../types/counseling/counselingSchedule';
 
 interface CounselingScheduleDetailProps {
   itemData: CounselingScheduleItemData;

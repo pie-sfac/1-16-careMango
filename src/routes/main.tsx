@@ -20,9 +20,9 @@ interface ApiResponse {
 function Main() {
   const planStatus: string = '플랜 이용중';
   const accessToken = localStorage.getItem('accessToken');
+  // const refreshToken = localStorage.getItem('refreshToken');
   const [data, setData] = useState<ApiResponse | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
-  const [isHovered, setHovered] = useState(false);
 
   useEffect(() => {
     axios
@@ -38,35 +38,35 @@ function Main() {
       });
   }, [accessToken]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(
-  //     () => {
-  //       axios
-  //         .post(
-  //           `${import.meta.env.VITE_API_URL}/tokens`,
-  //           {},
-  //           {
-  //             headers: {
-  //               accept: 'application/json',
-  //               Authorization: `Bearer ${accessToken}`,
-  //             },
-  //           },
-  //         )
-  //         .then((response) => {
-  //           localStorage.setItem('accessToken', response.data.accessToken);
-  //           localStorage.setItem('refreshToken', response.data.refreshToken);
-  //         })
-  //         .catch((error) => {
-  //           console.error(error);
-  //         });
-  //     },
-  //     15 * 60 * 1000,
-  //   );
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/tokens`,
+            {},
+            {
+              headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+              },
+            },
+          )
+          .then((response) => {
+            localStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      },
+      15 * 60 * 1000,
+    );
 
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [accessToken]);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

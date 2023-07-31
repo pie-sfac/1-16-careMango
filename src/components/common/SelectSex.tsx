@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 interface SelectSexProps {
   title: string;
   defaultState?: string;
-  onSelect?: (selectedSex: string) => void;
+  onChange?: (selectedSex: string) => void;
 }
 
-const SelectSex = ({ title, defaultState, onSelect }: SelectSexProps) => {
+const SelectSex = ({ title, defaultState, onChange }: SelectSexProps) => {
   const [state, setState] = useState<string>(defaultState || '');
 
   const handleClick = (sex: string) => {
     setState(sex);
-    onSelect?.(sex);
+    onChange?.(sex);
   };
 
   return (

@@ -4,14 +4,14 @@ import NameTag from './NameTag';
 interface SelectJobProps {
   title: string;
   defaultState?: string;
-  onSelect?: (selectedInstructor: string) => void;
+  onChange?: (selectedInstructor: string) => void;
 }
 
-const SelectJob = ({ title, defaultState, onSelect }: SelectJobProps) => {
+const SelectJob = ({ title, defaultState, onChange }: SelectJobProps) => {
   const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState(event.target.value);
-    onSelect?.(event.target.value);
+    onChange?.(event.target.value);
   };
 
   return (

@@ -6,6 +6,8 @@ import 'react-tabs/style/react-tabs.css';
 import { useNavigate } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 
+import '../index.css';
+
 interface LoginInfo {
   username: string;
   password: string;

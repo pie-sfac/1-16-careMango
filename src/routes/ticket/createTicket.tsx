@@ -14,7 +14,7 @@ const CreateTicket = () => {
     defaultTermUnit: string;
     duration: number;
     defaultCount: number;
-    maxServiceCount: number;
+    maxServiceCount?: number;
   }
   const initialState = {
     lessonType: '',
@@ -35,7 +35,9 @@ const CreateTicket = () => {
     setState((prev): StateType => ({ ...prev, [name]: value }));
   };
 
-  const inputs = Object.values(state);
+  const filteredState = { ...state };
+  delete filteredState.maxServiceCount;
+  const inputs = Object.values(filteredState);
   const allFieldsCompleted = () => inputs.every((input) => input !== '' && input !== 0);
 
   const createTicket = async (ticketData: StateType): Promise<StateType | undefined> => {
@@ -69,7 +71,7 @@ const CreateTicket = () => {
       <p>센터의 수강권을 추가하세요</p>
 
       <h2 className="my-10 small-title">수강권 정보 설정</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col flex-wrap h-3/4">
         <Select
           name="lessonType"
           options={[
@@ -79,8 +81,9 @@ const CreateTicket = () => {
           value={state.lessonType}
           onChange={handleChange}
           label="수업 유형"
+          required
+          width="w-80"
         />
-        <br />
 
         <Input
           name="title"
@@ -89,29 +92,33 @@ const CreateTicket = () => {
           onChange={handleChange}
           label="수강권명"
           placeholder="수강권명을 입력해주세요(15자이내)"
+          required
+          width="w-80"
         />
-        <br />
 
-        <Input
-          name="defaultTerm"
-          type="number"
-          value={state.defaultTerm}
-          onChange={handleChange}
-          label="수강권 기간"
-          placeholder={initialState.defaultTerm}
-        />
-        <Select
-          name="defaultTermUnit"
-          options={[
-            { label: TermUnitEnum.DAY, value: 'DAY' },
-            { label: TermUnitEnum.WEEK, value: 'WEEK' },
-            { label: TermUnitEnum.MONTH, value: 'MONTH' },
-            { label: TermUnitEnum.YEAR, value: 'YEAR' },
-          ]}
-          value={state.defaultTermUnit}
-          onChange={handleChange}
-        />
-        <br />
+        <div>
+          <Input
+            name="defaultTerm"
+            type="number"
+            value={state.defaultTerm}
+            onChange={handleChange}
+            label="수강권 기간"
+            placeholder={initialState.defaultTerm}
+            required
+            width="w-56"
+          />
+          <Select
+            name="defaultTermUnit"
+            options={[
+              { label: TermUnitEnum.DAY, value: 'DAY' },
+              { label: TermUnitEnum.WEEK, value: 'WEEK' },
+              { label: TermUnitEnum.MONTH, value: 'MONTH' },
+              { label: TermUnitEnum.YEAR, value: 'YEAR' },
+            ]}
+            value={state.defaultTermUnit}
+            onChange={handleChange}
+          />
+        </div>
 
         <Input
           name="duration"
@@ -121,8 +128,9 @@ const CreateTicket = () => {
           label="시간"
           placeholder={initialState.duration}
           unit="분"
+          required
+          width="w-80"
         />
-        <br />
 
         <Input
           name="defaultCount"
@@ -132,8 +140,9 @@ const CreateTicket = () => {
           label="기본횟수"
           placeholder={initialState.defaultCount}
           unit="회"
+          required
+          width="w-80"
         />
-        <br />
 
         <Input
           name="maxServiceCount"
@@ -162,6 +171,7 @@ const CreateTicket = () => {
             </button>
           }
           align="text-center"
+          width="w-72"
         />
 
         <button

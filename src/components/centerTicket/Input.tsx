@@ -11,11 +11,13 @@ interface InputProps {
   rightBtn?: React.ReactNode;
   unit?: string;
   align?: string;
+  width?: string;
+  required?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
-  name,
   type,
+  name,
   value,
   onChange,
   label,
@@ -23,15 +25,22 @@ const Input: React.FC<InputProps> = ({
   leftBtn,
   rightBtn,
   unit,
-  align,
+  align = 'text-left',
+  width = 'w-30',
+  required,
 }) => {
   const style = 'text-center';
   return (
     <>
-      {label && <label htmlFor={name}>{label}</label>}
+      {label && (
+        <label htmlFor={name} className="block my-5">
+          {label}
+          {required && <span className="text-primary-300">*</span>}
+        </label>
+      )}
       {leftBtn}
       <input
-        className={align}
+        className={`${align} ${width} input-select mr-1`}
         id={name}
         name={name}
         type={type}

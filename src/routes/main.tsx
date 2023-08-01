@@ -115,8 +115,8 @@ function Main() {
               </div>
             </div>
           </header>
-          <div className="mb-5">
-            <form onSubmit={handleSubmit} className="flex items-center">
+          <div className="flex justify-end mb-5 bg-slate-400">
+            <form onSubmit={handleSubmit} className="flex items-center inline-block bg-slate-500">
               <input
                 type="text"
                 name="search"

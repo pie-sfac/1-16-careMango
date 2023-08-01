@@ -3,7 +3,7 @@ import React, { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 
 // import axios from 'axios';
 import { axiosInstance, useTokenRefresher } from '../utils/apiInstance';
 import BottomNav from '../components/common/BottomNav';
-// import Logo from '../assets/icons/Logo.svg';
+import { ReactComponent as Logo } from '../assets/icons/Logo.svg';
 
 import '../index.css';
 
@@ -99,7 +99,9 @@ function Main() {
       {data && (
         <>
           <header className="flex items-center justify-between mb-5">
-            <h1>logo</h1>
+            <h1>
+              <Logo />
+            </h1>
             <div className="flex items-center">
               <p className="mr-2">박관리자</p>
               <div className="mr-2">{planStatus}</div>

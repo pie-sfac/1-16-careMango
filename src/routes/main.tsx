@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { axiosInstance, useTokenRefresher } from '../utils/apiInstance';
@@ -20,7 +20,7 @@ interface ApiResponse {
 
 function Main() {
   const planStatus: string = '플랜 이용중';
-  // const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem('accessToken');
   // const refreshToken = localStorage.getItem('refreshToken');
   const [data, setData] = useState<ApiResponse | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
@@ -39,7 +39,18 @@ function Main() {
   //     });
   // }, [accessToken]);
 
-  axiosInstance.get('/me/summary');
+  const getData = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get('/me/summary');
+      setData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
   // useEffect(() => {
   //   const interval = setInterval(

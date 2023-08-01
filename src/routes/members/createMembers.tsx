@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../utils/apiInstance';
+import { axiosInstance } from '../../utils/apiInstance';
 import Header from '../../components/common/Header';
 import InputName from '../../components/common/InputName';
 import SelectSex from '../../components/common/SelectSex';

@@ -4,7 +4,7 @@ import Header from '../../components/common/Header';
 import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
 import Select from '../../components/centerTicket/Select';
 import Input from '../../components/centerTicket/Input';
-import axiosInstance from '../../utils/apiInstance';
+import { axiosInstance } from '../../utils/apiInstance';
 
 const CreateTicket = () => {
   interface StateType {

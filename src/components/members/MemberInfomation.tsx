@@ -1,8 +1,10 @@
 import React from 'react';
-import { Profile, Edit } from '../../assets/icons/Icons';
+// import { Profile, Edit } from '../../assets/icons';
+import Profile from '../../assets/icons/Profile.svg';
+import Edit from '../../assets/icons/Edit.svg';
 
 const MemberInfomation = () => (
-  <div className=" flex justify-between items-center border-2 rounded-md p-4">
+  <div className="flex items-center justify-between p-4 border-2 rounded-md ">
     <div className="flex items-center">
       <Profile />
       <p>이름</p>

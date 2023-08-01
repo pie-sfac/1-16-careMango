@@ -1,6 +1,7 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { axiosInstance, useTokenRefresher } from '../utils/apiInstance';
 
 import '../index.css';
 
@@ -24,49 +25,63 @@ function Main() {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/me/summary`, {
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setData(response.data);
-      });
-  }, [accessToken]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${import.meta.env.VITE_API_URL}/me/summary`, {
+  //       headers: {
+  //         accept: 'application/json',
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       // console.log(response.data);
+  //       setData(response.data);
+  //     });
+  // }, [accessToken]);
 
-  useEffect(() => {
-    const interval = setInterval(
-      () => {
-        axios
-          .post(
-            `${import.meta.env.VITE_API_URL}/tokens`,
-            {},
-            {
-              headers: {
-                accept: 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
-              },
-            },
-          )
-          .then((response) => {
-            localStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.refreshToken);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      },
-      15 * 60 * 1000,
-    );
-
-    return () => {
-      clearInterval(interval);
-    };
+  const getData = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get('/me/summary');
+      setData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  // useEffect(() => {
+  //   const interval = setInterval(
+  //     () => {
+  //       axios
+  //         .post(
+  //           `${import.meta.env.VITE_API_URL}/tokens`,
+  //           {},
+  //           {
+  //             headers: {
+  //               accept: 'application/json',
+  //               Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+  //             },
+  //           },
+  //         )
+  //         .then((response) => {
+  //           localStorage.setItem('accessToken', response.data.accessToken);
+  //           localStorage.setItem('refreshToken', response.data.refreshToken);
+  //         })
+  //         .catch((error) => {
+  //           console.error(error);
+  //         });
+  //     },
+  //     15 * 60 * 1000,
+  //   );
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
+  useTokenRefresher();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

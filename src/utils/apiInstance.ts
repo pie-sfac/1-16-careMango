@@ -40,7 +40,7 @@ const useTokenRefresher = () => {
             console.error(error);
           });
       },
-      15 * 60 * 1000,
+      13 * 60 * 1000,
     );
 
     return () => {

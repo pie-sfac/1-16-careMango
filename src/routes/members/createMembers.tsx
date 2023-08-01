@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../utils/apiInstance';
-import Header from '../../components/common/SubHeader';
+import SubHeader from '../../components/common/SubHeader';
 import InputName from '../../components/common/InputName';
 import SelectSex from '../../components/common/SelectSex';
 import InputContact from '../../components/common/InputContact';
@@ -92,7 +92,7 @@ const CreateMembers = () => {
 
   return (
     <>
-      <Header title="회원등록" />
+      <SubHeader title="회원등록" />
       <div className="flex flex-col items-center">
         <div className="flex flex-col w-full max-w-md">
           <div className="flex flex-col items-center justify-center my-6">

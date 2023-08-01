@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
-import Header from '../../components/common/SubHeader';
+import SubHeader from '../../components/common/SubHeader';
 import { itemDataState } from '../../atoms/itemDataAtom';
 import { getDay, getTime } from '../../utils/date';
 import NameTag from '../../components/common/NameTag';
@@ -16,7 +16,7 @@ const ChangeSchedule = () => {
 
   return (
     <>
-      <Header title="일정 변경" />
+      <SubHeader title="일정 변경" />
       <div className="flex flex-col">
         <h1 className="main-title">개인수업</h1>
         <SelectDate title="일자 선택" defaultState={getDay(itemData!.startAt)} />

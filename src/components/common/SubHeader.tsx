@@ -7,7 +7,7 @@ type HeaderProps = {
   rightBtn?: React.ReactNode;
 };
 
-const Header = ({ title, rightBtn }: HeaderProps) => {
+const SubHeader = ({ title, rightBtn }: HeaderProps) => {
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
@@ -24,4 +24,4 @@ const Header = ({ title, rightBtn }: HeaderProps) => {
     </header>
   );
 };
-export default Header;
+export default SubHeader;

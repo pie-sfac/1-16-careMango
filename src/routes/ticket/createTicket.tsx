@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/common/SubHeader';
+import SubHeader from '../../components/common/SubHeader';
 import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
 import Select from '../../components/centerTicket/Select';
 import Input from '../../components/centerTicket/Input';
@@ -69,7 +69,7 @@ const CreateTicket = () => {
 
   return (
     <>
-      <Header title="수강권 추가" />
+      <SubHeader title="수강권 추가" />
       <h1 className="main-title">수강권 추가</h1>
       <p>센터의 수강권을 추가하세요</p>
 

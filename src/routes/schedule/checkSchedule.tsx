@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { axiosInstance } from '../../utils/apiInstance';
 import Card from '../../components/common/Card';
-import Header from '../../components/common/SubHeader';
+import SubHeader from '../../components/common/SubHeader';
 import { ScheduleItemData } from '../../types/schedule/schedule';
 import ScheduleBox from '../../components/schedule/ScheduleBox';
 import ScheduleDetail from '../../components/schedule/ScheduleDetail';
@@ -37,7 +37,7 @@ const CheckSchedule = () => {
   if (!itemData) return <p>loading...</p>;
   return (
     <>
-      <Header
+      <SubHeader
         title="11시 서태지"
         rightBtn={
           <div>

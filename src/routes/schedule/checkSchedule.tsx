@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
-import axiosInstance from '../utils/apiInstance';
-import Card from '../components/common/Card';
-import Header from '../components/common/Header';
-import { ScheduleItemData } from '../types/schedule/schedule';
-import ScheduleBox from '../components/ScheduleBox';
-import ScheduleDetail from '../components/ScheduleDetail';
-import { itemDataState } from '../atoms/itemDataAtom';
+import { axiosInstance } from '../../utils/apiInstance';
+import Card from '../../components/common/Card';
+import Header from '../../components/common/Header';
+import { ScheduleItemData } from '../../types/schedule/schedule';
+import ScheduleBox from '../../components/schedule/ScheduleBox';
+import ScheduleDetail from '../../components/schedule/ScheduleDetail';
+import { itemDataState } from '../../atoms/itemDataAtom';
 
 const CheckSchedule = () => {
   const [itemData, setItemData] = useRecoilState(itemDataState);

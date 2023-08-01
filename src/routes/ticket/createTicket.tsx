@@ -5,6 +5,8 @@ import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
 import Select from '../../components/centerTicket/Select';
 import Input from '../../components/centerTicket/Input';
 import { axiosInstance } from '../../utils/apiInstance';
+import { ReactComponent as Plus } from '../../assets/icons/Plus.svg';
+import { ReactComponent as Minus } from '../../assets/icons/Minus.svg';
 
 const CreateTicket = () => {
   interface StateType {
@@ -64,6 +66,7 @@ const CreateTicket = () => {
   const increaseCount = () => {
     setCount((prev) => prev + 1);
   };
+
   return (
     <>
       <Header title="수강권 추가" />
@@ -156,21 +159,12 @@ const CreateTicket = () => {
             placeholder={count.toString()}
             leftBtn={
               <button type="button" onClick={decreaseCount} className="mr-2 icon-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M6 12H18" stroke="#505050" strokeWidth="2" strokeLinecap="round" />
-                </svg>
+                <Minus />
               </button>
             }
             rightBtn={
               <button type="button" onClick={increaseCount} className="ml-2 icon-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M11 18C11 18.5523 11.4477 19 12 19C12.5523 19 13 18.5523 13 18V13H18C18.5523 13 19 12.5523 19 12C19 11.4477 18.5523 11 18 11H13V6C13 5.44771 12.5523 5 12 5C11.4477 5 11 5.44771 11 6V11H6C5.44772 11 5 11.4477 5 12C5 12.5523 5.44772 13 6 13H11V18Z"
-                    fill="#505050"
-                  />
-                </svg>
+                <Plus />
               </button>
             }
             unit="회"
@@ -178,6 +172,7 @@ const CreateTicket = () => {
             width="w-72"
           />
         </div>
+
         <button
           className={`my-5 py-3 rounded mt-36 w-full ${
             allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

@@ -14,7 +14,7 @@ const CreateTicket = () => {
     defaultTermUnit: string;
     duration: number;
     defaultCount: number;
-    maxServiceCount: number;
+    maxServiceCount?: number;
   }
   const initialState = {
     lessonType: '',
@@ -35,7 +35,9 @@ const CreateTicket = () => {
     setState((prev): StateType => ({ ...prev, [name]: value }));
   };
 
-  const inputs = Object.values(state);
+  const filteredState = { ...state };
+  delete filteredState.maxServiceCount;
+  const inputs = Object.values(filteredState);
   const allFieldsCompleted = () => inputs.every((input) => input !== '' && input !== 0);
 
   const createTicket = async (ticketData: StateType): Promise<StateType | undefined> => {
@@ -70,102 +72,114 @@ const CreateTicket = () => {
 
       <h2 className="my-10 small-title">수강권 정보 설정</h2>
       <form onSubmit={handleSubmit}>
-        <Select
-          name="lessonType"
-          options={[
-            { label: '선택해주세요', value: '' },
-            { label: LessonTypeEnum.SINGLE, value: 'SINGLE' },
-          ]}
-          value={state.lessonType}
-          onChange={handleChange}
-          label="수업 유형"
-        />
-        <br />
+        <div className="flex flex-col flex-wrap h-[32rem]">
+          <Select
+            name="lessonType"
+            options={[
+              { label: '선택해주세요', value: '' },
+              { label: LessonTypeEnum.SINGLE, value: 'SINGLE' },
+            ]}
+            value={state.lessonType}
+            onChange={handleChange}
+            label="수업 유형"
+            required
+            width="w-80"
+          />
 
-        <Input
-          name="title"
-          type="text"
-          value={state.title}
-          onChange={handleChange}
-          label="수강권명"
-          placeholder="수강권명을 입력해주세요(15자이내)"
-        />
-        <br />
+          <Input
+            name="title"
+            type="text"
+            value={state.title}
+            onChange={handleChange}
+            label="수강권명"
+            placeholder="수강권명을 입력해주세요(15자이내)"
+            required
+            width="w-80"
+          />
 
-        <Input
-          name="defaultTerm"
-          type="number"
-          value={state.defaultTerm}
-          onChange={handleChange}
-          label="수강권 기간"
-          placeholder={initialState.defaultTerm}
-        />
-        <Select
-          name="defaultTermUnit"
-          options={[
-            { label: TermUnitEnum.DAY, value: 'DAY' },
-            { label: TermUnitEnum.WEEK, value: 'WEEK' },
-            { label: TermUnitEnum.MONTH, value: 'MONTH' },
-            { label: TermUnitEnum.YEAR, value: 'YEAR' },
-          ]}
-          value={state.defaultTermUnit}
-          onChange={handleChange}
-        />
-        <br />
-
-        <Input
-          name="duration"
-          type="number"
-          value={state.duration}
-          onChange={handleChange}
-          label="시간"
-          placeholder={initialState.duration}
-          unit="분"
-        />
-        <br />
-
-        <Input
-          name="defaultCount"
-          type="number"
-          value={state.defaultCount}
-          onChange={handleChange}
-          label="기본횟수"
-          placeholder={initialState.defaultCount}
-          unit="회"
-        />
-        <br />
-
-        <Input
-          name="maxServiceCount"
-          type="number"
-          value={count}
-          onChange={handleChange}
-          label="서비스 횟수"
-          placeholder={count}
-          leftBtn={
-            <button type="button" onClick={decreaseCount}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M6 12H18" stroke="#505050" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </button>
-          }
-          rightBtn={
-            <button type="button" onClick={increaseCount}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M11 18C11 18.5523 11.4477 19 12 19C12.5523 19 13 18.5523 13 18V13H18C18.5523 13 19 12.5523 19 12C19 11.4477 18.5523 11 18 11H13V6C13 5.44771 12.5523 5 12 5C11.4477 5 11 5.44771 11 6V11H6C5.44772 11 5 11.4477 5 12C5 12.5523 5.44772 13 6 13H11V18Z"
-                  fill="#505050"
+          <div>
+            <Input
+              name="defaultTerm"
+              type="number"
+              value={state.defaultTerm}
+              onChange={handleChange}
+              label="수강권 기간"
+              placeholder={initialState.defaultTerm.toString()}
+              required
+              width="w-56"
+              unitSelect={
+                <Select
+                  name="defaultTermUnit"
+                  options={[
+                    { label: TermUnitEnum.DAY, value: 'DAY' },
+                    { label: TermUnitEnum.WEEK, value: 'WEEK' },
+                    { label: TermUnitEnum.MONTH, value: 'MONTH' },
+                    { label: TermUnitEnum.YEAR, value: 'YEAR' },
+                  ]}
+                  value={state.defaultTermUnit}
+                  onChange={handleChange}
                 />
-              </svg>
-            </button>
-          }
-          align="text-center"
-        />
+              }
+            />
+          </div>
 
+          <Input
+            name="duration"
+            type="number"
+            value={state.duration}
+            onChange={handleChange}
+            label="시간"
+            placeholder={initialState.duration.toString()}
+            unit="분"
+            required
+            width="w-80"
+          />
+
+          <Input
+            name="defaultCount"
+            type="number"
+            value={state.defaultCount}
+            onChange={handleChange}
+            label="기본횟수"
+            placeholder={initialState.defaultCount.toString()}
+            unit="회"
+            required
+            width="w-80"
+          />
+
+          <Input
+            name="maxServiceCount"
+            type="number"
+            value={count}
+            onChange={handleChange}
+            label="서비스 횟수"
+            placeholder={count.toString()}
+            leftBtn={
+              <button type="button" onClick={decreaseCount} className="mr-2 icon-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M6 12H18" stroke="#505050" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+            }
+            rightBtn={
+              <button type="button" onClick={increaseCount} className="ml-2 icon-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M11 18C11 18.5523 11.4477 19 12 19C12.5523 19 13 18.5523 13 18V13H18C18.5523 13 19 12.5523 19 12C19 11.4477 18.5523 11 18 11H13V6C13 5.44771 12.5523 5 12 5C11.4477 5 11 5.44771 11 6V11H6C5.44772 11 5 11.4477 5 12C5 12.5523 5.44772 13 6 13H11V18Z"
+                    fill="#505050"
+                  />
+                </svg>
+              </button>
+            }
+            unit="회"
+            align="text-center"
+            width="w-72"
+          />
+        </div>
         <button
-          className={`my-5 py-3 rounded ${
+          className={`my-5 py-3 rounded mt-36 w-full ${
             allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
           }`}
           type="submit">

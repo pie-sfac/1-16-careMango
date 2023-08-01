@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
     "types":["node"],
   },
-  "include": ["src"],
+  "include": ["src", "src/svg.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "types":["node"]
 }

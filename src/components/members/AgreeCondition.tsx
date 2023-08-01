@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 
 interface AgreeConditonProps {
   title: string;
-  defaultState?: string;
-  onSelect?: (selectedSex: string) => void;
+  defaultState?: boolean;
+  onChange?: (selectedAgree: boolean) => void;
 }
 
-const AgreeConditon = ({ title, defaultState, onSelect }: AgreeConditonProps) => {
-  const [state, setState] = useState<boolean>(false);
+const AgreeCondition = ({ title, defaultState, onChange }: AgreeConditonProps) => {
+  const [state, setState] = useState<boolean>(defaultState || false);
   const handleAgreementChange = () => {
-    setState(!state);
+    const newState = !state;
+    setState(newState);
+    onChange?.(newState);
   };
 
   const viewTerms = () => {
@@ -40,4 +42,4 @@ const AgreeConditon = ({ title, defaultState, onSelect }: AgreeConditonProps) =>
   );
 };
 
-export default AgreeConditon;
+export default AgreeCondition;

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 
 interface InputMemoProps {
   title: string;
-  onSelect?: (selectedName: string) => void;
+  onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const InputMemo = ({ title, onSelect }: InputMemoProps) => {
+const InputMemo = ({ title, onChange }: InputMemoProps) => {
   const [state, setState] = useState<string>('');
   const [memoLength, setMemoLength] = useState(0);
 
@@ -17,7 +17,7 @@ const InputMemo = ({ title, onSelect }: InputMemoProps) => {
   // 내용 업데이트
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setState(event.target.value);
-    onSelect?.(event.target.value);
+    onChange?.(event);
   };
 
   return (

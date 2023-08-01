@@ -1,15 +1,15 @@
-export interface MemberItemData {
+export interface Member {
   id: number;
   name: string;
   phone: string;
-  sex: string;
+  sex: 'MALE' | 'FEMALE';
   birthDate: string;
   createdAt: string;
   updatedAt: string;
   visitedAt: string;
 }
 
-export interface MembersItemData {
+export interface MembersData {
   meta: {
     totalCount: number;
     size: number;
@@ -17,15 +17,6 @@ export interface MembersItemData {
     page: number;
     hasMore: boolean;
   };
-  datas: MemberItemData[];
+  datas: Member[];
   message: string;
-}
-
-export interface CreateMembersItemData {
-  name: string;
-  birthDate: string;
-  phone: string;
-  sex: string;
-  job: string;
-  visitRoute: string;
 }

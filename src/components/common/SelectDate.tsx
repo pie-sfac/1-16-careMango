@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 interface SelectDateProps {
   title: string;
   defaultState?: string;
-  onSelect?: (selectedDate: string) => void;
+  onChange?: (selectedDate: string) => void;
 }
 
-const SelectDate = ({ title, defaultState, onSelect }: SelectDateProps) => {
+const SelectDate = ({ title, defaultState, onChange }: SelectDateProps) => {
   const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState(event.target.value);
-    onSelect?.(event.target.value);
+    onChange?.(event.target.value);
   };
 
   return (
@@ -19,7 +19,7 @@ const SelectDate = ({ title, defaultState, onSelect }: SelectDateProps) => {
         {title}
         <span className="text-primary-300">*</span>
       </p>
-      <input id="selectDate" className="input-select" type="date" name="date" value={state} onChange={handleChange} />
+      <input id="selectDate" className="input-select" type="date" name="date" value={state} onSelect={handleChange} />
     </label>
   );
 };

@@ -2,10 +2,11 @@ import React, { ChangeEvent, useState } from 'react';
 
 interface InputBirthProps {
   title: string;
-  onSelect?: (selectedName: string) => void;
+  onChange: (value: string) => void;
+  // onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputBirth = ({ title, onSelect }: InputBirthProps) => {
+const InputBirth = ({ title, onChange }: InputBirthProps) => {
   const [state, setState] = useState<string>('');
 
   // 생년월일 입력시 점으로 구분
@@ -15,11 +16,10 @@ const InputBirth = ({ title, onSelect }: InputBirthProps) => {
 
     if (value.length > 8) return;
     if (value.length > 4) {
-      value = value.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3');
+      value = value.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
     }
     setState(value);
-    onSelect?.(value);
-    onSelect?.(value);
+    onChange?.(value);
   };
 
   return (

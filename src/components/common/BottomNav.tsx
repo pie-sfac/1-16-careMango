@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const BottomNav = () => (
   <nav className="bottom-0 flex items-center justify-around w-full p-4">
-    <Link to="/main" className="flex flex-col items-center text-center  group">
+    <Link to="/main" className="flex flex-col items-center text-center group">
       <svg
         width="24"
         height="24"
@@ -19,7 +19,7 @@ const BottomNav = () => (
       <p>홈</p>
     </Link>
 
-    <Link to="/main" className="flex flex-col items-center text-center  group">
+    <Link to="/main" className="flex flex-col items-center text-center group">
       <svg
         width="24"
         height="24"
@@ -35,7 +35,7 @@ const BottomNav = () => (
       <p>일정관리</p>
     </Link>
 
-    <Link to="/main" className="flex flex-col items-center text-center  group">
+    <Link to="/members" className="flex flex-col items-center text-center group">
       <svg
         width="24"
         height="24"
@@ -59,7 +59,7 @@ const BottomNav = () => (
       <p>회원관리</p>
     </Link>
 
-    <Link to="/main" className="flex flex-col items-center text-center  group">
+    <Link to="/main" className="flex flex-col items-center text-center group">
       <svg
         width="24"
         height="24"
@@ -91,7 +91,7 @@ const BottomNav = () => (
       <p>센터관리</p>
     </Link>
 
-    <Link to="/main" className="flex flex-col items-center text-center  group">
+    <Link to="/main" className="flex flex-col items-center text-center group">
       <svg
         width="24"
         height="24"

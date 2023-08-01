@@ -1,17 +1,27 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import membersData from '../../../../public/data/membersData.json';
+import { axiosInstance } from '../../../utils/apiInstance';
+import { useRecoilState } from 'recoil';
+import { searchQueryState } from '../../../atoms/members/membersAtom';
+import MemberListItem from './MemberListItem';
 
 const SearchMembers = () => {
   // input에 입력된 문자열 state
   const [memberInput, setMemberInput] = useState('');
   // 검색된 결과를 담을 state
-  const [members, setMembers] = useState(membersData.datas);
+  const [memberList, setMemberList] = useState(membersData.datas);
+  const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
 
-  // TODO: axios get 요청으로 회원 데이터 수신
+  // 회원목록 호출
+  const getMembers = async () => {
+    const res = await axiosInstance.get('members');
+    setMemberList(res.data.members);
+    return memberList;
+  };
+
   useEffect(() => {
-    axios.get('');
+    getMembers();
   }, []);
 
   // 이전 페이지로
@@ -20,16 +30,13 @@ const SearchMembers = () => {
     navigate(-1);
   };
 
-  const getValue = (event: any) => event.target.value;
-
-  const searched = members.filter((item: any) => {
+  const searched = memberList.filter((item: any) => {
     return item.name.includes(memberInput);
   });
 
   return (
     <>
-      <h1>회원 검색 페이지</h1>
-      <header className="flex justify-between py-3 mb-2 text-xl font-bold border-b-2 border-gray-300">
+      <header className="flex justify-between py-3 mb-2 text-xl font-bold">
         <div className="flex">
           <button onClick={handleBackClick} type="submit" className="focus:outline-none">
             <svg
@@ -45,15 +52,18 @@ const SearchMembers = () => {
               />
             </svg>
           </button>
-          <input type="text" className="" onChange={getValue} placeholder="검색어를 입력해주세요" />
+          <input
+            type="text"
+            className="flex-grow px-4 py-3 outline-none"
+            placeholder="검색어를 입력해주세요"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
       </header>
       <ul>
-        {searched.map((item: any) => (
-          <li key={item.id} {...item}>
-            <p>{item.id}</p>
-            <p>{item.name}</p>
-          </li>
+        {searched.map((member: any) => (
+          <MemberListItem member={member} />
         ))}
       </ul>
     </>

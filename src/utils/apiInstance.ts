@@ -1,36 +1,24 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 
-const useTokenRefresher = () => {
-  useEffect(() => {
-    const interval = setInterval(
-      () => {
-        axios
-          .post(
-            `${import.meta.env.VITE_API_URL}/tokens`,
-            {},
-            {
-              headers: {
-                accept: 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
-              },
-            },
-          )
-          .then((response) => {
-            localStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.refreshToken);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+const useTokenRefresher = async () => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/tokens`,
+      {},
+      {
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+        },
       },
-      13 * 60 * 1000,
     );
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+    localStorage.setItem('accessToken', response.data.accessToken);
+    localStorage.setItem('refreshToken', response.data.refreshToken);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const axiosInstance = axios.create({

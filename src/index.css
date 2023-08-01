@@ -8,11 +8,11 @@ body {
 }
 
 .input-select {
-  @apply p-4 border-2 rounded border-line-300 focus:outline-none focus:border-primary-300;
+  @apply px-4 py-3 border-2 rounded border-line-300 focus:outline-none focus:border-primary-300;
 }
 
 .main-title {
-  @apply font-bold text-base lg:text-2xl my-3
+  @apply my-3 text-base font-bold lg:text-2xl;
 }
 
 .small-title {
@@ -24,9 +24,17 @@ body {
 }
 
 .card-border {
-  @apply bg-white border border-line-200 rounded-xl
+  @apply bg-white border border-line-200 rounded-xl;
 }
 
 .attendance-btn {
-  @apply px-5 py-2 border rounded border-line-200
+  @apply px-5 py-2 border rounded border-line-200;
+}
+
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.icon-btn {
+  @apply w-10 h-10 rounded-full flex-center bg-bg-100;
 }

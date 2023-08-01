@@ -1,26 +1,48 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { axiosInstance } from '../../utils/apiInstance';
 import SubHeader from '../../components/common/SubHeader';
-import MoreVert from '../../assets/icons/MoreVert.svg';
-import Document from '../../assets/icons/Document.svg';
-import Message from '../../assets/icons/Message.svg';
-import Filter from '../../assets/icons/Filter.svg';
-import MemberInfomation from '../../components/members/MemberInfomation';
+import { ReactComponent as MoreVert } from '../../assets/icons/MoreVert.svg';
+import { ReactComponent as Document } from '../../assets/icons/Document.svg';
+import { ReactComponent as Message } from '../../assets/icons/Message.svg';
+import { ReactComponent as Profile40 } from '../../assets/icons/Profile_40.svg';
+import { ReactComponent as Edit } from '../../assets/icons/Edit.svg';
+// import MemberInformation from '../../components/members/MemberInformation';
 import MemberRecord from '../../components/members/MemberRecord';
 import MemberReview from '../../components/members/MemberReview';
 import MemberAlbum from '../../components/members/MemberAlbum';
+import { MembersDetail } from '../../types/members/membersDetail';
 
 type TabType = 'record' | 'review' | 'album';
 
 const MemberInfo = () => {
+  const [activeTab, setActiveTab] = useState<TabType>('record');
+
   // 이용중인 수강권 보는 페이지로
   const navigate = useNavigate();
   const goMainMembers = () => {
-    // console.log(state);
     navigate('/tickets/useTickets');
   };
 
-  const [activeTab, setActiveTab] = useState<TabType>('record');
+  const { memberId } = useParams<{ memberId: string }>();
+  const [memberDetail, setMemberDetail] = useState<MembersDetail | null>(null);
+  const getMemberDatail = async () => {
+    const res = await axiosInstance.get(`members/${memberId}`);
+    setMemberDetail(res.data);
+  };
+
+  useEffect(() => {
+    getMemberDatail();
+  }, []);
+
+  const memberInformation = [
+    { id: 1, label: '이름', value: memberDetail?.name },
+    { id: 2, label: '생년월일', value: memberDetail?.birthDate },
+    { id: 3, label: '등록일', value: memberDetail?.createdAt.split('T')[0] },
+    { id: 4, label: '성별', value: memberDetail?.sex === 'MALE' ? '남' : '여' },
+    { id: 5, label: '전화번호', value: memberDetail?.phone },
+    { id: 6, label: '직업형태', value: memberDetail?.job },
+  ];
 
   return (
     <>
@@ -45,7 +67,18 @@ const MemberInfo = () => {
           </button>
         </div>
       </div>
-      <MemberInfomation />
+      <section className="flex items-center justify-between p-4 border-2 rounded-xl ">
+        <div className="flex items-center">
+          <Profile40 />
+          {memberInformation.map((info) => (
+            <React.Fragment key={info.id}>
+              <p className="ml-5 text-text-400">{info.label}</p>
+              <p className="ml-2">{info.value}</p>
+            </React.Fragment>
+          ))}
+        </div>
+        <Edit />
+      </section>
       <section className="mt-8">
         <div className="flex border-b tabs border-line-300">
           <button

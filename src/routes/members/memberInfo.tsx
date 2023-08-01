@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
-import { MoreVert, Document, Message, Filter } from '../../components/common/Icons';
+import MoreVert from '../../assets/icons/MoreVert.svg';
+import Document from '../../assets/icons/Document.svg';
+import Message from '../../assets/icons/Message.svg';
+import Filter from '../../assets/icons/Filter.svg';
 import MemberInfomation from '../../components/members/MemberInfomation';
 import MemberRecord from '../../components/members/MemberRecord';
 import MemberReview from '../../components/members/MemberReview';

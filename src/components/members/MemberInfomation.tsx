@@ -1,5 +1,5 @@
 import React from 'react';
-import { Profile, Edit } from '../common/Icons';
+import { Profile, Edit } from '../../assets/icons/Icons';
 
 const MemberInfomation = () => (
   <div className=" flex justify-between items-center border-2 rounded-md p-4">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 'react';
 // import { Link } from 'react-router-dom';
 // import axios from 'axios';
-import { axiosInstance, useTokenRefresher } from '../utils/apiInstance';
+import { axiosInstance } from '../utils/apiInstance';
 import BottomNav from '../components/common/BottomNav';
 import { ReactComponent as Logo } from '../assets/icons/Logo.svg';
 
@@ -83,7 +83,7 @@ function Main() {
   //     clearInterval(interval);
   //   };
   // }, []);
-  useTokenRefresher();
+  // useTokenRefresher();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -115,8 +115,8 @@ function Main() {
               </div>
             </div>
           </header>
-          <div className="flex justify-end mb-5 bg-slate-400">
-            <form onSubmit={handleSubmit} className="flex items-center inline-block bg-slate-500">
+          <div className="flex justify-end mb-5 ">
+            <form onSubmit={handleSubmit} className="flex items-center inline-block ">
               <input
                 type="text"
                 name="search"

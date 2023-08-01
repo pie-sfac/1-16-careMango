@@ -33,14 +33,16 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
           <Logo />
         </button>
 
-        <ul className="gap-8 font-semibold cursor-pointer flex-center">
-          {mainMenu.map(({ id, content, path }) => (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-            <li key={id} onClick={() => navigate(path)}>
-              {content}
-            </li>
-          ))}
-        </ul>
+        {menu && (
+          <ul className="gap-8 font-semibold cursor-pointer flex-center">
+            {mainMenu.map(({ id, content, path }) => (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+              <li key={id} onClick={() => navigate(path)}>
+                {content}
+              </li>
+            ))}
+          </ul>
+        )}
       </nav>
 
       <div className="flex-center">

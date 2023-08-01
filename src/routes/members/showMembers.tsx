@@ -20,7 +20,7 @@ const membersData: MembersData[] = [
         id: 0,
         name: 'yunie',
         phone: '010-1111-1111',
-        sex: '여',
+        sex: 'FEMALE',
         birthDate: '2023-01-01',
         createdAt: '2023-02-02',
         updatedAt: '2023-03-03',

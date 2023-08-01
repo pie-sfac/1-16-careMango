@@ -19,12 +19,12 @@ const CreateMembers = () => {
     job: string;
     acqusitionFunnel: string;
     acquisitionFunnel: string;
-    toss: [
-      {
-        id: number;
-        agree: boolean;
-      },
-    ];
+    // toss: [
+    //   {
+    //     id: number;
+    //     agree: boolean;
+    //   },
+    // ];
   }
 
   const initialState: StateType = {
@@ -35,12 +35,12 @@ const CreateMembers = () => {
     job: '',
     acqusitionFunnel: 'string',
     acquisitionFunnel: 'string',
-    toss: [
-      {
-        id: 0,
-        agree: false,
-      },
-    ],
+    // toss: [
+    //   {
+    //     id: 10,
+    //     agree: false,
+    //   },
+    // ],
   };
 
   const [state, setState] = useState<StateType>(initialState);
@@ -51,17 +51,17 @@ const CreateMembers = () => {
   };
 
   // 약관 동의
-  const handleAgree = (agreement: boolean) => {
-    setState((prev) => ({
-      ...prev,
-      toss: [
-        {
-          ...prev.toss[0],
-          agree: agreement,
-        },
-      ],
-    }));
-  };
+  // const handleAgree = (agreement: boolean) => {
+  //   setState((prev) => ({
+  //     ...prev,
+  //     toss: [
+  //       {
+  //         ...prev.toss[0],
+  //         agree: agreement,
+  //       },
+  //     ],
+  //   }));
+  // };
 
   // 회원관리 메인 페이지로
   const goMainMembers = () => {
@@ -73,7 +73,7 @@ const CreateMembers = () => {
     try {
       const res = await axiosInstance.post('/members', membersData);
       const createdMembers = res.data;
-      navigate('/members/showMembers', { state: { refetch: true } });
+      navigate('/members', { state: { refetch: true } });
       return createdMembers;
     } catch (err) {
       console.log(err);
@@ -87,7 +87,8 @@ const CreateMembers = () => {
   };
 
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
-  const allFieldsCompleted = () => !!(state.birthDate && state.sex && state.name && state.phone && state.toss[0].agree);
+  // const allFieldsCompleted = () => !!(state.birthDate && state.sex && state.name && state.phone && state.toss[0].agree);
+  const allFieldsCompleted = () => !!(state.birthDate && state.sex && state.name && state.phone);
 
   return (
     <>
@@ -105,7 +106,8 @@ const CreateMembers = () => {
             <InputContact title="휴대폰 번호" onChange={(value) => handleSelect('phone', value)} />
             <SelectJob title="직업" onChange={(value) => handleSelect('job', value)} />
             <SelectVisitRoute title="방문 경로" onChange={(value) => handleSelect('acquisitionFunnel', value)} />
-            <AgreeCondition title="회원 약관 동의" onChange={handleAgree} />
+            <AgreeCondition title="회원 약관 동의" />
+            {/* <AgreeCondition title="회원 약관 동의" onChange={handleAgree} /> */}
             <button
               className={`my-5 py-3 w-full rounded ${
                 allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

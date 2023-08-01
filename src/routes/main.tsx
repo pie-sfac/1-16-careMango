@@ -22,8 +22,6 @@ interface ApiResponse {
 
 function Main() {
   const planStatus: string = '플랜 이용중';
-  // const accessToken = localStorage.getItem('accessToken');
-  // const refreshToken = localStorage.getItem('refreshToken');
   const [data, setData] = useState<ApiResponse | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
 
@@ -41,14 +39,18 @@ function Main() {
   //     });
   // }, [accessToken]);
 
+  const token = localStorage.getItem('accessToken');
   const getData = useCallback(async () => {
+    if (!token) {
+      return;
+    }
     try {
       const response = await axiosInstance.get('/me/summary');
       setData(response.data);
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     getData();

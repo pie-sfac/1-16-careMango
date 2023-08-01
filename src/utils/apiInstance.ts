@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -15,4 +16,37 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error),
 );
-export default axiosInstance;
+
+const useTokenRefresher = () => {
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/tokens`,
+            {},
+            {
+              headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+              },
+            },
+          )
+          .then((response) => {
+            localStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      },
+      15 * 60 * 1000,
+    );
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+};
+
+export { axiosInstance, useTokenRefresher };

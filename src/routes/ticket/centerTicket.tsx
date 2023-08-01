@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import { TicketsData } from '../../types/tickets/tickets';
-import axiosInstance from '../../utils/apiInstance';
+import { axiosInstance } from '../../utils/apiInstance';
 import TicketItem from '../../components/centerTicket/TicketItem';
 
 // test data
@@ -69,6 +69,7 @@ const CenterTicket = () => {
     // }, 500);
     // return () => clearTimeout(timer);
     getTickets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

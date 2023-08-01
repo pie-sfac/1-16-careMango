@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axiosInstance from '../../utils/apiInstance';
+import { axiosInstance } from '../../utils/apiInstance';
 import { MembersData } from '../../types/members/members';
 import NoMembers from '../../components/members/Nomembers';
 import MembersItem from '../../components/members/MembersItem';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/common/Header';
+import Header from '../../components/common/SubHeader';
 import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
 import Select from '../../components/centerTicket/Select';
 import Input from '../../components/centerTicket/Input';

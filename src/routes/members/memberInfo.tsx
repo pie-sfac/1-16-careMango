@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/common/Header';
+import Header from '../../components/common/SubHeader';
 import MoreVert from '../../assets/icons/MoreVert.svg';
 import Document from '../../assets/icons/Document.svg';
 import Message from '../../assets/icons/Message.svg';

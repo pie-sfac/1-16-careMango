@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
-import Header from '../../components/common/Header';
+import Header from '../../components/common/SubHeader';
 import { itemDataState } from '../../atoms/itemDataAtom';
 import { getDay, getTime } from '../../utils/date';
 import NameTag from '../../components/common/NameTag';

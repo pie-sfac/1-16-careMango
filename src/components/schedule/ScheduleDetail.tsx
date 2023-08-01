@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ScheduleItemData } from '../../types/schedule/schedule';
-import { ReactComponent as Profile } from '../../assets/icons/Profile.svg';
+import { ReactComponent as Profile } from '../../assets/icons/Profile_24.svg';
 
 interface ScheduleDetailProps {
   itemData: ScheduleItemData;

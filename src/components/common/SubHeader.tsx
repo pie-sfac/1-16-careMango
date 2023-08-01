@@ -15,7 +15,7 @@ const Header = ({ title, rightBtn }: HeaderProps) => {
   return (
     <header className="flex justify-between py-3 border-b border-line-200">
       <div className="flex">
-        <button onClick={handleBackClick} type="submit" className="focus:outline-none">
+        <button onClick={handleBackClick} type="button" className="focus:outline-none">
           <Back />
         </button>
         <p className="text-base">{title}</p>

@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { axiosInstance } from '../../utils/apiInstance';
 import Card from '../../components/common/Card';
-import Header from '../../components/common/Header';
+import Header from '../../components/common/SubHeader';
 import { ScheduleItemData } from '../../types/schedule/schedule';
 import ScheduleBox from '../../components/schedule/ScheduleBox';
 import ScheduleDetail from '../../components/schedule/ScheduleDetail';

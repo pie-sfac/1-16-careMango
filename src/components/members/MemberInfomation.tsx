@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Profile, Edit } from '../../assets/icons';
-import Profile from '../../assets/icons/Profile.svg';
+import Profile from '../../assets/icons/Profile_40.svg';
 import Edit from '../../assets/icons/Edit.svg';
 
 const MemberInfomation = () => (

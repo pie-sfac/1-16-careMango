@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Card from '../../components/common/Card';
-import Header from '../../components/common/Header';
+import Header from '../../components/common/SubHeader';
 import CounselingScheduleBox from '../../components/counseling/CounselingScheduleBox';
 import InputMemo from '../../components/common/InputMemo';
 import { CounselingScheduleItemData } from '../../types/counseling/counselingSchedule';

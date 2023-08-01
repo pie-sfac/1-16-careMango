@@ -24,22 +24,8 @@ function Main() {
   const planStatus: string = '플랜 이용중';
   const [data, setData] = useState<ApiResponse | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${import.meta.env.VITE_API_URL}/me/summary`, {
-  //       headers: {
-  //         accept: 'application/json',
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       // console.log(response.data);
-  //       setData(response.data);
-  //     });
-  // }, [accessToken]);
-
   const token = localStorage.getItem('accessToken');
+
   const getData = useCallback(async () => {
     if (!token) {
       return;
@@ -55,37 +41,6 @@ function Main() {
   useEffect(() => {
     getData();
   }, [getData]);
-
-  // useEffect(() => {
-  //   const interval = setInterval(
-  //     () => {
-  //       axios
-  //         .post(
-  //           `${import.meta.env.VITE_API_URL}/tokens`,
-  //           {},
-  //           {
-  //             headers: {
-  //               accept: 'application/json',
-  //               Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
-  //             },
-  //           },
-  //         )
-  //         .then((response) => {
-  //           localStorage.setItem('accessToken', response.data.accessToken);
-  //           localStorage.setItem('refreshToken', response.data.refreshToken);
-  //         })
-  //         .catch((error) => {
-  //           console.error(error);
-  //         });
-  //     },
-  //     15 * 60 * 1000,
-  //   );
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
-  // useTokenRefresher();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

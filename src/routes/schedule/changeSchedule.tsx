@@ -1,24 +1,24 @@
 import React, { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import SelectDate from '../components/common/SelectDate';
-import SelectTime from '../components/common/SelectTime';
-import Header from '../components/common/Header';
-import { itemDataState } from '../atoms/itemDataAtom';
-import axiosInstance from '../utils/apiInstance';
-import { getDay, getTime } from '../utils/date';
-import NameTag from '../components/common/NameTag';
+import SelectDate from '../../components/common/SelectDate';
+import SelectTime from '../../components/common/SelectTime';
+import SubHeader from '../../components/common/SubHeader';
+import { itemDataState } from '../../atoms/itemDataAtom';
+import { getDay, getTime } from '../../utils/date';
+import NameTag from '../../components/common/NameTag';
 
 const ChangeSchedule = () => {
   const [itemData, setItemData] = useRecoilState(itemDataState);
   console.log(itemData);
 
+  // 스케쥴변경 로직 추가하기
+
   return (
     <>
-      <Header title="일정 변경" />
+      <SubHeader title="일정 변경" />
       <div className="flex flex-col">
         <h1 className="main-title">개인수업</h1>
-        {/* 변경 일정 기본 데이터값 넣어주기 */}
         <SelectDate title="일자 선택" defaultState={getDay(itemData!.startAt)} />
         <SelectTime
           title="시간 선택"

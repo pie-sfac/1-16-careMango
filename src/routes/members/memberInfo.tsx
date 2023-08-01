@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/common/Header';
+import SubHeader from '../../components/common/SubHeader';
 import MoreVert from '../../assets/icons/MoreVert.svg';
 import Document from '../../assets/icons/Document.svg';
 import Message from '../../assets/icons/Message.svg';
@@ -24,7 +24,7 @@ const MemberInfo = () => {
 
   return (
     <>
-      <Header
+      <SubHeader
         title="회원 정보"
         rightBtn={
           <button type="button">
@@ -47,7 +47,7 @@ const MemberInfo = () => {
       </div>
       <MemberInfomation />
       <section className="mt-8">
-        <div className="tabs flex border-b border-line-300">
+        <div className="flex border-b tabs border-line-300">
           <button
             type="button"
             className={`flex-1 py-2 px-4 ${activeTab === 'record' ? 'border-b-2 border-blue-500' : 'hover:bg-blue-50'}`}

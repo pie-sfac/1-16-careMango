@@ -13,7 +13,7 @@ interface SelectProps {
 const Select: React.FC<SelectProps> = ({ name, options, value, onChange, label, required, width = 'w-24' }) => (
   <>
     {label && (
-      <label htmlFor={name} className="block my-5">
+      <label htmlFor={name} className="block mt-10 mb-2">
         {label}
         {required && <span className="text-primary-300 w-">*</span>}
       </label>

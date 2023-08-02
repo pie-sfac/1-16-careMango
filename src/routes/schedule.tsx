@@ -116,7 +116,7 @@ function schedule() {
             height="500px"
             view="month"
             month={{
-              dayNames: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+              dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               visibleWeeksCount: 5,
             }}
             calendars={calendars}

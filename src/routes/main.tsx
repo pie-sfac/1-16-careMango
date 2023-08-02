@@ -27,16 +27,13 @@ function Main() {
   const token = localStorage.getItem('accessToken');
 
   const getData = useCallback(async () => {
-    if (!token) {
-      return;
-    }
     try {
       const response = await axiosInstance.get('/me/summary');
       setData(response.data);
     } catch (error) {
       console.error(error);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     getData();

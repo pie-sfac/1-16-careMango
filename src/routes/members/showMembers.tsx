@@ -65,18 +65,18 @@ const ShowMembers = () => {
           onClick={() => navigate('/members', { state: { register: true } })}>
           등록하기
         </button>
-
-        {/* 회원 목록 */}
-        <ul className="flex flex-col">
-          {/* 등록된 회원이 있는 경우 */}
-          {displayedMembers && displayedMembers.length > 0 ? (
-            displayedMembers.map((members) => <MembersItem key={members.id} members={members} />)
-          ) : (
-            // 등록된 회원이 없는 경우
-            <NoMembers />
-          )}
-        </ul>
       </div>
+
+      {/* 회원 목록 */}
+      <ul className="flex flex-col">
+        {/* 등록된 회원이 있는 경우 */}
+        {displayedMembers && displayedMembers.length > 0 ? (
+          displayedMembers.map((members) => <MembersItem key={members.id} members={members} />)
+        ) : (
+          // 등록된 회원이 없는 경우
+          <NoMembers />
+        )}
+      </ul>
     </div>
   );
 };

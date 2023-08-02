@@ -18,7 +18,7 @@ export interface Client {
   phone: string;
 }
 
-export interface CounselingData {
+export interface CounselingDetail {
   id: number;
   startAt: string;
   endAt: string;

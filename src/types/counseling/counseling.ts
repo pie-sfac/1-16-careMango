@@ -6,23 +6,23 @@ export interface CounselingScheduleItemData {
   isCanceled: true;
   canceledAt: string;
   counselor: {
-    id: 0;
+    id: number;
     name: string;
   };
   client: {
-    memberId: 0;
+    memberId: number;
     name: string;
     phone: string;
   };
   counselingRecord: {
-    id: 0;
+    id: number;
     content: string;
     createdBy: {
-      id: 0;
+      id: number;
       name: string;
     };
     updatedBy: {
-      id: 0;
+      id: number;
       name: string;
     };
     createdAt: string;
@@ -30,12 +30,12 @@ export interface CounselingScheduleItemData {
   };
   createdAt: string;
   createdBy: {
-    id: 0;
+    id: number;
     name: string;
   };
   updatedAt: string;
   updatedBy: {
-    id: 0;
+    id: number;
     name: string;
   };
 }

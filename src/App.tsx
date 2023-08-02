@@ -15,6 +15,7 @@ import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
 import ShowMembers from './routes/members/showMembers';
 import CreateMembers from './routes/members/createMembers';
 import MemberInfo from './routes/members/memberInfo';
+import ShowStaffs from './routes/staff/showStaffs';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
@@ -41,6 +42,7 @@ function App() {
         <Route path="/members" element={<ShowMembers />} />
         <Route path="/members/createMembers" element={<CreateMembers />} />
         <Route path="/members/:memberId" element={<MemberInfo />} />
+        <Route path="/staffs" element={<ShowStaffs />} />
       </Routes>
     </BrowserRouter>
   );

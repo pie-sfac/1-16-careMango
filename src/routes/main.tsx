@@ -36,6 +36,7 @@ function Main() {
   }, []);
 
   useEffect(() => {
+    console.log('useEffect 호출');
     getData();
   }, [getData]);
 

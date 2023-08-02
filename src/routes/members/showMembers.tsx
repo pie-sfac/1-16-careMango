@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { axiosInstance } from '../../utils/apiInstance';
 import { Member } from '../../types/members/members';
 import NoMembers from '../../components/members/Nomembers';
 import MembersItem from '../../components/members/MembersItem';
 import MainHeader from '../../components/common/MainHeader';
 import BottomNav from '../../components/common/BottomNav';
+import CreateMembers from './createMembers';
 import { ReactComponent as Search } from '../../assets/icons/Search.svg';
 
 const ShowMembers = () => {
@@ -30,11 +31,14 @@ const ShowMembers = () => {
     );
   }
 
-  // 등록하기 누르면 회원 생성 페이지로
+  // 등록하기 누르면 회원 등록 화면으로 전환
   const navigate = useNavigate();
-  const goCreateMembers = () => {
-    navigate('/members/createMembers');
-  };
+  const location = useLocation();
+  const isRegistering = location.state?.register || false;
+
+  if (isRegistering) {
+    return <CreateMembers />;
+  }
 
   return (
     <>
@@ -62,7 +66,7 @@ const ShowMembers = () => {
           <button
             className="px-2 py-1 bg-white border-2 border-solid border-line-300 rounded-xl"
             type="button"
-            onClick={goCreateMembers}>
+            onClick={() => navigate('/members', { state: { register: true } })}>
             등록하기
           </button>
         </div>

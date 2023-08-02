@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../utils/apiInstance';
 import SelectCounselor from '../../components/common/SelectCounselor';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
@@ -8,9 +8,9 @@ import InputName from '../../components/common/InputName';
 import InputContact from '../../components/common/InputContact';
 import InputMemo from '../../components/common/InputMemo';
 
-interface CounselingState {
-  counselor: string;
-  date: string;
+interface StateType {
+  userId: number;
+  memberId: number;
   clientName: string;
   clientPhone: string;
   memo: string;
@@ -18,17 +18,37 @@ interface CounselingState {
   endAt: string;
 }
 
-function CreateCounseling() {
-  const [state, setState] = useState<CounselingState>({
-    // 강사와 날짜는 api에 나와있지 않음
-    counselor: '', // ?????
-    date: '', // ?????
-    clientName: '',
-    clientPhone: '',
-    memo: '',
-    startAt: '',
-    endAt: '',
-  });
+const initialState: StateType = {
+  userId: 0,
+  memberId: 0,
+  clientName: '',
+  clientPhone: '',
+  memo: '',
+  startAt: '',
+  endAt: '',
+};
+
+const CreateCounseling = () => {
+  const [state, setState] = useState<StateType>(initialState);
+
+  const onChange = (name: string, value: string | number) => {
+    setState((prev): StateType => ({ ...prev, [name]: value }));
+  };
+
+  const onTimeChange = (selectedTime: { startAt: string; endAt: string }) => {
+    // 현재 날짜
+    const currentDate = state.startAt.split('T')[0];
+
+    // 선택된 시간에 현재 날짜 추가
+    const updatedStartAt = `${currentDate}T${selectedTime.startAt}`;
+    const updatedEndAt = `${currentDate}T${selectedTime.endAt}`;
+
+    setState((prev) => ({
+      ...prev,
+      startAt: updatedStartAt,
+      endAt: updatedEndAt,
+    }));
+  };
 
   // 이전 페이지로
   const navigate = useNavigate();
@@ -36,35 +56,33 @@ function CreateCounseling() {
     navigate(-1);
   };
 
-  // 조회 페이지에서 변경 버튼 클릭 시 기존 데이터 로드하여 수정
-  const { counselingId } = useParams<{ counselingId?: string }>();
-  useEffect(() => {
-    if (counselingId) {
-      // 기존 상담 데이터 로드(axios 사용하여 API에서 해당 상담 데이터 가져오기)
-      axios.get(`http://localhost:5173/schedule/counseling/createCounseling/${counselingId}`).then((res) => {
-        const { data } = res;
-        setState({
-          counselor: data.counselor,
-          date: data.date,
-          clientName: data.clientName,
-          clientPhone: data.clientPhone,
-          memo: data.memo,
-          startAt: data.startAt,
-          endAt: data.endAt,
-        });
-      });
-    }
-  }, [counselingId]);
-
   // 일정관리 메인 페이지로
   const goMainSchedule = () => {
     console.log(state);
     navigate('/schedule');
   };
 
+  const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
+    try {
+      const res = await axiosInstance.post('/counseling', counselingData);
+      const createdCounseling = res.data;
+      navigate('/counseling', { state: { refetch: true } });
+      return createdCounseling;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    createCounseling(state);
+  };
+
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = (): boolean =>
-    !!(state.counselor && state.date && state.startAt && state.endAt && state.clientName && state.clientPhone);
+    !!(state.userId && state.startAt && state.endAt && state.clientName && state.clientPhone);
+
+  console.log(state);
 
   return (
     <>
@@ -89,43 +107,31 @@ function CreateCounseling() {
       </header>
       <div className="flex flex-col">
         <h1 className="main-title">상담</h1>
-        <SelectCounselor
-          title="담당 강사 선택"
-          onSelect={(selectedCounselor) => setState((prev) => ({ ...prev, counselor: selectedCounselor }))}
-        />
-        <SelectDate
-          title="날짜 선택"
-          onSelect={(selectedDate) => setState((prev) => ({ ...prev, date: selectedDate }))}
-        />
-        <SelectTime
-          title="시간 선택"
-          onSelect={(selectedTime) =>
-            setState((prev) => ({ ...prev, startAt: selectedTime.startTime, endAt: selectedTime.endTime }))
-          }
-        />
-        <InputName
-          title="이름"
-          onSelect={(selectedName) => setState((prev) => ({ ...prev, clientName: selectedName }))}
-        />
-        <InputContact
-          title="연락처"
-          onSelect={(selectedPhone) => setState((prev) => ({ ...prev, clientPhone: selectedPhone }))}
-        />
-        <InputMemo
-          title="일정 메모"
-          onSelect={(selectedMemo) => setState((prev) => ({ ...prev, memo: selectedMemo }))}
-        />
-        <button
-          className={`my-5 py-3 rounded ${
-            allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
-          }`}
-          type="submit"
-          onClick={goMainSchedule}>
-          완료
-        </button>
+        <form onSubmit={handleSubmit}>
+          <SelectCounselor title="담당 강사 선택" onChange={(value) => onChange('userId', value)} />
+          <SelectDate
+            title="날짜 선택"
+            onChange={(value) => {
+              onChange('startAt', value);
+              onChange('endAt', value);
+            }}
+          />
+          <SelectTime title="시간 선택" onChange={onTimeChange} />
+          <InputName title="이름" onChange={(value) => onChange('clientName', value)} />
+          <InputContact title="연락처" onChange={(value) => onChange('clientPhone', value)} />
+          <InputMemo title="일정 메모" onChange={(value) => onChange('memo', value)} />
+          <button
+            className={`my-5 py-3 rounded ${
+              allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
+            }`}
+            type="submit"
+            onClick={goMainSchedule}>
+            완료
+          </button>
+        </form>
       </div>
     </>
   );
-}
+};
 
 export default CreateCounseling;

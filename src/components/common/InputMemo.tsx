@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 
 interface InputMemoProps {
   title: string;
-  onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (value: string) => void;
 }
 
 const InputMemo = ({ title, onChange }: InputMemoProps) => {
@@ -17,7 +17,7 @@ const InputMemo = ({ title, onChange }: InputMemoProps) => {
   // 내용 업데이트
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setState(event.target.value);
-    onChange?.(event);
+    onChange?.(event.target.value);
   };
 
   return (

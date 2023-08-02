@@ -1,8 +1,8 @@
 import React from 'react';
 import Calendar from '@toast-ui/react-calendar';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
-import BottomNav from '../components/common/BottomNav';
-import MainHeader from '../components/common/MainHeader';
+// import BottomNav from '../components/common/BottomNav';
+// import MainHeader from '../components/layout/MainHeader';
 
 function schedule() {
   const calendars = [{ id: 'cal1', name: 'Personal' }];
@@ -57,7 +57,6 @@ function schedule() {
 
   return (
     <div className="flex flex-col justify-between">
-      <MainHeader />
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-4">
           <span className="text-lg font-semibold">2023년 8월</span>
@@ -158,7 +157,6 @@ function schedule() {
           </table>
         </aside>
       </main>
-      <BottomNav />
     </div>
   );
 }

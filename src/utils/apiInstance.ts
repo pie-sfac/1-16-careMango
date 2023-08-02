@@ -1,7 +1,11 @@
 import axios from 'axios';
-import { useEffect } from 'react';
 
-const useTokenRefresher = async () => {
+interface Tokens {
+  refreshToken: string;
+  accessToken: string;
+}
+
+const useTokenRefresher: () => Promise<Tokens | null> = async () => {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/tokens`,
@@ -14,10 +18,14 @@ const useTokenRefresher = async () => {
       },
     );
 
-    localStorage.setItem('accessToken', response.data.accessToken);
-    localStorage.setItem('refreshToken', response.data.refreshToken);
+    const newAccessToken: string = response.data.accessToken;
+    const newRefreshToken: string = response.data.refreshToken;
+    localStorage.setItem('accessToken', newAccessToken);
+    localStorage.setItem('refreshToken', newRefreshToken);
+    return { refreshToken: newRefreshToken, accessToken: newAccessToken };
   } catch (error) {
     console.error(error);
+    return null;
   }
 };
 
@@ -25,6 +33,24 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
+// 토큰 갱신 중인지 여부
+let isRefreshing: boolean = false;
+// 네트워크 대기열
+let watingApiQueue: { resolve: (value: unknown) => void; reject: (reason?: unknown) => void }[] = [];
+
+// 대기열 일괄 처리
+const runWatingApiQueue = (error: unknown, token: string | null = null) => {
+  watingApiQueue.forEach((p) => {
+    if (error) {
+      p.reject(error);
+    } else {
+      p.resolve(token);
+    }
+  });
+  watingApiQueue = [];
+};
+
+// 요청 인터셉터
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
@@ -34,24 +60,49 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
+  (err) => {
+    console.log(err);
+  },
+);
+
+// 응답 인터셉터
+axiosInstance.interceptors.response.use(
+  (config) => config,
   async (error) => {
     const originalRequest = error.config;
 
     if (error.response.status === 401 && !originalRequest.isRetry) {
+      // 이미 토큰 갱신 중이라면
+      if (isRefreshing) {
+        // 작업 큐에 담아놓고 resolve되는 경우 일괄 처리
+        return new Promise((resolve, reject) => {
+          watingApiQueue.push({ resolve, reject });
+        })
+          .then((newToken) => {
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return axios(originalRequest);
+          })
+          .catch((err) => err);
+      }
+      isRefreshing = true;
       originalRequest.isRetry = true;
 
       try {
         // Wait for token refresh to complete
-        await useTokenRefresher();
-
+        const newTokens = await useTokenRefresher();
+        isRefreshing = false;
+        if (newTokens == null) {
+          return await Promise.reject(error);
+        }
         // Update Authorization header with new token
-        originalRequest.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+        originalRequest.headers.Authorization = `Bearer ${newTokens.accessToken}`;
 
         // Retry the original request
+        runWatingApiQueue(null, newTokens.accessToken);
         return await axiosInstance(originalRequest);
       } catch (err) {
+        runWatingApiQueue(err);
         console.error(err);
-        // handle error appropriately
       }
     }
 

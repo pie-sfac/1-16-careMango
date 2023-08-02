@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "totalCount": 100,
+    "size": 0,
+    "count": 10,
+    "page": 0,
+    "hasMore": true
+  },
+  "datas": [
+    {
+      "id": 0,
+      "name": "김직원",
+      "phone": "010-2345-6789",
+      "memberCount": 1,
+      "rating": 3,
+      "memo": "김직원 메모"
+    },
+    {
+      "id": 1,
+      "name": "최직원",
+      "phone": "010-4321-4321",
+      "memberCount": 2,
+      "rating": 4,
+      "memo": "최직원 메모"
+    },
+    {
+      "id": 2,
+      "name": "박직원",
+      "phone": "010-1234-4321",
+      "memberCount": 1,
+      "rating": 5,
+      "memo": "박직원 메모"
+    }
+  ],
+  "message": "string"
+}

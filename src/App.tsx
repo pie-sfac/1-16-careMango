@@ -7,6 +7,7 @@ import CreateCounseling from './routes/counseling/createCounseling';
 import CheckCounseling from './routes/counseling/checkCounseling';
 import Login from './routes/login';
 import Main from './routes/main';
+import Schedule from './routes/schedule';
 import ChangeSchedule from './routes/schedule/changeSchedule';
 import CenterTicket from './routes/ticket/centerTicket';
 import CreateTicket from './routes/ticket/createTicket';
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={accessToken ? <Navigate to="/main" /> : <Login setAccessToken={setAccessToken} />} />
         <Route path="/main" element={accessToken ? <Main /> : <Navigate to="/" />} />
         <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
+        <Route path="/schedule" element={<Schedule />} />
         <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
         <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
         <Route path="/schedule/counseling/createCounseling" element={<CreateCounseling />} />

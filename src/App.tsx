@@ -13,8 +13,7 @@ import CreateTicket from './routes/ticket/createTicket';
 import PersonalClass from './routes/createSchedule/PersonalClass';
 import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
 import ShowMembers from './routes/members/showMembers';
-import CreateMembers from './routes/members/createMembers';
-import MemberInfo from './routes/members/memberInfo';
+import CheckMembers from './routes/members/checkMembers';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
@@ -31,14 +30,14 @@ function App() {
         <Route path="/main" element={accessToken ? <Main /> : <Navigate to="/" />} />
         <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
         <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
-        <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
-        <Route path="/schedule/counseling" element={<CreateCounseling />} />
+        <Route path="/schedules/counseling/:scheduleId" element={<CheckCounseling />} />
+        <Route path="/schedules/counseling" element={<CreateCounseling />} />
         <Route path="/tickets/centerTicket" element={<CenterTicket />} />
         <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />
         <Route path="/schedule/personal/new" element={<PersonalClass />} />
         <Route path="/schedule/personal/searchMembers" element={<SearchMembers />} />
         <Route path="/members" element={<ShowMembers />} />
-        <Route path="/members/:memberId" element={<MemberInfo />} />
+        <Route path="/members/:memberId" element={<CheckMembers />} />
       </Routes>
     </BrowserRouter>
   );

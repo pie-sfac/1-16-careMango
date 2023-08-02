@@ -57,17 +57,18 @@ const CreateCounseling = () => {
     navigate(-1);
   };
 
-  // 일정관리 메인 페이지로
-  const goMainSchedule = () => {
-    console.log(state);
-    navigate('/schedule');
-  };
+  // // 일정관리 메인 페이지로
+  // const goMainSchedule = () => {
+  //   console.log(state);
+  //   navigate('/schedule');
+  // };
 
   const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
     try {
-      const res = await axiosInstance.post('/counseling', counselingData);
+      const res = await axiosInstance.post('/schedules/counseling', counselingData);
       const createdCounseling = res.data;
-      navigate('/counseling', { state: { refetch: true } });
+      navigate('/schedules/counseling', { state: { refetch: true } });
+      console.log(state);
       return createdCounseling;
     } catch (err) {
       console.log(err);
@@ -82,8 +83,6 @@ const CreateCounseling = () => {
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = (): boolean =>
     !!(state.userId && state.startAt && state.endAt && state.clientName && state.clientPhone);
-
-  console.log(state);
 
   return (
     <>
@@ -115,7 +114,8 @@ const CreateCounseling = () => {
               allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
             }`}
             type="submit"
-            onClick={goMainSchedule}>
+            // onClick={goMainSchedule}>
+          >
             완료
           </button>
         </form>

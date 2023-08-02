@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../utils/apiInstance';
 import { Staff } from '../../types/staffs/staffs';
-import StaffListItem from '../../components/staff/StaffListItem';
+import StaffListItem from '../../components/staffs/StaffListItem';
 import MainHeader from '../../components/common/MainHeader';
 import BottomNav from '../../components/common/BottomNav';
 import { ReactComponent as Search } from '../../assets/icons/Search.svg';
@@ -24,6 +24,11 @@ const ShowStaffs = () => {
   if (searchQuery) {
     displayedStaffs = displayedStaffs.filter((data) => data.name.includes(searchQuery));
   }
+
+  const navigate = useNavigate();
+  const goCreateStaff = () => {
+    navigate('/staffs/createStaff');
+  };
 
   return (
     <>
@@ -47,7 +52,9 @@ const ShowStaffs = () => {
             <p className="text-primary-500">{displayedStaffs?.length || 0}</p>
             <button type="button">등록일</button>
             <button type="button">이름순</button>
-            <button type="button">직원등록</button>
+            <button type="button" onClick={goCreateStaff}>
+              직원등록
+            </button>
           </div>
         </div>
         <div className="flex items-center justify-between p-3 my-1">

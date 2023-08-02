@@ -33,13 +33,11 @@ function App() {
         <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
         <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
         <Route path="/schedule/counseling" element={<CreateCounseling />} />
-        <Route path="/schedule/counseling/edit/:createCounseling" element={<CreateCounseling />} />
         <Route path="/tickets/centerTicket" element={<CenterTicket />} />
         <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />
         <Route path="/schedule/personal/new" element={<PersonalClass />} />
         <Route path="/schedule/personal/searchMembers" element={<SearchMembers />} />
         <Route path="/members" element={<ShowMembers />} />
-        <Route path="/members/createMembers" element={<CreateMembers />} />
         <Route path="/members/:memberId" element={<MemberInfo />} />
       </Routes>
     </BrowserRouter>

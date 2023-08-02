@@ -16,7 +16,7 @@ import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
 import ShowMembers from './routes/members/showMembers';
 import CreateMembers from './routes/members/createMembers';
 import MemberInfo from './routes/members/memberInfo';
-import ShowStaffs from './routes/staff/showStaffs';
+import ShowStaffs from './routes/staffs/showStaffs';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)

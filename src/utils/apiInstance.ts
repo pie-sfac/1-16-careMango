@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useEffect } from 'react';
 
 const useTokenRefresher = async () => {
   try {
@@ -34,6 +33,11 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
+  (error) => Promise.reject(error),
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
@@ -51,7 +55,6 @@ axiosInstance.interceptors.request.use(
         return await axiosInstance(originalRequest);
       } catch (err) {
         console.error(err);
-        // handle error appropriately
       }
     }
 

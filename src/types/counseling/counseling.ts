@@ -1,41 +1,35 @@
-export interface CounselingScheduleItemData {
+export interface IdName {
+  id: number;
+  name: string;
+}
+
+export interface CounselingRecord {
+  id: number;
+  content: string;
+  createdBy: IdName;
+  updatedBy: IdName;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Client {
+  memberId: number;
+  name: string;
+  phone: string;
+}
+
+export interface CounselingData {
   id: number;
   startAt: string;
   endAt: string;
   memo: string;
-  isCanceled: true;
+  isCanceled: boolean;
   canceledAt: string;
-  counselor: {
-    id: number;
-    name: string;
-  };
-  client: {
-    memberId: number;
-    name: string;
-    phone: string;
-  };
-  counselingRecord: {
-    id: number;
-    content: string;
-    createdBy: {
-      id: number;
-      name: string;
-    };
-    updatedBy: {
-      id: number;
-      name: string;
-    };
-    createdAt: string;
-    updatedAt: string;
-  };
+  counselor: IdName;
+  client: Client;
+  counselingRecord: CounselingRecord;
   createdAt: string;
-  createdBy: {
-    id: number;
-    name: string;
-  };
+  createdBy: IdName;
   updatedAt: string;
-  updatedBy: {
-    id: number;
-    name: string;
-  };
+  updatedBy: IdName;
 }

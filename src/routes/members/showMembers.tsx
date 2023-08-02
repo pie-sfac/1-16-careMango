@@ -15,16 +15,19 @@ const ShowMembers = () => {
   const getMembers = async () => {
     const res = await axiosInstance.get('members');
     setMemberList(res.data.datas);
+    console.log(res.data.datas);
   };
 
   useEffect(() => {
     getMembers();
   }, []);
 
-  // 검색
+  // 검색 (이름 or 전화번호)
   let displayedMembers = memberList || [];
   if (searchQuery) {
-    displayedMembers = displayedMembers.filter((data) => data.name.includes(searchQuery));
+    displayedMembers = displayedMembers.filter(
+      (data) => data.name.includes(searchQuery) || data.phone.includes(searchQuery),
+    );
   }
 
   // 등록하기 누르면 회원 생성 페이지로

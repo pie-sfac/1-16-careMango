@@ -11,6 +11,18 @@ export const getDay = (dateString?: string, type?: string) => {
   return `${year}-${month}-${day}`;
 };
 
+// 날짜 생성함수
+export const getDay2 = (date: Date, type?: string) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  const weekday = date.toLocaleString('ko-KR', { weekday: 'long' });
+
+  if (type === 'weekday') return `${year}.${month}.${day} (${weekday})`;
+  return `${year}-${month}-${day}`;
+};
+
 // 시간 생성함수
 export const getTime = (dateString: string) => {
   const date = new Date(dateString);
@@ -27,16 +39,16 @@ export const calculateDate = (date: string, unit: string, amount: number) => {
   const startDate = new Date(date);
 
   switch (unit) {
-    case 'day':
+    case 'DAY':
       calculatedDate.setDate(startDate.getDate() + amount);
       break;
-    case 'week':
+    case 'WEEK':
       calculatedDate.setDate(startDate.getDate() + amount * 7);
       break;
-    case 'month':
+    case 'MONTH':
       calculatedDate.setMonth(startDate.getMonth() + amount);
       break;
-    case 'year':
+    case 'YEAR':
       calculatedDate.setFullYear(startDate.getFullYear() + amount);
       break;
     default:

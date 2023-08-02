@@ -42,7 +42,11 @@ const initialState: StateType = {
   // ],
 };
 
-const CreateMembers = () => {
+interface CreateMembersProps {
+  onRegisterd: () => void;
+}
+
+const CreateMembers = ({ onRegisterd }: CreateMembersProps) => {
   const [state, setState] = useState<StateType>(initialState);
   const navigate = useNavigate();
 
@@ -63,7 +67,7 @@ const CreateMembers = () => {
   //   }));
   // };
 
-  // 회원관리 메인 페이지로
+  // 회원 조회 페이지로
   const goMainMembers = () => {
     console.log(state);
     navigate('/members');
@@ -72,13 +76,26 @@ const CreateMembers = () => {
   const createMembers = async (membersData: StateType): Promise<StateType | undefined> => {
     try {
       const res = await axiosInstance.post('/members', membersData);
-      const createdMembers = res.data;
-      navigate('/members', { state: { refetch: true } });
-      return createdMembers;
+      if (res.status === 200 || res.status === 201) {
+        // HTTP 상태 코드가 200(성공) 또는 201(생성됨)인 경우
+        onRegisterd(); // 여기에서 onCompletion (즉, setIsComplete(true)를 호출합니다)
+        navigate('/members', { state: { refetch: true } });
+      }
+      return res.data;
     } catch (err) {
       console.log(err);
     }
   };
+  //   try {
+  //     const res = await axiosInstance.post('/members', membersData);
+  //     const createdMembers = res.data;
+  //     navigate('/members', { state: { refetch: true } });
+  //     console.log('res.status=', res.status);
+  //     return createdMembers;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

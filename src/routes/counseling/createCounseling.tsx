@@ -57,11 +57,11 @@ const CreateCounseling = () => {
     navigate(-1);
   };
 
-  // // 일정관리 메인 페이지로
-  // const goMainSchedule = () => {
-  //   console.log(state);
-  //   navigate('/schedule');
-  // };
+  // 일정관리 메인 페이지로
+  const goMainSchedule = () => {
+    console.log(state);
+    navigate('/schedules');
+  };
 
   const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
     try {
@@ -69,6 +69,7 @@ const CreateCounseling = () => {
       const createdCounseling = res.data;
       navigate('/schedules/counseling', { state: { refetch: true } });
       console.log(state);
+      console.log('res.status=', res.status);
       return createdCounseling;
     } catch (err) {
       console.log(err);
@@ -110,12 +111,11 @@ const CreateCounseling = () => {
           <InputContact title="연락처" onChange={(value) => onChange('clientPhone', value)} />
           <InputMemo title="일정 메모" onChange={(value) => onChange('memo', value)} />
           <button
-            className={`my-5 py-3 rounded ${
+            className={`my-5 py-3 w-full rounded ${
               allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
             }`}
-            type="submit"
-            // onClick={goMainSchedule}>
-          >
+            type="button"
+            onClick={handleSubmit}>
             완료
           </button>
         </form>

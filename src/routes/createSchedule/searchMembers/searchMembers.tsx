@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Member } from '../../../types/members/members';
 import { axiosInstance } from '../../../utils/apiInstance';
 
-import MemberListItem from './MemberListItem';
+import MemberListItem from '../../../components/createSchedule/MemberListItem';
 
 const SearchMembers = () => {
   const [memberList, setMemberList] = useState<Member[] | null>(null);

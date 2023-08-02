@@ -1,38 +1,33 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import membersData from '../../../../public/data/membersData.json';
+import { Member } from '../../../types/members/members';
 import { axiosInstance } from '../../../utils/apiInstance';
-import { useRecoilState } from 'recoil';
-import { searchQueryState } from '../../../atoms/members/membersAtom';
+
 import MemberListItem from './MemberListItem';
 
 const SearchMembers = () => {
-  // input에 입력된 문자열 state
-  const [memberInput, setMemberInput] = useState('');
-  // 검색된 결과를 담을 state
-  const [memberList, setMemberList] = useState(membersData.datas);
-  const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
-
-  // 회원목록 호출
-  const getMembers = async () => {
-    const res = await axiosInstance.get('members');
-    setMemberList(res.data.members);
-    return memberList;
-  };
+  const [memberList, setMemberList] = useState<Member[] | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
+    // 회원목록 호출
+    const getMembers = async () => {
+      const res = await axiosInstance.get('members');
+      setMemberList(res.data.datas);
+    };
     getMembers();
   }, []);
+
+  let displayedMembers = memberList || [];
+  if (searchQuery) {
+    displayedMembers = displayedMembers.filter((data) => data.name.includes(searchQuery));
+  }
 
   // 이전 페이지로
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
   };
-
-  const searched = memberList.filter((item: any) => {
-    return item.name.includes(memberInput);
-  });
 
   return (
     <>
@@ -62,9 +57,11 @@ const SearchMembers = () => {
         </div>
       </header>
       <ul>
-        {searched.map((member: any) => (
-          <MemberListItem member={member} />
-        ))}
+        {displayedMembers && displayedMembers.length > 0 ? (
+          displayedMembers.map((members) => <MemberListItem key={members.id} members={members} />)
+        ) : (
+          <div>회원이 없습니다.</div>
+        )}
       </ul>
     </>
   );

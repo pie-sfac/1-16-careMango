@@ -50,6 +50,7 @@ const CheckSchedule = () => {
           </div>
         }
       />
+
       <ScheduleBox itemData={itemData} />
 
       <section className="mt-20 base-font">

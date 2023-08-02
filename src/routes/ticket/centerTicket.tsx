@@ -4,7 +4,7 @@ import Header from '../../components/common/SubHeader';
 import { TicketsData } from '../../types/tickets/tickets';
 import { axiosInstance } from '../../utils/apiInstance';
 import TicketItem from '../../components/centerTicket/TicketItem';
-import MainHeader from '../../components/common/MainHeader';
+import MainHeader from '../../components/layout/MainHeader';
 
 const CenterTicket = () => {
   const [ticketList, setTicketList] = useState<TicketsData[] | null>(null);
@@ -26,7 +26,6 @@ const CenterTicket = () => {
 
   return (
     <>
-      <MainHeader menu />
       <section className="flex items-center justify-between mt-4">
         <h1 className="main-title">센터 수강권</h1>
         <button type="button" onClick={onClickAdd} className="px-8 py-3 text-white rounded bg-primary-500">

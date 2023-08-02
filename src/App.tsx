@@ -7,6 +7,7 @@ import CreateCounseling from './routes/counseling/createCounseling';
 import CheckCounseling from './routes/counseling/checkCounseling';
 import Login from './routes/login';
 import Main from './routes/main';
+import Schedule from './routes/schedule';
 import ChangeSchedule from './routes/schedule/changeSchedule';
 import CenterTicket from './routes/ticket/centerTicket';
 import CreateTicket from './routes/ticket/createTicket';
@@ -14,6 +15,8 @@ import PersonalClass from './routes/createSchedule/PersonalClass';
 import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
 import ShowMembers from './routes/members/showMembers';
 import CheckMembers from './routes/members/checkMembers';
+import CreateMembers from './routes/members/createMembers';
+import Layout from './components/layout/Layout';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
@@ -25,20 +28,25 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={accessToken ? <Navigate to="/main" /> : <Login setAccessToken={setAccessToken} />} />
-        <Route path="/main" element={accessToken ? <Main /> : <Navigate to="/" />} />
-        <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
-        <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
-        <Route path="/schedules/counseling/:scheduleId" element={<CheckCounseling />} />
-        <Route path="/schedules/counseling" element={<CreateCounseling />} />
-        <Route path="/tickets/centerTicket" element={<CenterTicket />} />
-        <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />
-        <Route path="/schedule/personal/new" element={<PersonalClass />} />
-        <Route path="/schedule/personal/searchMembers" element={<SearchMembers />} />
-        <Route path="/members" element={<ShowMembers />} />
-        <Route path="/members/:memberId" element={<CheckMembers />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={accessToken ? <Navigate to="/main" /> : <Login setAccessToken={setAccessToken} />} />
+          <Route path="/main" element={accessToken ? <Main /> : <Navigate to="/" />} />
+          <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
+          <Route path="/schedule/counseling/:counselingId" element={<CheckCounseling />} />
+          <Route path="/schedule/counseling/createCounseling" element={<CreateCounseling />} />
+          <Route path="/schedule/counseling/edit/:createCounseling" element={<CreateCounseling />} />
+          <Route path="/tickets/centerTicket" element={<CenterTicket />} />
+          <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />
+          <Route path="/schedule/personal/new" element={<PersonalClass />} />
+          <Route path="/schedule/personal/searchMembers" element={<SearchMembers />} />
+          <Route path="/members" element={<ShowMembers />} />
+          <Route path="/members/createMembers" element={<CreateMembers />} />
+          <Route path="/members/:memberId" element={<CheckMembers />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 }

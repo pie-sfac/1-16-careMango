@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/icons/Logo.svg';
-import { ReactComponent as Back } from '../../assets/icons/Back.svg';
 import { ReactComponent as Profile } from '../../assets/icons/Profile_24.svg';
 import { ReactComponent as Notifications } from '../../assets/icons/Notifications.svg';
 
@@ -16,18 +15,12 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
   };
 
   const mainMenu = [
-    // { id: 'Home', content: '홈', path: '/' },
-    // { id: 'Schedule', content: '일정관리', path: '/schedule' },
-    // { id: 'Member', content: '회원관리', path: '/members' },
-    // { id: 'Center', content: '센터관리', path: '/tickets/centerTicket' },
-    // { id: 'Mypage', content: '마이페이지', path: '/mypage' },
-
     { id: 'Members', content: '직원 관리', path: '/members' },
     { id: 'Tickets', content: '수강권 관리', path: '/tickets/centerTicket' },
   ];
 
   return (
-    <header className="flex justify-between py-3 border-b border-line-200">
+    <header className="flex justify-between py-3 border-b base-px border-line-200">
       <nav className="gap-8 flex-center">
         <button onClick={goMain} type="button">
           <Logo />

@@ -92,6 +92,7 @@ axiosInstance.interceptors.response.use(
         const newTokens = await useTokenRefresher();
         isRefreshing = false;
         if (newTokens == null) {
+          window.location.href = '/'; // 로그인 페이지로 이동
           return await Promise.reject(error);
         }
         // Update Authorization header with new token

@@ -19,7 +19,7 @@ const SelectDate = ({ title, defaultState, onChange }: SelectDateProps) => {
         {title}
         <span className="text-primary-300">*</span>
       </p>
-      <input id="selectDate" className="input-select" type="date" name="date" value={state} onSelect={handleChange} />
+      <input id="selectDate" className="input-select" type="date" name="date" value={state} onChange={handleChange} />
     </label>
   );
 };

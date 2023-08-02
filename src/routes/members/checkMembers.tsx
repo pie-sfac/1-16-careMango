@@ -17,14 +17,14 @@ type TabType = 'record' | 'review' | 'album';
 
 const MemberInfo = () => {
   const [activeTab, setActiveTab] = useState<TabType>('record');
+  const { memberId } = useParams<{ memberId: string | undefined }>();
 
   // 이용중인 수강권 보는 페이지로
   const navigate = useNavigate();
   const goMainMembers = () => {
-    navigate('/tickets/useTickets');
+    navigate(`/members/${memberId}/issued-tickets`);
   };
 
-  const { memberId } = useParams<{ memberId: string }>();
   const [memberDetail, setMemberDetail] = useState<MembersDetail | null>(null);
   const getMemberDatail = async () => {
     const res = await axiosInstance.get(`members/${memberId}`);

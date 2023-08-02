@@ -14,8 +14,8 @@ import CreateTicket from './routes/ticket/createTicket';
 import PersonalClass from './routes/createSchedule/PersonalClass';
 import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
 import ShowMembers from './routes/members/showMembers';
+import CheckMembers from './routes/members/checkMembers';
 import CreateMembers from './routes/members/createMembers';
-import MemberInfo from './routes/members/memberInfo';
 import Layout from './components/layout/Layout';
 
 export const accessTokenState = atom({
@@ -44,7 +44,7 @@ function App() {
           <Route path="/schedule/personal/searchMembers" element={<SearchMembers />} />
           <Route path="/members" element={<ShowMembers />} />
           <Route path="/members/createMembers" element={<CreateMembers />} />
-          <Route path="/members/:memberId" element={<MemberInfo />} />
+          <Route path="/members/:memberId" element={<CheckMembers />} />
         </Routes>
       </Layout>
     </BrowserRouter>

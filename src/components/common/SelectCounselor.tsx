@@ -1,49 +1,55 @@
 import React, { useState } from 'react';
 import NameTag from './NameTag';
 
-interface SelectInstructorProps {
+interface SelectCounselorProps {
   title: string;
   defaultState?: string;
-  onSelect?: (selectedInstructor: string) => void;
+  onChange?: (selectedCounselor: string | number) => void;
 }
 
-const SelectInstructor = ({ title, defaultState, onSelect }: SelectInstructorProps) => {
+const SelectCounselor = ({ title, defaultState, onChange }: SelectCounselorProps) => {
   const [state, setState] = useState<string>(defaultState || '');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState(event.target.value);
-    onSelect?.(event.target.value);
+    onChange?.(+event.target.value);
+  };
+
+  // 강사 Id와 이름 매핑
+  const counselorNames: { [key: number]: string } = {
+    1: '박강사',
+    2: '김강사',
   };
 
   // 강사 선택 취소
-  const handleRemoveInstructor = () => {
+  const handleRemoveCounselor = () => {
     setState('');
-    onSelect?.('');
+    onChange?.(-1);
   };
 
   return (
-    <label htmlFor="selectInstructor" className="my-5">
+    <label htmlFor="selectCounselor" className="my-5">
       <p className="small-title">
         {title}
         <span className="text-primary-300">*</span>
       </p>
       <div className="flex items-center">
         <select
-          id="selectInstructor"
+          id="selectCounselor"
           className={`input-select ${state ? 'bg-bg-100' : ''} mr-4`}
-          name="instructor"
+          name="counselor"
           value={state}
           onChange={handleChange}
           disabled={!!state}>
-          <option value="">선택하기</option>
-          <option value="박강사">박강사</option>
-          <option value="김강사">김강사</option>
+          <option value={0}>선택하기</option>
+          <option value={1}>박강사</option>
+          <option value={2}>김강사</option>
         </select>
 
         {/* 선택된 강사 출력 */}
-        {state && <NameTag name={state} handleRemove={handleRemoveInstructor} />}
+        {state && <NameTag name={counselorNames[+state]} handleRemove={handleRemoveCounselor} />}
       </div>
     </label>
   );
 };
 
-export default SelectInstructor;
+export default SelectCounselor;

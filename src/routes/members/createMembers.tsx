@@ -10,43 +10,43 @@ import SelectJob from '../../components/common/SelectJob';
 import SelectVisitRoute from '../../components/common/SelectVisitRoute';
 import AgreeCondition from '../../components/members/AgreeCondition';
 
+interface StateType {
+  name: string;
+  birthDate: string;
+  phone: string;
+  sex: string;
+  job: string;
+  acqusitionFunnel: string;
+  acquisitionFunnel: string;
+  // toss: [
+  //   {
+  //     id: number;
+  //     agree: boolean;
+  //   },
+  // ];
+}
+
+const initialState: StateType = {
+  name: '',
+  birthDate: '',
+  phone: '',
+  sex: '',
+  job: '',
+  acqusitionFunnel: 'string',
+  acquisitionFunnel: 'string',
+  // toss: [
+  //   {
+  //     id: 10,
+  //     agree: false,
+  //   },
+  // ],
+};
+
 const CreateMembers = () => {
-  interface StateType {
-    name: string;
-    birthDate: string;
-    phone: string;
-    sex: string;
-    job: string;
-    acqusitionFunnel: string;
-    acquisitionFunnel: string;
-    // toss: [
-    //   {
-    //     id: number;
-    //     agree: boolean;
-    //   },
-    // ];
-  }
-
-  const initialState: StateType = {
-    name: '',
-    birthDate: '',
-    phone: '',
-    sex: '',
-    job: '',
-    acqusitionFunnel: 'string',
-    acquisitionFunnel: 'string',
-    // toss: [
-    //   {
-    //     id: 10,
-    //     agree: false,
-    //   },
-    // ],
-  };
-
   const [state, setState] = useState<StateType>(initialState);
   const navigate = useNavigate();
 
-  const handleSelect = (name: string, value: string) => {
+  const onChange = (name: string, value: string) => {
     setState((prev): StateType => ({ ...prev, [name]: value }));
   };
 
@@ -100,12 +100,12 @@ const CreateMembers = () => {
             <p>회원 정보를 등록하세요</p>
           </div>
           <form onSubmit={handleSubmit}>
-            <InputName title="이름" onChange={(value) => handleSelect('name', value)} />
-            <SelectSex title="성별" onChange={(value) => handleSelect('sex', value)} />
-            <InputBirth title="생년월일" onChange={(value) => handleSelect('birthDate', value)} />
-            <InputContact title="휴대폰 번호" onChange={(value) => handleSelect('phone', value)} />
-            <SelectJob title="직업" onChange={(value) => handleSelect('job', value)} />
-            <SelectVisitRoute title="방문 경로" onChange={(value) => handleSelect('acquisitionFunnel', value)} />
+            <InputName title="이름" onChange={(value) => onChange('name', value)} />
+            <SelectSex title="성별" onChange={(value) => onChange('sex', value)} />
+            <InputBirth title="생년월일" onChange={(value) => onChange('birthDate', value)} />
+            <InputContact title="휴대폰 번호" onChange={(value) => onChange('phone', value)} />
+            <SelectJob title="직업" onChange={(value) => onChange('job', value)} />
+            <SelectVisitRoute title="방문 경로" onChange={(value) => onChange('acquisitionFunnel', value)} />
             <AgreeCondition title="회원 약관 동의" />
             {/* <AgreeCondition title="회원 약관 동의" onChange={handleAgree} /> */}
             <button

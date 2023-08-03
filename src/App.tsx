@@ -20,6 +20,7 @@ import Layout from './components/layout/Layout';
 import IssuedTickets from './routes/ticket/issuedTickets';
 import TicketList from './routes/ticket/ticketList';
 import TicketDetail from './routes/ticket/ticketDetail';
+import ShowStaffs from './routes/staffs/showStaffs';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
@@ -50,6 +51,7 @@ function App() {
           <Route path="/members/:memberId/issued-tickets" element={<IssuedTickets />} />
           <Route path="/tickets" element={<TicketList />} />
           <Route path="/tickets/:ticketId" element={<TicketDetail />} />
+          <Route path="/staffs" element={<ShowStaffs />} />
         </Routes>
       </Layout>
     </BrowserRouter>

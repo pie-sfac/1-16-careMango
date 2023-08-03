@@ -31,6 +31,10 @@ const ScheduleApi = () => {
     navigate('/schedule/personal/new');
   };
 
+  const goCheckCounseling = () => {
+    navigate('/schedules/counseling/174');
+  };
+
   // console.log(scheduleList.counselingSchedules);
 
   return (
@@ -43,6 +47,9 @@ const ScheduleApi = () => {
       </button>
       <button type="button" className="w-20 m-3 border-8" onClick={goCreateCounseling}>
         상담 일정 생성
+      </button>
+      <button type="button" className="w-20 m-3 border-8" onClick={goCheckCounseling}>
+        상담 일정 조회
       </button>
 
       <p>개인 수업 일정</p>

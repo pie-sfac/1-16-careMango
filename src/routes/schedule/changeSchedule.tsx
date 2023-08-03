@@ -22,7 +22,7 @@ const ChangeSchedule = () => {
         <SelectDate title="일자 선택" defaultState={getDay(itemData!.startAt)} />
         <SelectTime
           title="시간 선택"
-          defaultState={{ startTime: getTime(itemData!.startAt), endTime: getTime(itemData!.endAt) }}
+          defaultState={{ startAt: getTime(itemData!.startAt), endAt: getTime(itemData!.endAt) }}
         />
         <div className="my-5">
           <h2 className="small-title m-b">참여 회원</h2>

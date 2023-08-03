@@ -8,7 +8,7 @@ const ScheduleApi = () => {
 
   const getScheduleApi = async () => {
     const from = '2023-01-21';
-    const to = '2023-01-30';
+    const to = '2023-12-31';
     const res = await axiosInstance.get(`schedules?from=${from}&to=${to}`);
     setScheduleList(res.data);
     console.log(res.data);
@@ -23,6 +23,10 @@ const ScheduleApi = () => {
     navigate('counseling');
   };
 
+  const goCheckSchedule = () => {
+    navigate('/schedule/personal/1');
+  };
+
   const goCreateSchedule = () => {
     navigate('/schedule/personal/new');
   };
@@ -33,6 +37,9 @@ const ScheduleApi = () => {
     <div className="flex flex-col">
       <button type="button" className="w-20 m-3 border-8" onClick={goCreateSchedule}>
         개인 수업 일정 생성
+      </button>
+      <button type="button" className="w-20 m-3 border-8" onClick={goCheckSchedule}>
+        개인 수업 일정 조회(mock 데이터)
       </button>
       <button type="button" className="w-20 m-3 border-8" onClick={goCreateCounseling}>
         상담 일정 생성

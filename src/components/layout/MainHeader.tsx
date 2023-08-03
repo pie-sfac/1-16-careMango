@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userState } from '../../atoms/user/userAtom';
 import { ReactComponent as Logo } from '../../assets/icons/Logo.svg';
 import { ReactComponent as Profile } from '../../assets/icons/Profile_24.svg';
 import { ReactComponent as Notifications } from '../../assets/icons/Notifications.svg';
+import { axiosInstance } from '../../utils/apiInstance';
 
 type MainHeaderProps = {
   menu?: boolean;
 };
 
 const MainHeader = ({ menu }: MainHeaderProps) => {
+  const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
   const goMain = () => {
     navigate('/main');
@@ -18,6 +22,16 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
     { id: 'Members', content: '직원 관리', path: '/staffs' },
     { id: 'Tickets', content: '수강권 관리', path: '/tickets/centerTicket' },
   ];
+
+  const getUserData = async () => {
+    const res = await axiosInstance.get('me');
+    setUser(res.data);
+  };
+
+  useEffect(() => {
+    getUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header className="flex justify-between py-3 border-b base-px border-line-200">
@@ -45,8 +59,10 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
           <button type="button" className="ml-4">
             <Profile />
           </button>
-          <p className="mx-2 text-base">관리자01</p>
-          <span className="px-2 py-1 mr-4 text-xs rounded-md bg-bg-100 text-primary-500">플랜 이용중</span>
+          <p className="mx-2 text-base">{user?.name}</p>
+          <span className="px-2 py-1 mr-4 text-xs rounded-md bg-bg-100 text-primary-500">
+            {user?.active && '플랜 이용중'}
+          </span>
         </div>
         <button type="button" className="ml-3">
           <Notifications />

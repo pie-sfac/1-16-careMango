@@ -15,7 +15,7 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
   };
 
   const mainMenu = [
-    { id: 'Members', content: '직원 관리', path: '/members' },
+    { id: 'Members', content: '직원 관리', path: '/staffs' },
     { id: 'Tickets', content: '수강권 관리', path: '/tickets/centerTicket' },
   ];
 

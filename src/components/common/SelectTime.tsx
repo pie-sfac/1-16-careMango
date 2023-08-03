@@ -3,16 +3,16 @@ import React, { useState } from 'react';
 interface SelectTimeProps {
   title: string;
   defaultState?: {
-    startTime: string;
-    endTime: string;
+    startAt: string;
+    endAt: string;
   };
-  onChange?: (selectedTime: { startTime: string; endTime: string }) => void;
+  onChange?: (selectedTime: { startAt: string; endAt: string }) => void;
 }
 
 const SelectTime = ({ title, defaultState, onChange }: SelectTimeProps) => {
-  const [state, setState] = useState<{ startTime: string; endTime: string }>({
-    startTime: defaultState?.startTime || '',
-    endTime: defaultState?.endTime || '',
+  const [state, setState] = useState<{ startAt: string; endAt: string }>({
+    startAt: defaultState?.startAt || '',
+    endAt: defaultState?.endAt || '',
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -27,24 +27,24 @@ const SelectTime = ({ title, defaultState, onChange }: SelectTimeProps) => {
         {title}
         <span className="text-primary-300">*</span>
       </p>
-      <label htmlFor="startTime">
+      <label htmlFor="startAt">
         <input
           className="input-select"
           type="time"
-          id="startTime"
-          name="startTime"
-          value={state.startTime}
+          id="startAt"
+          name="startAt"
+          value={state.startAt}
           onChange={handleChange}
         />
       </label>
       <span> ~ </span>
-      <label htmlFor="endTime">
+      <label htmlFor="endAt">
         <input
           className="input-select"
           type="time"
-          id="endTime"
-          name="endTime"
-          value={state.endTime}
+          id="endAt"
+          name="endAt"
+          value={state.endAt}
           onChange={handleChange}
         />
       </label>

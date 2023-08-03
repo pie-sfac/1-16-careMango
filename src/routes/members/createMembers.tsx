@@ -10,43 +10,47 @@ import SelectJob from '../../components/common/SelectJob';
 import SelectVisitRoute from '../../components/common/SelectVisitRoute';
 import AgreeCondition from '../../components/members/AgreeCondition';
 
-const CreateMembers = () => {
-  interface StateType {
-    name: string;
-    birthDate: string;
-    phone: string;
-    sex: string;
-    job: string;
-    acqusitionFunnel: string;
-    acquisitionFunnel: string;
-    // toss: [
-    //   {
-    //     id: number;
-    //     agree: boolean;
-    //   },
-    // ];
-  }
+interface StateType {
+  name: string;
+  birthDate: string;
+  phone: string;
+  sex: string;
+  job: string;
+  acqusitionFunnel: string;
+  acquisitionFunnel: string;
+  // toss: [
+  //   {
+  //     id: number;
+  //     agree: boolean;
+  //   },
+  // ];
+}
 
-  const initialState: StateType = {
-    name: '',
-    birthDate: '',
-    phone: '',
-    sex: '',
-    job: '',
-    acqusitionFunnel: 'string',
-    acquisitionFunnel: 'string',
-    // toss: [
-    //   {
-    //     id: 10,
-    //     agree: false,
-    //   },
-    // ],
-  };
+const initialState: StateType = {
+  name: '',
+  birthDate: '',
+  phone: '',
+  sex: '',
+  job: '',
+  acqusitionFunnel: 'string',
+  acquisitionFunnel: 'string',
+  // toss: [
+  //   {
+  //     id: 10,
+  //     agree: false,
+  //   },
+  // ],
+};
 
+interface CreateMembersProps {
+  onRegisterd: () => void;
+}
+
+const CreateMembers = ({ onRegisterd }: CreateMembersProps) => {
   const [state, setState] = useState<StateType>(initialState);
   const navigate = useNavigate();
 
-  const handleSelect = (name: string, value: string) => {
+  const onChange = (name: string, value: string) => {
     setState((prev): StateType => ({ ...prev, [name]: value }));
   };
 
@@ -63,7 +67,7 @@ const CreateMembers = () => {
   //   }));
   // };
 
-  // 회원관리 메인 페이지로
+  // 회원 조회 페이지로
   const goMainMembers = () => {
     console.log(state);
     navigate('/members');
@@ -72,13 +76,26 @@ const CreateMembers = () => {
   const createMembers = async (membersData: StateType): Promise<StateType | undefined> => {
     try {
       const res = await axiosInstance.post('/members', membersData);
-      const createdMembers = res.data;
-      navigate('/members', { state: { refetch: true } });
-      return createdMembers;
+      if (res.status === 200 || res.status === 201) {
+        // HTTP 상태 코드가 200(성공) 또는 201(생성됨)인 경우
+        onRegisterd(); // 여기에서 onCompletion (즉, setIsComplete(true)를 호출합니다)
+        navigate('/members', { state: { refetch: true } });
+      }
+      return res.data;
     } catch (err) {
       console.log(err);
     }
   };
+  //   try {
+  //     const res = await axiosInstance.post('/members', membersData);
+  //     const createdMembers = res.data;
+  //     navigate('/members', { state: { refetch: true } });
+  //     console.log('res.status=', res.status);
+  //     return createdMembers;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -100,12 +117,12 @@ const CreateMembers = () => {
             <p>회원 정보를 등록하세요</p>
           </div>
           <form onSubmit={handleSubmit}>
-            <InputName title="이름" onChange={(value) => handleSelect('name', value)} />
-            <SelectSex title="성별" onChange={(value) => handleSelect('sex', value)} />
-            <InputBirth title="생년월일" onChange={(value) => handleSelect('birthDate', value)} />
-            <InputContact title="휴대폰 번호" onChange={(value) => handleSelect('phone', value)} />
-            <SelectJob title="직업" onChange={(value) => handleSelect('job', value)} />
-            <SelectVisitRoute title="방문 경로" onChange={(value) => handleSelect('acquisitionFunnel', value)} />
+            <InputName title="이름" onChange={(value) => onChange('name', value)} />
+            <SelectSex title="성별" onChange={(value) => onChange('sex', value)} />
+            <InputBirth title="생년월일" onChange={(value) => onChange('birthDate', value)} />
+            <InputContact title="휴대폰 번호" onChange={(value) => onChange('phone', value)} />
+            <SelectJob title="직업" onChange={(value) => onChange('job', value)} />
+            <SelectVisitRoute title="방문 경로" onChange={(value) => onChange('acquisitionFunnel', value)} />
             <AgreeCondition title="회원 약관 동의" />
             {/* <AgreeCondition title="회원 약관 동의" onChange={handleAgree} /> */}
             <button

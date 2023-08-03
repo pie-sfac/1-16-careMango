@@ -4,7 +4,15 @@
 @tailwind utilities;
 
 body {
-  @apply mx-6 lg:mx-12 text-text-900 font-pretendard base-font;
+  @apply text-text-900 font-pretendard base-font;
+}
+
+.base-mx {
+  @apply mx-6 lg:mx-12;
+}
+
+.base-px {
+  @apply px-6 lg:px-12;
 }
 
 .input-select {

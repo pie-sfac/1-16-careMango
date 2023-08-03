@@ -1,8 +1,8 @@
 import React from 'react';
-import { CounselingScheduleItemData } from '../../types/counseling/counselingSchedule';
+import { CounselingDetail } from '../../types/counseling/counselingDetail';
 import { getDay, getTime } from '../../utils/date';
 
-const CounselingScheduleBox = ({ itemData }: { itemData: CounselingScheduleItemData }) => (
+const CounselingScheduleBox = ({ itemData }: { itemData: CounselingDetail }) => (
   <section className="relative h-40 bg-bg-100">
     <div className="flex items-center justify-between py-4">
       <h1 className="main-title">상담</h1>

@@ -10,8 +10,8 @@ import CounselingScheduleBox from '../../components/counseling/CounselingSchedul
 import CounselingScheduleDetail from '../../components/counseling/CounselingScheduleDetail';
 
 const CheckCounseling = () => {
-  // const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
-  const scheduleId = '174';
+  const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
+  // const scheduleId = '174';
   const [counselingData, setCounselingData] = useState<CounselingDetail[] | null>(null);
 
   const getCounseling = async () => {
@@ -30,6 +30,7 @@ const CheckCounseling = () => {
       setMemo(value);
     }
   };
+  console.log(counselingData);
 
   // console.log(counselingData.createdAt);
   // const navigate = useNavigate();
@@ -54,7 +55,7 @@ const CheckCounseling = () => {
         }
       />
 
-      {/* <CounselingScheduleBox itemData={counselingData} /> */}
+      {counselingData && <CounselingScheduleBox itemData={counselingData} />}
       {/* <section className="relative h-40 bg-bg-100">
         <div className="flex items-center justify-between py-4">
           <h1 className="main-title">상담</h1>
@@ -88,9 +89,7 @@ const CheckCounseling = () => {
       <section className="mt-20 base-font">
         <h2 className="small-title">상담 회원</h2>
         <div className="flex items-center">
-          <Card>
-            <CounselingScheduleDetail itemData={counselingData} />
-          </Card>
+          <Card>{counselingData && <CounselingScheduleDetail itemData={counselingData} />}</Card>
         </div>
       </section>
 

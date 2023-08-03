@@ -1,14 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import Calendar from '@toast-ui/react-calendar';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 // import BottomNav from '../components/common/BottomNav';
 // import MainHeader from '../components/layout/MainHeader';
 
-function Schedule() {
+interface Schedule {
+  id: string;
+  calendarId: string;
+  title: string;
+  category: string;
+  start: string;
+  end: string;
+  isAllDay: boolean;
+}
+interface Counselor {
+  id: number;
+  name: string;
+}
+
+interface Client {
+  memberId: number;
+  name: string;
+  phone: string;
+}
+
+interface ScheduleResponse {
+  id: number;
+  startAt: string;
+  endAt: string;
+  memo: string;
+  isCanceled: boolean;
+  canceledAt: string;
+  counselor: Counselor;
+  client: Client;
+  createdAt: string;
+  updatedAt: string;
+}
+
+function ScheduleCalendar() {
   const [view, setView] = useState('month');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setView(event.target.value);
   };
+
+  const [events, setEvents] = useState<Schedule[]>([]);
+
+  useEffect(() => {
+    axios
+      .get('http://223.130.161.221/api/v1/schedules', {
+        params: {
+          from: '2023-01-21',
+          to: '2023-01-30',
+        },
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      .then((response) => {
+        const counselingSchedules = response.data.counselingSchedules.map((schedule: ScheduleResponse) => ({
+          id: String(schedule.id),
+          calendarId: '1',
+          title: schedule.memo,
+          category: 'time',
+          start: schedule.startAt,
+          end: schedule.endAt,
+          isAllDay: false,
+        }));
+
+        setEvents([...counselingSchedules]);
+      });
+  }, []);
 
   const calendars = [
     {
@@ -150,7 +214,7 @@ function Schedule() {
               collapseDuplicateEvents: true,
             }}
             calendars={calendars}
-            events={initialEvents}
+            events={events}
           />
         </div>
         <aside className="w-64 p-4 bg-gray-100 border-l">
@@ -188,4 +252,4 @@ function Schedule() {
   );
 }
 
-export default Schedule;
+export default ScheduleCalendar;

@@ -59,7 +59,7 @@ const BottomNav = () => (
       <p>회원관리</p>
     </Link>
 
-    <Link to="/main" className="flex flex-col items-center text-center group">
+    <Link to="/staffs" className="flex flex-col items-center text-center group">
       <svg
         width="24"
         height="24"

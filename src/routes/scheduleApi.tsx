@@ -23,11 +23,15 @@ const ScheduleApi = () => {
     navigate('counseling');
   };
 
+  const goCreateSchedule = () => {
+    navigate('/schedule/personal/new');
+  };
+
   // console.log(scheduleList.counselingSchedules);
 
   return (
     <div className="flex flex-col">
-      <button type="button" className="w-20 m-3 border-8">
+      <button type="button" className="w-20 m-3 border-8" onClick={goCreateSchedule}>
         개인 수업 일정 생성
       </button>
       <button type="button" className="w-20 m-3 border-8" onClick={goCreateCounseling}>

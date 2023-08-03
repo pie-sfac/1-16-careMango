@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Calendar from '@toast-ui/react-calendar';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 // import BottomNav from '../components/common/BottomNav';
 // import MainHeader from '../components/layout/MainHeader';
 
-function schedule() {
-  const calendars = [{ id: 'cal1', name: 'Personal' }];
+function Schedule() {
+  const [view, setView] = useState('month');
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setView(event.target.value);
+  };
+
+  const calendars = [
+    {
+      id: 'cal1',
+      name: 'Personal',
+    },
+  ];
   const initialEvents = [
     {
       id: '1',
@@ -22,6 +32,16 @@ function schedule() {
       category: 'time',
       start: '2023-08-28T12:00:00',
       end: '2023-08-28T13:30:00',
+    },
+    {
+      id: '3',
+      calendarId: 'cal1',
+      title: 'Lunch',
+      category: 'time',
+      start: '2023-08-01T12:00:00',
+      end: '2023-08-13T13:30:00',
+      color: 'aliceblue',
+      backgroundColor: 'green',
     },
   ];
   const data = [
@@ -75,9 +95,9 @@ function schedule() {
           </select>
         </div>
         <div>
-          <select name="selectView" id="calendarView" className="p-1 border rounded">
+          <select name="selectView" id="calendarView" className="p-1 border rounded" onChange={handleChange}>
             <option value="month">월</option>
-            <option value="wekk">주</option>
+            <option value="week">주</option>
             <option value="day">일</option>
           </select>
         </div>
@@ -117,10 +137,17 @@ function schedule() {
         <div className="flex-1 p-4">
           <Calendar
             height="500px"
-            view="month"
+            view={view}
             month={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               visibleWeeksCount: 5,
+            }}
+            week={{
+              dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+              eventView: true,
+              taskView: true,
+              // eventView: true,
+              collapseDuplicateEvents: true,
             }}
             calendars={calendars}
             events={initialEvents}
@@ -161,4 +188,4 @@ function schedule() {
   );
 }
 
-export default schedule;
+export default Schedule;

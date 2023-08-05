@@ -1,11 +1,85 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import Calendar from '@toast-ui/react-calendar';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 // import BottomNav from '../components/common/BottomNav';
 // import MainHeader from '../components/layout/MainHeader';
 
-function schedule() {
-  const calendars = [{ id: 'cal1', name: 'Personal' }];
+interface Schedule {
+  id: string;
+  calendarId: string;
+  title: string;
+  category: string;
+  start: string;
+  end: string;
+  isAllDay: boolean;
+}
+interface Counselor {
+  id: number;
+  name: string;
+}
+
+interface Client {
+  memberId: number;
+  name: string;
+  phone: string;
+}
+
+interface ScheduleResponse {
+  id: number;
+  startAt: string;
+  endAt: string;
+  memo: string;
+  isCanceled: boolean;
+  canceledAt: string;
+  counselor: Counselor;
+  client: Client;
+  createdAt: string;
+  updatedAt: string;
+}
+
+function ScheduleCalendar() {
+  const [view, setView] = useState('month');
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setView(event.target.value);
+  };
+
+  const [events, setEvents] = useState<Schedule[]>([]);
+
+  useEffect(() => {
+    axios
+      .get('http://223.130.161.221/api/v1/schedules', {
+        params: {
+          from: '2023-01-21',
+          to: '2023-01-30',
+        },
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      .then((response) => {
+        const counselingSchedules = response.data.counselingSchedules.map((schedule: ScheduleResponse) => ({
+          id: String(schedule.id),
+          calendarId: '1',
+          title: schedule.memo,
+          category: 'time',
+          start: schedule.startAt,
+          end: schedule.endAt,
+          isAllDay: false,
+        }));
+
+        setEvents([...counselingSchedules]);
+      });
+  }, []);
+
+  const calendars = [
+    {
+      id: 'cal1',
+      name: 'Personal',
+    },
+  ];
   const initialEvents = [
     {
       id: '1',
@@ -22,6 +96,16 @@ function schedule() {
       category: 'time',
       start: '2023-08-28T12:00:00',
       end: '2023-08-28T13:30:00',
+    },
+    {
+      id: '3',
+      calendarId: 'cal1',
+      title: 'Lunch',
+      category: 'time',
+      start: '2023-08-01T12:00:00',
+      end: '2023-08-13T13:30:00',
+      color: 'aliceblue',
+      backgroundColor: 'green',
     },
   ];
   const data = [
@@ -75,9 +159,9 @@ function schedule() {
           </select>
         </div>
         <div>
-          <select name="selectView" id="calendarView" className="p-1 border rounded">
+          <select name="selectView" id="calendarView" className="p-1 border rounded" onChange={handleChange}>
             <option value="month">월</option>
-            <option value="wekk">주</option>
+            <option value="week">주</option>
             <option value="day">일</option>
           </select>
         </div>
@@ -117,13 +201,20 @@ function schedule() {
         <div className="flex-1 p-4">
           <Calendar
             height="500px"
-            view="month"
+            view={view}
             month={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               visibleWeeksCount: 5,
             }}
+            week={{
+              dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+              eventView: true,
+              taskView: true,
+              // eventView: true,
+              collapseDuplicateEvents: true,
+            }}
             calendars={calendars}
-            events={initialEvents}
+            events={events}
           />
         </div>
         <aside className="w-64 p-4 bg-gray-100 border-l">
@@ -161,4 +252,4 @@ function schedule() {
   );
 }
 
-export default schedule;
+export default ScheduleCalendar;

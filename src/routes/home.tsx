@@ -19,10 +19,10 @@ interface ApiResponse {
 }
 
 function Main() {
-  const planStatus: string = '플랜 이용중';
+  // const planStatus: string = '플랜 이용중';
   const [data, setData] = useState<ApiResponse | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
-  const token = localStorage.getItem('accessToken');
+  // const token = localStorage.getItem('accessToken');
 
   const getData = useCallback(async () => {
     try {

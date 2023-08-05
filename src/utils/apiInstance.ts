@@ -1,4 +1,6 @@
 import axios from 'axios';
+// import { accessSync } from 'fs';
+// import { accessTokenState } from '../App';
 
 interface Tokens {
   refreshToken: string;
@@ -25,6 +27,8 @@ const useTokenRefresher: () => Promise<Tokens | null> = async () => {
     return { refreshToken: newRefreshToken, accessToken: newAccessToken };
   } catch (error) {
     console.error(error);
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessToken');
     return null;
   }
 };
@@ -71,18 +75,22 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest.isRetry) {
+    if (!localStorage.getItem('refreshToken')) {
+      // window.location.href = '/';
+      return Promise.reject(error);
+    }
+
+    if (error.response && error.response.status === 401 && !originalRequest.isRetry) {
       // 이미 토큰 갱신 중이라면
       if (isRefreshing) {
         // 작업 큐에 담아놓고 resolve되는 경우 일괄 처리
         return new Promise((resolve, reject) => {
           watingApiQueue.push({ resolve, reject });
-        })
-          .then((newToken) => {
-            originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            return axios(originalRequest);
-          })
-          .catch((err) => err);
+        }).then((newToken) => {
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return axiosInstance(originalRequest);
+        });
+        // .catch((err) => err);
       }
       isRefreshing = true;
       originalRequest.isRetry = true;

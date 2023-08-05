@@ -11,7 +11,7 @@ const ScheduleApi = () => {
     const to = '2023-12-31';
     const res = await axiosInstance.get(`schedules?from=${from}&to=${to}`);
     setScheduleList(res.data);
-    console.log(res.data);
+    // console.log(res.data);
   };
 
   useEffect(() => {

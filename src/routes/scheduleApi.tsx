@@ -50,6 +50,18 @@ const ScheduleApi = () => {
         상담 일정 조회
       </button>
 
+      <p>개인 수업 일정</p>
+      {scheduleList?.privateSchedules.map((privateSchedule) => (
+        <button key={privateSchedule.id} type="button">
+          <div className="flex">
+            <p>
+              {privateSchedule.startAt.split('T')[1]}~{privateSchedule.endAt.split('T')[1]}
+            </p>
+            <p>{privateSchedule.memo}</p>
+          </div>
+        </button>
+      ))}
+
       <p>상담 일정</p>
       {scheduleList?.counselingSchedules.map((counseling) => (
         <button key={counseling.id} type="button">

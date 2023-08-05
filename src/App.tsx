@@ -6,7 +6,7 @@ import CheckSchedule from './routes/schedule/checkSchedule';
 import CreateCounseling from './routes/counseling/createCounseling';
 import CheckCounseling from './routes/counseling/checkCounseling';
 import Login from './routes/login';
-import Main from './routes/main';
+import Home from './routes/home';
 import Schedule from './routes/schedule';
 import ScheduleApi from './routes/scheduleApi';
 import ChangeSchedule from './routes/schedule/changeSchedule';
@@ -34,8 +34,8 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={accessToken ? <Navigate to="/main" /> : <Login setAccessToken={setAccessToken} />} />
-          <Route path="/main" element={accessToken ? <Main /> : <Navigate to="/" />} />
+          <Route path="/" element={accessToken ? <Navigate to="/home" /> : <Login setAccessToken={setAccessToken} />} />
+          <Route path="/home" element={accessToken ? <Home /> : <Navigate to="/" />} />
           <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/schedules" element={<ScheduleApi />} />

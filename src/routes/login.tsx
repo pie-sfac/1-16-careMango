@@ -48,8 +48,8 @@ function Login({ setAccessToken }: LoginProps) {
         localStorage.setItem('accessToken', res.data.accessToken);
         localStorage.setItem('refreshToken', res.data.refreshToken);
         setAccessToken(res.data.accessToken);
-        navigate('/main');
-      });
+      })
+      .catch((err) => err);
   });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });

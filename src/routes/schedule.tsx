@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
 import Calendar from '@toast-ui/react-calendar';
+import { CounselingSchedule, PrivateSchedule } from '../types/scheduleApi';
+
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
-// import BottomNav from '../components/common/BottomNav';
-// import MainHeader from '../components/layout/MainHeader';
 
 interface Schedule {
   id: string;
@@ -14,29 +13,6 @@ interface Schedule {
   start: string;
   end: string;
   isAllDay: boolean;
-}
-interface Counselor {
-  id: number;
-  name: string;
-}
-
-interface Client {
-  memberId: number;
-  name: string;
-  phone: string;
-}
-
-interface ScheduleResponse {
-  id: number;
-  startAt: string;
-  endAt: string;
-  memo: string;
-  isCanceled: boolean;
-  canceledAt: string;
-  counselor: Counselor;
-  client: Client;
-  createdAt: string;
-  updatedAt: string;
 }
 
 function ScheduleCalendar() {
@@ -49,10 +25,10 @@ function ScheduleCalendar() {
 
   useEffect(() => {
     axios
-      .get('http://223.130.161.221/api/v1/schedules', {
+      .get(`${import.meta.env.VITE_API_URL}/schedules`, {
         params: {
-          from: '2023-01-21',
-          to: '2023-01-30',
+          from: '2023-01-01',
+          to: '2024-01-01',
         },
         headers: {
           accept: 'application/json',
@@ -60,7 +36,8 @@ function ScheduleCalendar() {
         },
       })
       .then((response) => {
-        const counselingSchedules = response.data.counselingSchedules.map((schedule: ScheduleResponse) => ({
+        // For counselingSchedules
+        const counselingSchedules = response.data.counselingSchedules.map((schedule: CounselingSchedule) => ({
           id: String(schedule.id),
           calendarId: '1',
           title: schedule.memo,
@@ -68,9 +45,25 @@ function ScheduleCalendar() {
           start: schedule.startAt,
           end: schedule.endAt,
           isAllDay: false,
+          createdAt: schedule.createdAt,
+          updatedAt: schedule.updatedAt,
         }));
 
-        setEvents([...counselingSchedules]);
+        // For privateSchedules
+        const privateSchedulesEvents = response.data.privateSchedules.map((schedule: PrivateSchedule) => ({
+          id: String(schedule.id),
+          calendarId: '2', // Assuming it's a different calendar ID
+          title: `${schedule.tutor.name} - ${schedule.memo}`, // Combining tutor name and memo for title
+          category: 'time',
+          start: schedule.startAt,
+          end: schedule.endAt,
+          isAllDay: false,
+          createdAt: schedule.createdAt,
+          updatedAt: schedule.updatedAt,
+        }));
+
+        // Merge and set the events
+        setEvents([...counselingSchedules, ...privateSchedulesEvents]);
       });
   }, []);
 
@@ -78,34 +71,6 @@ function ScheduleCalendar() {
     {
       id: 'cal1',
       name: 'Personal',
-    },
-  ];
-  const initialEvents = [
-    {
-      id: '1',
-      calendarId: 'cal1',
-      title: 'Lunch',
-      category: 'time',
-      start: '2023-08-28T12:00:00',
-      end: '2023-08-28T13:30:00',
-    },
-    {
-      id: '2',
-      calendarId: 'cal1',
-      title: 'Lunch',
-      category: 'time',
-      start: '2023-08-28T12:00:00',
-      end: '2023-08-28T13:30:00',
-    },
-    {
-      id: '3',
-      calendarId: 'cal1',
-      title: 'Lunch',
-      category: 'time',
-      start: '2023-08-01T12:00:00',
-      end: '2023-08-13T13:30:00',
-      color: 'aliceblue',
-      backgroundColor: 'green',
     },
   ];
   const data = [

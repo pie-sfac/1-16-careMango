@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { schedulesState } from '../../atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '../../utils/apiInstance';
 import SelectCounselor from '../../components/common/SelectCounselor';
 import SelectDate from '../../components/common/SelectDate';
@@ -31,11 +33,29 @@ const initialState: StateType = {
 
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
+  const schedules = useRecoilValue(schedulesState);
+  const setSchedules = useSetRecoilState(schedulesState);
+  const navigate = useNavigate();
+
+  // API
+  const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
+    try {
+      const res = await axiosInstance.post('/schedules/counseling', counselingData);
+      const createdCounseling = res.data;
+      navigate('/schedules/counseling', { state: { refetch: true } });
+      // console.log(state);
+      console.log('res.status=', res.status);
+      return createdCounseling;
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onChange = (name: string, value: string | number) => {
     setState((prev): StateType => ({ ...prev, [name]: value }));
   };
 
+  // 시간 선택
   const onTimeChange = (selectedTime: { startAt: string; endAt: string }) => {
     // 현재 날짜
     const currentDate = state.startAt.split('T')[0];
@@ -44,41 +64,39 @@ const CreateCounseling = () => {
     const updatedStartAt = `${currentDate}T${selectedTime.startAt}`;
     const updatedEndAt = `${currentDate}T${selectedTime.endAt}`;
 
-    setState((prev) => ({
-      ...prev,
-      startAt: updatedStartAt,
-      endAt: updatedEndAt,
-    }));
-  };
+    // 겹치는 시간 확인
+    const isOverlapping = schedules.some(
+      (schedule: { endAt: string; startAt: string }) =>
+        new Date(updatedStartAt) < new Date(schedule.endAt) && new Date(updatedEndAt) > new Date(schedule.startAt),
+    );
 
-  // 이전 페이지로
-  const navigate = useNavigate();
-  const handleBackClick = () => {
-    navigate(-1);
-  };
-
-  // 일정관리 메인 페이지로
-  const goMainSchedule = () => {
-    console.log(state);
-    navigate('/schedules');
-  };
-
-  const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
-    try {
-      const res = await axiosInstance.post('/schedules/counseling', counselingData);
-      const createdCounseling = res.data;
-      navigate('/schedules/counseling', { state: { refetch: true } });
-      console.log(state);
-      console.log('res.status=', res.status);
-      return createdCounseling;
-    } catch (err) {
-      console.log(err);
+    if (isOverlapping) {
+      alert('선택하신 시간대와 겹치는 일정이 있습니다. 시간을 다시 설정해 주세요.');
+    } else if (new Date(updatedStartAt) >= new Date(updatedEndAt)) {
+      alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
+    } else {
+      setState((prev) => ({
+        ...prev,
+        startAt: updatedStartAt,
+        endAt: updatedEndAt,
+      }));
     }
   };
 
+  // 완료
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    createCounseling(state);
+    createCounseling(state).then((createdCounseling) => {
+      if (createdCounseling) {
+        setSchedules((prevSchedules) => [...prevSchedules, createdCounseling]);
+        navigate('/schedules');
+      }
+    });
+  };
+
+  // 이전 페이지로
+  const handleBackClick = () => {
+    navigate(-1);
   };
 
   // 필수 입력 값들이 채워지면 완료 버튼 활성화

@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Calendar from '@toast-ui/react-calendar';
-import { CounselingSchedule, PrivateSchedule } from '../types/scheduleApi';
+import { CounselingSchedule, PrivateSchedule, SchedulApiData } from '../types/scheduleApi';
+import { convertToDisplayData, Schedule } from '../utils/scheduleUtils';
 
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
-
-interface Schedule {
-  id: string;
-  calendarId: string;
-  title: string;
-  category: string;
-  start: string;
-  end: string;
-  isAllDay: boolean;
-}
 
 function ScheduleCalendar() {
   const [view, setView] = useState('month');
@@ -24,47 +15,26 @@ function ScheduleCalendar() {
   const [events, setEvents] = useState<Schedule[]>([]);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/schedules`, {
-        params: {
-          from: '2023-01-01',
-          to: '2024-01-01',
-        },
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      })
-      .then((response) => {
-        // For counselingSchedules
-        const counselingSchedules = response.data.counselingSchedules.map((schedule: CounselingSchedule) => ({
-          id: String(schedule.id),
-          calendarId: '1',
-          title: schedule.memo,
-          category: 'time',
-          start: schedule.startAt,
-          end: schedule.endAt,
-          isAllDay: false,
-          createdAt: schedule.createdAt,
-          updatedAt: schedule.updatedAt,
-        }));
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/schedules`, {
+          params: {
+            from: '2023-01-01',
+            to: '2024-01-01',
+          },
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+        const convertedData = convertToDisplayData(response.data);
+        setEvents(convertedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-        // For privateSchedules
-        const privateSchedulesEvents = response.data.privateSchedules.map((schedule: PrivateSchedule) => ({
-          id: String(schedule.id),
-          calendarId: '2', // Assuming it's a different calendar ID
-          title: `${schedule.tutor.name} - ${schedule.memo}`, // Combining tutor name and memo for title
-          category: 'time',
-          start: schedule.startAt,
-          end: schedule.endAt,
-          isAllDay: false,
-          createdAt: schedule.createdAt,
-          updatedAt: schedule.updatedAt,
-        }));
-
-        // Merge and set the events
-        setEvents([...counselingSchedules, ...privateSchedulesEvents]);
-      });
+    fetchData();
   }, []);
 
   const calendars = [
@@ -73,14 +43,19 @@ function ScheduleCalendar() {
       name: 'Personal',
     },
   ];
-  const data = [
-    { id: 1, attendance: '출석', duration: '1 hour', memberName: 'John Doe (20)', remainingTimes: '3' },
-    { id: 2, attendance: '결석', duration: '2 hours', memberName: 'Jane Doe (15)', remainingTimes: '5' },
-    { id: 3, attendance: '예약', duration: '2 hours', memberName: 'Jane Doe (30)', remainingTimes: '8' },
-    { id: 4, attendance: '상담', duration: '2 hours', memberName: 'Jane Doe (18)', remainingTimes: '1' },
-  ];
 
-  const renderAttendance = (attendance: string) => {
+  const getDuration = (start: string, end: string): string => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const differenceInMilliseconds = endDate.getTime() - startDate.getTime();
+    const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+
+    const roundedHours = Math.round(differenceInHours);
+    return `${roundedHours} 시간`;
+  };
+
+  const renderAttendance = (attendance?: string) => {
     let bgColor;
 
     switch (attendance) {
@@ -101,7 +76,7 @@ function ScheduleCalendar() {
         break;
     }
 
-    return <div className={` w-3 h-3 ${bgColor}`} />;
+    return <div className={`w-3 h-3 ${bgColor}`} />;
   };
 
   return (
@@ -191,22 +166,36 @@ function ScheduleCalendar() {
               <li className="inline-block text-sm">취소율 : 100%</li>
             </ul>
           </div>
+          <div className="flex justify-around">
+            <span className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-blue-500" /> 출석
+            </span>
+            <span className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-red-500" /> 결석
+            </span>
+            <span className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-gray-500" /> 예약
+            </span>
+            <span className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-transparent border border-green-500" /> 상담
+            </span>
+          </div>
           <table className="w-full table-auto">
             <thead>
               <tr>
                 <th className="text-xs">출결</th>
                 <th className="text-xs">진행시간</th>
-                <th className="text-xs">회원명 (총인원)</th>
+                <th className="text-xs">내용</th>
                 <th className="text-xs">잔여횟수</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-4 py-2 text-xs border">{renderAttendance(item.attendance)}</td>
-                  <td className="px-4 py-2 text-xs border">{item.duration}</td>
-                  <td className="px-4 py-2 text-xs border">{item.memberName}</td>
-                  <td className="px-4 py-2 text-xs border">{item.remainingTimes}</td>
+              {events.map((event) => (
+                <tr key={event.id}>
+                  <td className="px-4 py-2 text-xs border">{renderAttendance(event.attendance)}</td>
+                  <td className="px-4 py-2 text-xs border">{getDuration(event.start, event.end)}</td>
+                  <td className="px-4 py-2 text-xs border">{event.title}</td>
+                  <td className="px-4 py-2 text-xs border">{event.remainingTimes}</td>
                 </tr>
               ))}
             </tbody>

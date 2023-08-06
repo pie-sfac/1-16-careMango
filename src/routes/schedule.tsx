@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Calendar from '@toast-ui/react-calendar';
 import { CounselingSchedule, PrivateSchedule, SchedulApiData } from '../types/scheduleApi';
-import { convertToDisplayData, ScheduleDisplayData } from '../utils/scheduleUtils';
+import { convertToDisplayData, Schedule } from '../utils/scheduleUtils';
 
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 
@@ -12,7 +12,7 @@ function ScheduleCalendar() {
     setView(event.target.value);
   };
 
-  const [events, setEvents] = useState<ScheduleDisplayData[]>([]);
+  const [events, setEvents] = useState<Schedule[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

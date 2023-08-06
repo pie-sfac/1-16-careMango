@@ -1,57 +1,33 @@
-import { CounselingSchedule, PrivateSchedule } from '../types/scheduleApi';
+import { SchedulApiData, CounselingSchedule, PrivateSchedule } from '../types/scheduleApi';
+// scheduleUtils.ts
 
-export interface Schedule {
-  id: string;
-  calendarId: string;
+export type ScheduleDisplayData = {
+  id: number;
   title: string;
-  category: string;
   start: string;
   end: string;
-  attendance?: string;
-  duration?: string;
-  memberName?: string;
-  remainingTimes?: string;
-}
+  type: 'Counseling' | 'Private';
+  details: CounselingSchedule | PrivateSchedule;
+};
 
-export const convertToDisplayData = (apiResponse: {
-  counselingSchedules: CounselingSchedule[];
-  privateSchedules: PrivateSchedule[];
-}): Schedule[] => {
-  const displayData: Schedule[] = [];
+export const convertToDisplayData = (data: SchedulApiData): ScheduleDisplayData[] => {
+  const counselingData: ScheduleDisplayData[] = data.counselingSchedules.map((schedule) => ({
+    id: schedule.id,
+    title: `${schedule.client.name} - ${schedule.memo}`,
+    start: schedule.startAt,
+    end: schedule.endAt,
+    type: 'Counseling',
+    details: schedule,
+  }));
 
-  // Convert counseling schedules
-  apiResponse.counselingSchedules.forEach((counseling) => {
-    displayData.push({
-      id: counseling.id.toString(),
-      calendarId: '1',
-      title: `상담: ${counseling.client.name}`,
-      category: 'time',
-      start: counseling.startAt,
-      end: counseling.endAt,
-      attendance: '상담',
-      duration: '',
-      memberName: counseling.client.name,
-      remainingTimes: '',
-    });
-  });
+  const privateData: ScheduleDisplayData[] = data.privateSchedules.map((schedule) => ({
+    id: schedule.id,
+    title: `${schedule.tutor.name} - ${schedule.memo}`,
+    start: schedule.startAt,
+    end: schedule.endAt,
+    type: 'Private',
+    details: schedule,
+  }));
 
-  // Convert private schedules
-  apiResponse.privateSchedules.forEach((privateSchedule) => {
-    const attendance = privateSchedule.isCanceled ? '결석' : '출석';
-
-    displayData.push({
-      id: privateSchedule.id.toString(),
-      calendarId: '2',
-      title: `${attendance}: ${privateSchedule.tutor.name}`,
-      category: 'time',
-      start: privateSchedule.startAt,
-      end: privateSchedule.endAt,
-      attendance,
-      duration: '',
-      memberName: privateSchedule.tutor.name,
-      remainingTimes: '',
-    });
-  });
-
-  return displayData;
+  return [...counselingData, ...privateData];
 };

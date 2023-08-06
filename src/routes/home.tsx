@@ -51,7 +51,7 @@ function Main() {
     <div>
       {data && (
         <>
-          <div className="flex justify-end mb-5 ">
+          <div className="flex justify-end my-4">
             <form onSubmit={handleSubmit} className="flex items-center inline-block ">
               <input
                 type="text"
@@ -71,8 +71,8 @@ function Main() {
               </button>
             </form>
           </div>
-          <div className="flex justify-between mb-5">
-            <ul className="flex">
+          <div className="flex justify-between px-1 mb-5">
+            <ul className="flex gap-3">
               <li>
                 <a href="https://github.com/pie-sfac/1-16-careMango">
                   <img src="./images/Banners.png" alt="광고 배너" />
@@ -93,16 +93,18 @@ function Main() {
           <div>
             <ul className="grid grid-cols-3 gap-4 mb-5">
               <li>
-                <span>나의 오늘 일정</span>
-                <div className="card_wrapper">
-                  <div className="card">
+                <span className="text-xl">나의 오늘 일정</span>
+                <div className="h-full p-3 mt-3 rounded-2xl card_wrapper bg-slate-200">
+                  <div className="relative h-full card">
                     <div className="card_upper">
-                      <span>총 {data.mySchedule.lessonCount + data.mySchedule.counselingCount}건의 일정</span>
+                      <span className="font-bold">
+                        총 {data.mySchedule.lessonCount + data.mySchedule.counselingCount}건의 일정
+                      </span>
                       <br />
                       <span>
                         수업 {data.mySchedule.lessonCount}건, 상담 {data.mySchedule.counselingCount}건
                       </span>
-                      <div>
+                      <div className="absolute top-0 right-0 p-2 bg-white rounded-full">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M8 2C9.1 2 10 2.9 10 4C10 5.1 9.1 6 8 6C6.9 6 6 5.1 6 4C6 2.9 6.9 2 8 2ZM8 11C10.7 11 13.8 12.29 14 13V14H2V13.01C2.2 12.29 5.3 11 8 11ZM8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0ZM8 9C5.33 9 0 10.34 0 13V16H16V13C16 10.34 10.67 9 8 9Z"
@@ -111,19 +113,21 @@ function Main() {
                         </svg>
                       </div>
                     </div>
-                    <div className="card_down">
-                      <span>{data.mySchedule.lessonCount + data.mySchedule.counselingCount}</span>
+                    <div className="absolute bottom-0 right-0 card_down">
+                      <span className="text-2xl font-extrabold text-primary-700">
+                        {data.mySchedule.lessonCount + data.mySchedule.counselingCount}
+                      </span>
                     </div>
                   </div>
                 </div>
               </li>
               <li>
-                <span>나의 회원</span>
-                <div className="card_wrapper">
-                  <div className="card">
-                    <div className="card_upper">
-                      <span>{data.center.memberCount}</span>
-                      <div>
+                <span className="text-xl">나의 회원</span>
+                <div className="h-full p-3 mt-3 rounded-2xl card_wrapper bg-slate-200">
+                  <div className="relative h-full card">
+                    <div className=" card_upper">
+                      <span className="font-bold">나의 회원 수</span>
+                      <div className="absolute top-0 right-0 p-2 bg-white rounded-full">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M8 2C9.1 2 10 2.9 10 4C10 5.1 9.1 6 8 6C6.9 6 6 5.1 6 4C6 2.9 6.9 2 8 2ZM8 11C10.7 11 13.8 12.29 14 13V14H2V13.01C2.2 12.29 5.3 11 8 11ZM8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0ZM8 9C5.33 9 0 10.34 0 13V16H16V13C16 10.34 10.67 9 8 9Z"
@@ -132,19 +136,19 @@ function Main() {
                         </svg>
                       </div>
                     </div>
-                    <div className="card_down">
-                      <span>{data.center.memberCount}</span>
+                    <div className="absolute bottom-0 right-0 card_down">
+                      <span className="text-2xl font-extrabold text-primary-700">{data.center.memberCount}</span>
                     </div>
                   </div>
                 </div>
               </li>
               <li>
-                <span>전체 직원</span>
-                <div className="card_wrapper">
-                  <div className="card">
-                    <div className="card_upper">
-                      <span>{data.center.staffCount}</span>
-                      <div>
+                <span className="text-xl">전체 직원</span>
+                <div className="h-full p-3 mt-3 rounded-2xl card_wrapper bg-slate-200">
+                  <div className="relative h-full card">
+                    <div className=" card_upper">
+                      <span className="font-bold">전체 직원 수</span>
+                      <div className="absolute top-0 right-0 p-2 bg-white rounded-full">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M8 2C9.1 2 10 2.9 10 4C10 5.1 9.1 6 8 6C6.9 6 6 5.1 6 4C6 2.9 6.9 2 8 2ZM8 11C10.7 11 13.8 12.29 14 13V14H2V13.01C2.2 12.29 5.3 11 8 11ZM8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0ZM8 9C5.33 9 0 10.34 0 13V16H16V13C16 10.34 10.67 9 8 9Z"
@@ -153,8 +157,8 @@ function Main() {
                         </svg>
                       </div>
                     </div>
-                    <div className="card_down">
-                      <span>{data.center.staffCount}</span>
+                    <div className="absolute bottom-0 right-0 card_down">
+                      <span className="text-2xl font-extrabold text-primary-700">{data.center.staffCount}</span>
                     </div>
                   </div>
                 </div>

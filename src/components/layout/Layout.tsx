@@ -12,7 +12,7 @@ const Layout = ({ children }: LayoutProps) => {
   const pathName = location.pathname;
 
   let menu = false;
-  if (pathName.includes('/tickets') || pathName.includes('/staffs')) {
+  if (pathName.includes('/tickets') || pathName.includes('/staffs') || pathName.includes('/myPage')) {
     menu = true;
   }
 

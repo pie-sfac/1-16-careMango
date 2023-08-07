@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import SubHeader from '../../components/common/SubHeader';
-import { axiosInstance } from '../../utils/apiInstance';
-import { TicketsData } from '../../types/tickets/tickets';
-import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
-import Input from '../../components/common/Input/Input';
-import { calculateDate, getDay, getDay2 } from '../../utils/date';
-import { ReactComponent as Plus } from '../../assets/icons/Plus.svg';
-import { ReactComponent as Minus } from '../../assets/icons/Minus.svg';
-import SelectCounselor from '../../components/common/SelectCounselor';
+import SubHeader from '../../../components/common/SubHeader';
+import { axiosInstance } from '../../../utils/apiInstance';
+import { TicketsData } from '../../../types/tickets/tickets';
+import { LessonTypeEnum, TermUnitEnum } from '../../../enums/Ticket';
+import Input from '../../../components/common/Input/Input';
+import { calculateDate, getDay, getDay2 } from '../../../utils/date';
+import { ReactComponent as Plus } from '../../../assets/icons/Plus.svg';
+import { ReactComponent as Minus } from '../../../assets/icons/Minus.svg';
+import SelectCounselor from '../../../components/common/SelectCounselor';
 
-const TicketDetail = () => {
+const IssuedTicketDetail = () => {
   const [ticket, setTicket] = useState<TicketsData | null>(null);
   const { ticketId } = useParams<{ ticketId: string | undefined }>();
 
@@ -114,4 +114,4 @@ const TicketDetail = () => {
     </>
   );
 };
-export default TicketDetail;
+export default IssuedTicketDetail;

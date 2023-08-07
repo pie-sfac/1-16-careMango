@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { axiosInstance } from '../../../../utils/apiInstance';
 import InputName from '../../../common/InputName';
+import InputContact from '../../../common/InputContact';
 
-const StaffRegFirst = () => <div>회원 생성 페이지</div>;
+interface StaffRegFirstProps {
+  inputInfo: string;
+  setInputInfo: void;
+}
+
+const StaffRegFirst = () => {
+  const onChange = (name: string, value: string) => {};
+  return <div>첫 번째</div>;
+};
 
 export default StaffRegFirst;

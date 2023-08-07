@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CounselingModal from './CounselingModal';
+import Modal from '../common/Modal/Modal';
 import { CounselingDetail } from '../../types/counseling/counselingDetail';
 import { ReactComponent as Profile24 } from '../../assets/icons/Profile_24.svg';
+import { ReactComponent as Close } from '../../assets/icons/Close.svg';
 
 interface CounselingScheduleDetailProps {
   itemData: CounselingDetail;
@@ -18,6 +19,11 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
 
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const handleConfirmModal = () => {
+    // 상담 내용 저장 로직 구현 (예: API 호출)
+    handleCloseModal();
   };
 
   // 회원 정보 등록 페이지로
@@ -53,11 +59,27 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
           </button>
         </div>
       </div>
-      <CounselingModal
+      <Modal
         isOpen={showModal}
         onClose={handleCloseModal}
-        content={counselingContent}
-        setContent={setCounselingContent}
+        onConfirm={handleConfirmModal}
+        content={
+          <>
+            <div className="flex justify-between mb-3">
+              <h1 className="text-lg font-bold">상담기록</h1>
+              <button type="button" onClick={handleCloseModal}>
+                <Close />
+              </button>
+            </div>
+            <p className="mb-3">회원님과 나눈 내용을 자유롭게 작성해 보세요.</p>
+            <textarea
+              className="w-full p-2 border rounded"
+              placeholder="내용을 입력해 주세요. (1000자 이내)"
+              value={counselingContent}
+              onChange={(e) => setCounselingContent(e.target.value)}
+            />
+          </>
+        }
       />
     </>
   );

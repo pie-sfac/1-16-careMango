@@ -65,10 +65,10 @@ function Login({ setAccessToken }: LoginProps) {
       <Tabs>
         <TabList className="flex w-2/4 mb-3">
           <Tab className="flex-1 py-2 text-sm text-center border-b-4 cursor-pointer focus:outline-none focus:shadow-outline focus:text-blue-500 focus:border-blue-500">
-            User Login
+            관리자 로그인
           </Tab>
           <Tab className="flex-1 py-2 text-sm text-center border-b-4 cursor-pointer focus:outline-none focus:shadow-outline focus:text-blue-500 focus:border-blue-500">
-            Admin Login
+            직원 로그인
           </Tab>
         </TabList>
 

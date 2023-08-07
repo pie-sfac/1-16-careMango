@@ -2,6 +2,8 @@ import React, { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 
 // import { Link } from 'react-router-dom';
 // import axios from 'axios';
 import { axiosInstance } from '../utils/apiInstance';
+import { ReactComponent as Search } from '../assets/icons/Search.svg';
+import { ReactComponent as BlankPerson } from '../assets/icons/BlankPerson.svg';
 
 import '../index.css';
 
@@ -18,7 +20,7 @@ interface ApiResponse {
   message: string;
 }
 
-function Main() {
+function Home() {
   // const planStatus: string = '플랜 이용중';
   const [data, setData] = useState<ApiResponse | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
@@ -34,7 +36,7 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    console.log('useEffect 호출');
+    // console.log('useEffect 호출');
     getData();
   }, [getData]);
 
@@ -62,12 +64,7 @@ function Main() {
                 className="p-2 mr-2 border rounded-md"
               />
               <button type="submit">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M13.4765 14.8907C12.4957 15.5892 11.2958 16 10 16C6.68629 16 4 13.3137 4 10C4 6.68629 6.68629 4 10 4C13.3137 4 16 6.68629 16 10C16 11.2958 15.5892 12.4957 14.8907 13.4765L20.7071 19.2929C21.0976 19.6834 21.0976 20.3166 20.7071 20.7071C20.3166 21.0976 19.6834 21.0976 19.2929 20.7071L13.4765 14.8907ZM14.5 10C14.5 7.51472 12.4853 5.5 10 5.5C7.51472 5.5 5.5 7.51472 5.5 10C5.5 12.4853 7.51472 14.5 10 14.5C12.4853 14.5 14.5 12.4853 14.5 10Z"
-                    fill="#505050"
-                  />
-                </svg>
+                <Search />
               </button>
             </form>
           </div>
@@ -117,12 +114,7 @@ function Main() {
                         수업 {data.mySchedule.lessonCount}건, 상담 {data.mySchedule.counselingCount}건
                       </span>
                       <div className="absolute top-0 right-0 p-2 bg-white rounded-full">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M8 2C9.1 2 10 2.9 10 4C10 5.1 9.1 6 8 6C6.9 6 6 5.1 6 4C6 2.9 6.9 2 8 2ZM8 11C10.7 11 13.8 12.29 14 13V14H2V13.01C2.2 12.29 5.3 11 8 11ZM8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0ZM8 9C5.33 9 0 10.34 0 13V16H16V13C16 10.34 10.67 9 8 9Z"
-                            fill="#CFCFCF"
-                          />
-                        </svg>
+                        <BlankPerson />
                       </div>
                     </div>
                     <div className="absolute bottom-0 right-0 card_down">
@@ -140,12 +132,7 @@ function Main() {
                     <div className=" card_upper">
                       <span className="font-bold">나의 회원 수</span>
                       <div className="absolute top-0 right-0 p-2 bg-white rounded-full">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M8 2C9.1 2 10 2.9 10 4C10 5.1 9.1 6 8 6C6.9 6 6 5.1 6 4C6 2.9 6.9 2 8 2ZM8 11C10.7 11 13.8 12.29 14 13V14H2V13.01C2.2 12.29 5.3 11 8 11ZM8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0ZM8 9C5.33 9 0 10.34 0 13V16H16V13C16 10.34 10.67 9 8 9Z"
-                            fill="#CFCFCF"
-                          />
-                        </svg>
+                        <BlankPerson />
                       </div>
                     </div>
                     <div className="absolute bottom-0 right-0 card_down">
@@ -161,12 +148,7 @@ function Main() {
                     <div className=" card_upper">
                       <span className="font-bold">전체 직원 수</span>
                       <div className="absolute top-0 right-0 p-2 bg-white rounded-full">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M8 2C9.1 2 10 2.9 10 4C10 5.1 9.1 6 8 6C6.9 6 6 5.1 6 4C6 2.9 6.9 2 8 2ZM8 11C10.7 11 13.8 12.29 14 13V14H2V13.01C2.2 12.29 5.3 11 8 11ZM8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0ZM8 9C5.33 9 0 10.34 0 13V16H16V13C16 10.34 10.67 9 8 9Z"
-                            fill="#CFCFCF"
-                          />
-                        </svg>
+                        <BlankPerson />
                       </div>
                     </div>
                     <div className="absolute bottom-0 right-0 card_down">
@@ -183,4 +165,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Home;

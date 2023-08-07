@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import { IssuedTicketsData } from '../../types/tickets/tickets';
-import SubHeader from '../../components/common/SubHeader';
-import IssuedTicketItem from '../../components/tickets/IssuedTicketItem';
+import { axiosInstance } from '../../../utils/apiInstance';
+import { IssuedTicketsData } from '../../../types/tickets/tickets';
+import SubHeader from '../../../components/common/SubHeader';
+import IssuedTicketItem from '../../../components/tickets/IssuedTicketItem';
 
-const IssuedTickets = () => {
+const IssuedTicketList = () => {
   const [issuedList, setIssuedList] = useState<IssuedTicketsData[] | null>(null);
   const navigate = useNavigate();
   const { memberId } = useParams<{ memberId: string | undefined }>();
@@ -42,4 +42,4 @@ const IssuedTickets = () => {
     </>
   );
 };
-export default IssuedTickets;
+export default IssuedTicketList;

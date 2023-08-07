@@ -71,21 +71,33 @@ function Main() {
               </button>
             </form>
           </div>
-          <div className="flex justify-between px-1 mb-5">
-            <ul className="flex gap-3">
-              <li>
+          <div className="mb-5">
+            <ul className="flex w-full gap-5">
+              <li className="w-full h-full">
                 <a href="https://github.com/pie-sfac/1-16-careMango">
-                  <img src="./images/Banners.png" alt="광고 배너" />
+                  <img
+                    src="./images/Banners.png"
+                    alt="광고 배너"
+                    className="w-full h-full object-cover object-center"
+                  />
                 </a>
               </li>
-              <li>
+              <li className="w-full h-full">
                 <a href="https://github.com/pie-sfac/1-16-careMango">
-                  <img src="./images/Banners.png" alt="광고 배너" />
+                  <img
+                    src="./images/Banners.png"
+                    alt="광고 배너"
+                    className="w-full h-full object-cover object-center"
+                  />
                 </a>
               </li>
-              <li>
+              <li className="w-full h-full">
                 <a href="https://github.com/pie-sfac/1-16-careMango">
-                  <img src="./images/Banners.png" alt="광고 배너" />
+                  <img
+                    src="./images/Banners.png"
+                    alt="광고 배너"
+                    className="w-full h-full object-cover object-center"
+                  />
                 </a>
               </li>
             </ul>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import Calendar from '@toast-ui/react-calendar';
 // import { CounselingSchedule, PrivateSchedule, SchedulApiData } from '../types/scheduleApi';
@@ -8,37 +9,44 @@ import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 import { ReactComponent as Search } from '../assets/icons/Search.svg';
 import { ReactComponent as Setting } from '../assets/icons/Setting.svg';
 import { ReactComponent as CalendarIcon } from '../assets/icons/Calendar.svg';
+import Modal from '../components/common/Modal/Modal';
 
 function ScheduleCalendar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [view, setView] = useState('month');
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setView(event.target.value);
   };
 
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  const handleConfirm = () => {
+    console.log('Modal confirmed');
+    handleClose();
+  };
+
+  const navigate = useNavigate();
+
+  const goCreateCounseling = () => {
+    navigate('/schedules/counseling');
+  };
+
+  const goCheckSchedule = () => {
+    navigate('/schedule/personal/1');
+  };
+
+  const goCreateSchedule = () => {
+    navigate('/schedule/personal/new');
+  };
+
+  const goCheckCounseling = () => {
+    navigate('/schedules/counseling/174');
+  };
+
   const [events, setEvents] = useState<Schedule[]>([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`${import.meta.env.VITE_API_URL}/schedules`, {
-  //         params: {
-  //           from: '2023-01-01',
-  //           to: '2024-01-01',
-  //         },
-  //         headers: {
-  //           accept: 'application/json',
-  //           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //         },
-  //       });
-  //       const convertedData = convertToDisplayData(response.data);
-  //       setEvents(convertedData);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,7 +148,10 @@ function ScheduleCalendar() {
             <Setting />
           </button>
         </div>
-        <button type="submit" className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">
+        <button
+          type="submit"
+          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+          onClick={handleOpen}>
           + 일정생성
         </button>
       </div>
@@ -209,6 +220,39 @@ function ScheduleCalendar() {
           </table>
         </aside>
       </main>
+      <Modal
+        isOpen={isOpen}
+        content={
+          <div className="flex h-64 items-center">
+            <button
+              type="button"
+              onClick={goCreateSchedule}
+              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 mr-2 w-64 h-32">
+              개인 수업 일정 생성
+            </button>
+            <button
+              type="button"
+              onClick={goCheckSchedule}
+              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 mr-2  w-64 h-32">
+              개인 수업 일정 조회(mock 데이터)
+            </button>
+            <button
+              type="button"
+              onClick={goCreateCounseling}
+              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 mr-2  w-64 h-32">
+              상담 일정 생성
+            </button>
+            <button
+              type="button"
+              onClick={goCheckCounseling}
+              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600  w-64 h-32">
+              상담 일정 조회
+            </button>
+          </div>
+        }
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+      />
     </div>
   );
 }

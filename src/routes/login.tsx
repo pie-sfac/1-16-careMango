@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 
 import '../index.css';
@@ -27,7 +27,7 @@ function Login({ setAccessToken }: LoginProps) {
     isAdmin: false,
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const mutation = useMutation((info: LoginInfo) => {
     const apiUrl = info.isAdmin

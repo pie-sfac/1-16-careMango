@@ -10,18 +10,17 @@ import Home from './routes/home';
 import Schedule from './routes/schedule';
 import ScheduleApi from './routes/scheduleApi';
 import ChangeSchedule from './routes/schedule/changeSchedule';
-import CenterTicket from './routes/ticket/centerTicket';
-import CreateTicket from './routes/ticket/createTicket';
+import CenterTicket from './routes/tickets/centerTicket/centerTicketList';
+import CreateTicket from './routes/tickets/centerTicket/createTicket';
 import PersonalClass from './routes/createSchedule/PersonalClass';
 import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
 import ShowMembers from './routes/members/showMembers';
 import CheckMembers from './routes/members/checkMembers';
 import Layout from './components/layout/Layout';
-import IssuedTickets from './routes/ticket/issuedTickets';
-import TicketList from './routes/ticket/ticketList';
-import TicketDetail from './routes/ticket/ticketDetail';
+import IssuedTicketList from './routes/tickets/issuedTicket/issuedTicketList';
+import AllTicketList from './routes/tickets/issuedTicket/allTicketList';
+import IssuedTicketDetail from './routes/tickets/issuedTicket/issuedTicketDetail';
 import ShowStaffs from './routes/staffs/showStaffs';
-import CreateStaff from './routes/staffs/createStaff';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
@@ -49,11 +48,10 @@ function App() {
           <Route path="/schedule/personal/searchMembers" element={<SearchMembers />} />
           <Route path="/members" element={<ShowMembers />} />
           <Route path="/members/:memberId" element={<CheckMembers />} />
-          <Route path="/members/:memberId/issued-tickets" element={<IssuedTickets />} />
-          <Route path="/tickets" element={<TicketList />} />
-          <Route path="/tickets/:ticketId" element={<TicketDetail />} />
+          <Route path="/members/:memberId/issued-tickets" element={<IssuedTicketList />} />
+          <Route path="/tickets" element={<AllTicketList />} />
+          <Route path="/tickets/:ticketId" element={<IssuedTicketDetail />} />
           <Route path="/staffs" element={<ShowStaffs />} />
-          <Route path="/staffs/createStaff" element={<CreateStaff />} />
         </Routes>
       </Layout>
     </BrowserRouter>

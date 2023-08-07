@@ -1,16 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { axiosInstance } from '../../../utils/apiInstance';
 import { IssuedTicketsData } from '../../../types/tickets/tickets';
 import SubHeader from '../../../components/common/SubHeader';
 import IssuedTicketItem from '../../../components/tickets/IssuedTicketItem';
+import { memberIdState } from '../../../atoms/members/memberIdAtom';
 
 const IssuedTicketList = () => {
   const [issuedList, setIssuedList] = useState<IssuedTicketsData[] | null>(null);
   const navigate = useNavigate();
   const { memberId } = useParams<{ memberId: string | undefined }>();
+  const setMemberId = useSetRecoilState(memberIdState);
 
   const goTicketList = () => {
+    if (memberId) setMemberId({ memberId });
     navigate(`/tickets`);
   };
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import SubHeader from '../../components/common/SubHeader';
 import { axiosInstance } from '../../utils/apiInstance';
-import TicketItem from '../../components/centerTicket/TicketItem';
+import TicketItem from '../../components/tickets/TicketItem';
 import { TicketsData } from '../../types/tickets/tickets';
 
 const TicketList = () => {

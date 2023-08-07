@@ -10,16 +10,16 @@ import Home from './routes/home';
 import Schedule from './routes/schedule';
 import ScheduleApi from './routes/scheduleApi';
 import ChangeSchedule from './routes/schedule/changeSchedule';
-import CenterTicket from './routes/ticket/centerTicket';
-import CreateTicket from './routes/ticket/createTicket';
+import CenterTicket from './routes/tickets/centerTicket';
+import CreateTicket from './routes/tickets/createTicket';
 import PersonalClass from './routes/createSchedule/PersonalClass';
 import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
 import ShowMembers from './routes/members/showMembers';
 import CheckMembers from './routes/members/checkMembers';
 import Layout from './components/layout/Layout';
-import IssuedTickets from './routes/ticket/issuedTickets';
-import TicketList from './routes/ticket/ticketList';
-import TicketDetail from './routes/ticket/ticketDetail';
+import IssuedTickets from './routes/tickets/issuedTickets';
+import TicketList from './routes/tickets/ticketList';
+import TicketDetail from './routes/tickets/ticketDetail';
 import ShowStaffs from './routes/staffs/showStaffs';
 
 export const accessTokenState = atom({

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../utils/apiInstance';
 import { IssuedTicketsData } from '../../types/tickets/tickets';
 import SubHeader from '../../components/common/SubHeader';
-import IssuedTicketItem from '../../components/centerTicket/IssuedTicketItem';
+import IssuedTicketItem from '../../components/tickets/IssuedTicketItem';
 
 const IssuedTickets = () => {
   const [issuedList, setIssuedList] = useState<IssuedTicketsData[] | null>(null);

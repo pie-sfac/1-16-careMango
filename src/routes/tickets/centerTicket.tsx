@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/SubHeader';
 import { TicketsData } from '../../types/tickets/tickets';
 import { axiosInstance } from '../../utils/apiInstance';
-import TicketItem from '../../components/centerTicket/TicketItem';
+import TicketItem from '../../components/tickets/TicketItem';
 import MainHeader from '../../components/layout/MainHeader';
 
 const CenterTicket = () => {

@@ -40,21 +40,40 @@ const Input: React.FC<InputProps> = ({
           {required && <span className="text-primary-300">*</span>}
         </label>
       )}
-      <div className="relative flex items-center justify-start">
-        {leftBtn}
-        <input
-          className={`${align} ${width} input-select mr-1`}
-          id={name}
-          name={name}
-          type={type}
-          value={value === 0 ? '' : value}
-          onChange={onChange}
-          placeholder={placeholder}
-        />
-        <span className={`absolute ${unitPosition} text-text-700`}>{unit}</span>
-        {rightBtn}
-        {unitSelect}
-      </div>
+      {required ? (
+        <div className="relative flex items-center justify-start">
+          {leftBtn}
+          <input
+            className={`${align} ${width} input-select mr-1`}
+            id={name}
+            name={name}
+            type={type}
+            value={value === 0 ? '' : value}
+            onChange={onChange}
+            placeholder={placeholder}
+          />
+          <span className={`absolute ${unitPosition} text-text-700`}>{unit}</span>
+          {rightBtn}
+          {unitSelect}
+        </div>
+      ) : (
+        <div className="relative flex items-center justify-start">
+          {leftBtn}
+          <input
+            className={`${align} ${width} input-select mr-1 bg-gray-200 border-gray-300 cursor-not-allowed`}
+            id={name}
+            name={name}
+            type={type}
+            value={value === 0 ? '' : value}
+            onChange={onChange}
+            placeholder={placeholder}
+            readOnly
+          />
+          <span className={`absolute ${unitPosition} text-text-700`}>{unit}</span>
+          {rightBtn}
+          {unitSelect}
+        </div>
+      )}
     </>
   );
 };

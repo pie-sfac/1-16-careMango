@@ -14,8 +14,8 @@ const SelectDate = ({ title, defaultState, onChange }: SelectDateProps) => {
   };
 
   return (
-    <label htmlFor="selectDate" className="my-5">
-      <p className="small-title">
+    <label htmlFor="selectDate" className="block mt-10 mb-2">
+      <p>
         {title}
         <span className="text-primary-300">*</span>
       </p>

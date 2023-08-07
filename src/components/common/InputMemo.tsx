@@ -21,8 +21,8 @@ const InputMemo = ({ title, onChange }: InputMemoProps) => {
   };
 
   return (
-    <label htmlFor="inputMemo" className="my-5">
-      <p className="small-title">{title}</p>
+    <label htmlFor="inputMemo" className="block mt-10 mb-2">
+      <p>{title}</p>
       <div className="relative">
         <textarea
           id="inputMemo"

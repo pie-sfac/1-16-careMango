@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 // import { Link } from 'react-router-dom';
 // import axios from 'axios';
 import { axiosInstance } from '../utils/apiInstance';
@@ -40,12 +40,12 @@ function Home() {
     getData();
   }, [getData]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // console.log(`search for "${inputValue}"`);
   };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(event.target.value);
   };
 
@@ -54,7 +54,7 @@ function Home() {
       {data && (
         <>
           <div className="flex justify-end my-4">
-            <form onSubmit={handleSubmit} className="flex items-center inline-block ">
+            <form onSubmit={handleSubmit} className="flex items-center">
               <input
                 type="text"
                 name="search"

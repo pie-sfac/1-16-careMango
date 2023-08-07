@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Calendar from '@toast-ui/react-calendar';
-import { CounselingSchedule, PrivateSchedule, SchedulApiData } from '../types/scheduleApi';
+// import { CounselingSchedule, PrivateSchedule, SchedulApiData } from '../types/scheduleApi';
 import { convertToDisplayData, Schedule } from '../utils/scheduleUtils';
 import { axiosInstance } from '../utils/apiInstance';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';

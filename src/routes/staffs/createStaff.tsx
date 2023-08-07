@@ -22,7 +22,7 @@ const initialState: StaffRegType = {
   password: '',
   name: '',
   phone: '',
-  roles: [0],
+  roles: [3, 4],
 };
 
 interface CreateStaffProps {
@@ -50,10 +50,18 @@ const CreateStaff = ({ onRegistered }: CreateStaffProps) => {
     }
   };
 
+  const getRoleId = async () => {
+    const res = await axiosInstance.get('/roles');
+    console.log(res.data);
+  };
+
+  // getRoleId();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(inputInfo);
     createStaff(inputInfo);
+    navigate('/staffs');
   };
 
   const allFieldsCompleted = () => !!(inputInfo.name && inputInfo.password && inputInfo.loginId && inputInfo.phone);

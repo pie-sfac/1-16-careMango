@@ -21,6 +21,7 @@ import IssuedTicketList from './routes/tickets/issuedTicket/issuedTicketList';
 import AllTicketList from './routes/tickets/issuedTicket/allTicketList';
 import IssuedTicketDetail from './routes/tickets/issuedTicket/issuedTicketDetail';
 import ShowStaffs from './routes/staffs/showStaffs';
+import MyPage from './routes/myPage';
 
 export const accessTokenState = atom({
   key: 'accessTokenState', // unique ID (with respect to other atoms/selectors)
@@ -52,6 +53,7 @@ function App() {
           <Route path="/tickets" element={<AllTicketList />} />
           <Route path="/tickets/:ticketId" element={<IssuedTicketDetail />} />
           <Route path="/staffs" element={<ShowStaffs />} />
+          <Route path="/myPage" element={<MyPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

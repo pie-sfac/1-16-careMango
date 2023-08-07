@@ -26,6 +26,7 @@
   "plugins": ["@typescript-eslint", "react", "prettier", "html"],
   "ignorePatterns": [".eslintrc.cjs", "vite.config.ts", "tailwind.config.js"],
   "rules": {
+    "no-console": "off",
     "prettier/prettier": [
       "error",
       {

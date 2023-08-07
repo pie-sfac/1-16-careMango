@@ -4,7 +4,7 @@ import SubHeader from '../../components/common/SubHeader';
 import { axiosInstance } from '../../utils/apiInstance';
 import { TicketsData } from '../../types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
-import Input from '../../components/common/Input';
+import Input from '../../components/common/Input/Input';
 import { calculateDate, getDay, getDay2 } from '../../utils/date';
 import { ReactComponent as Plus } from '../../assets/icons/Plus.svg';
 import { ReactComponent as Minus } from '../../assets/icons/Minus.svg';

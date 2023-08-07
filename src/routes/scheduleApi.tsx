@@ -4,7 +4,7 @@ import { axiosInstance } from '../utils/apiInstance';
 import { SchedulApiData } from '../types/scheduleApi';
 
 const ScheduleApi = () => {
-  const [scheduleList, setScheduleList] = useState<SchedulApiData[] | null>(null);
+  const [scheduleList, setScheduleList] = useState<SchedulApiData | null>(null);
 
   const getScheduleApi = async () => {
     const from = '2023-01-21';
@@ -35,8 +35,6 @@ const ScheduleApi = () => {
     navigate('/schedules/counseling/174');
   };
 
-  // console.log(scheduleList.counselingSchedules);
-
   return (
     <div className="flex flex-col">
       <button type="button" className="w-20 m-3 border-8" onClick={goCreateSchedule}>
@@ -53,23 +51,18 @@ const ScheduleApi = () => {
       </button>
 
       <p>개인 수업 일정</p>
-      <button type="button">
-        <div className="flex">
-          <p>09:00~10:00</p>
-          <p>mango(1)</p>
-          <p>0회</p>
-        </div>
-      </button>
+      {scheduleList?.privateSchedules.map((privateSchedule) => (
+        <button key={privateSchedule.id} type="button">
+          <div className="flex">
+            <p>
+              {privateSchedule.startAt.split('T')[1]}~{privateSchedule.endAt.split('T')[1]}
+            </p>
+            <p>{privateSchedule.memo}</p>
+          </div>
+        </button>
+      ))}
 
       <p>상담 일정</p>
-      <button type="button">
-        <div className="flex">
-          <p>09:00~10:00</p>
-          <p>mango(1)</p>
-          <p>0회</p>
-        </div>
-      </button>
-
       {scheduleList?.counselingSchedules.map((counseling) => (
         <button key={counseling.id} type="button">
           <div className="flex">

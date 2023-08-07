@@ -13,7 +13,7 @@ const SubHeader = ({ title, rightBtn }: HeaderProps) => {
     navigate(-1);
   };
   return (
-    <header className="flex justify-between py-3 border-b border-line-200">
+    <header className="flex justify-between py-3 ">
       <div className="flex">
         <button onClick={handleBackClick} type="button" className="focus:outline-none">
           <Back />

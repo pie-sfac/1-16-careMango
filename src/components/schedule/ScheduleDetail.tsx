@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { ScheduleItemData } from '../../types/schedule/schedule';
 import { ReactComponent as Profile } from '../../assets/icons/Profile_24.svg';
+import Modal from '../common/Modal/Modal';
+import { axiosInstance } from '../../utils/apiInstance';
 
 interface ScheduleDetailProps {
   itemData: ScheduleItemData;
@@ -10,22 +11,35 @@ interface ScheduleDetailProps {
 }
 
 const ScheduleDetail = ({ itemData, fetchCheckSchedule, attendanceHistoryId }: ScheduleDetailProps) => {
-  const onClickPresent = () => {
-    axios.post(`/attendance-histories/${attendanceHistoryId}/check-present`);
-    const isConfirmed = window.confirm('출석처리를 진행하시겠습니까?');
-    if (isConfirmed) {
-      alert('출석 처리되었습니다.');
-      fetchCheckSchedule();
-    }
+  const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
+  const [absenceModalOpen, setAbsenceModalOpen] = useState(false);
+
+  const openAttendanceModal = () => {
+    setAttendanceModalOpen(true);
+  };
+  const closeAttendanceModal = () => {
+    setAttendanceModalOpen(false);
   };
 
-  const onClickAbsent = () => {
-    axios.post(`/attendance-histories/${attendanceHistoryId}/check-absent`);
-    const isConfirmed = window.confirm('결석처리를 진행하시겠습니까?');
-    if (isConfirmed) {
-      alert('결석 처리되었습니다.');
-      fetchCheckSchedule();
-    }
+  const openAbsenceModal = () => {
+    setAbsenceModalOpen(true);
+  };
+  const closeAbsenceModal = () => {
+    setAbsenceModalOpen(false);
+  };
+
+  const handleConfirmAttendance = async () => {
+    console.log('출석 버튼이 눌렸습니다.');
+    const res = await axiosInstance.post(`/attendance-histories/${attendanceHistoryId}/check-present`);
+    console.log(res.data);
+    fetchCheckSchedule();
+  };
+
+  const handleConfirmAbsence = async () => {
+    console.log('결석 버튼이 눌렸습니다.');
+    const res = await axiosInstance.post(`/attendance-histories/${attendanceHistoryId}/check-absent`);
+    console.log(res.data);
+    fetchCheckSchedule();
   };
 
   const attendanceStatus = (status: string) => {
@@ -50,12 +64,36 @@ const ScheduleDetail = ({ itemData, fetchCheckSchedule, attendanceHistoryId }: S
           </div>
         </div>
         <div className="flex gap-1">
-          <button type="button" className="attendance-btn" onClick={onClickPresent}>
-            출석
-          </button>
-          <button type="button" className="attendance-btn" onClick={onClickAbsent}>
-            결석
-          </button>
+          {itemData.attendanceHistories[0].status === 'PRESENT' ? (
+            <button type="button" className="text-white attendance-btn bg-primary-500" onClick={openAttendanceModal}>
+              출석
+            </button>
+          ) : (
+            <button type="button" className="attendance-btn" onClick={openAttendanceModal}>
+              출석
+            </button>
+          )}
+          <Modal
+            isOpen={attendanceModalOpen}
+            content="출석처리 하시겠습니까?"
+            onClose={closeAttendanceModal}
+            onConfirm={handleConfirmAttendance}
+          />
+          {itemData.attendanceHistories[0].status === 'ABSENT' ? (
+            <button type="button" className="text-white attendance-btn bg-erro" onClick={openAbsenceModal}>
+              결석
+            </button>
+          ) : (
+            <button type="button" className="attendance-btn" onClick={openAbsenceModal}>
+              결석
+            </button>
+          )}
+          <Modal
+            isOpen={absenceModalOpen}
+            content="결석처리 하시겠습니까?"
+            onClose={closeAbsenceModal}
+            onConfirm={handleConfirmAbsence}
+          />
         </div>
       </div>
       <div className="flex gap-8 py-5 px-14">

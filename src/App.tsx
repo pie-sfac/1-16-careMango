@@ -29,7 +29,7 @@ function App() {
       <Layout>
         <Routes>
           <Route element={<LoginRouter />}>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/schedule/personal/:scheduleId" element={<CheckSchedule />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/schedules" element={<ScheduleApi />} />

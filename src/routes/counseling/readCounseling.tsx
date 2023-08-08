@@ -8,7 +8,7 @@ import SubHeader from '../../components/common/SubHeader';
 import CounselingScheduleBox from '../../components/counseling/CounselingScheduleBox';
 import CounselingScheduleDetail from '../../components/counseling/CounselingScheduleDetail';
 
-const CheckCounseling = () => {
+const ReadCounseling = () => {
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [counselingData, setCounselingData] = useState<CounselingDetail | null>(null);
 
@@ -60,4 +60,4 @@ const CheckCounseling = () => {
     </>
   );
 };
-export default CheckCounseling;
+export default ReadCounseling;

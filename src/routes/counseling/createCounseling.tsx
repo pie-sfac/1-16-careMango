@@ -102,6 +102,7 @@ const CreateCounseling = () => {
   const allFieldsCompleted = (): boolean =>
     !!(state.userId && state.startAt && state.endAt && state.clientName && state.clientPhone);
 
+  console.log(state);
   return (
     <>
       <SubHeader title="일정 생성" />
@@ -111,9 +112,9 @@ const CreateCounseling = () => {
           <Select
             name="userId"
             options={[
-              { label: '선택해주세요', value: '' },
-              { label: '박강사', value: '박강사' },
-              { label: '김강사', value: '김강사' },
+              { label: '선택해주세요', value: 0 },
+              { label: '박강사', value: 1 },
+              { label: '김강사', value: 2 },
             ]}
             value={state.userId}
             onChange={handleChange}

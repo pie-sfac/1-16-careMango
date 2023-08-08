@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../utils/apiInstance';
 import { Staff } from '../../types/staffs/staffs';
 import StaffListItem from '../../components/staffs/StaffListItem';
 import { ReactComponent as Search } from '../../assets/icons/Search.svg';
+import CreateStaff from './createStaff';
 
 const ShowStaffs = () => {
   const [staffList, setStaffList] = useState<Staff[] | null>(null);
@@ -28,9 +29,12 @@ const ShowStaffs = () => {
   }
 
   const navigate = useNavigate();
-  const goCreateStaff = () => {
-    navigate('/staffs/createStaff');
-  };
+  const location = useLocation();
+  const isRegistering = location.state?.register || false;
+
+  if (isRegistering) {
+    return <CreateStaff onRegistered={() => setIsRegister(true)} />;
+  }
 
   return (
     <div className="p-5 bg-bg-100">
@@ -63,7 +67,7 @@ const ShowStaffs = () => {
           <button
             className="px-2 bg-white border-2 border-solid border-line-300 rounded-xl"
             type="button"
-            onClick={() => navigate('/staffs/createStaff')}>
+            onClick={() => navigate('/staffs', { state: { register: true } })}>
             직원등록
           </button>
         </div>

@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { ChangeEvent, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { schedulesState } from '../../atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '../../utils/apiInstance';
@@ -8,10 +8,10 @@ import SelectTime from '../../components/common/SelectTime';
 import Input from '../../components/common/Input/Input';
 import Select from '../../components/common/Select/Select';
 import InputMemo from '../../components/common/InputMemo';
-import { StateType } from '../../types/counseling/counseling';
+import { UpdateStateType } from '../../types/counseling/counseling';
 import SubHeader from '../../components/common/SubHeader';
 
-const initialState: StateType = {
+const initialState: UpdateStateType = {
   userId: 0,
   memberId: 0,
   clientName: '',
@@ -19,21 +19,48 @@ const initialState: StateType = {
   memo: '',
   startAt: '',
   endAt: '',
+  counselingRecordContent: '',
 };
 
-const CreateCounseling = () => {
-  const [state, setState] = useState<StateType>(initialState);
+const UpdateCounseling = () => {
+  const [state, setState] = useState<UpdateStateType>(initialState);
+  const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const setSchedules = useSetRecoilState(schedulesState);
   const navigate = useNavigate();
 
-  // 생성 API
-  const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
+  // 기존 일정 데이터 가져오기
+  const fetchCounselingData = async () => {
     try {
-      const res = await axiosInstance.post('/schedules/counseling', counselingData);
-      const createdCounseling = res.data;
+      const res = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
+      const counselingData = {
+        userId: res.data.counselor.id,
+        memberId: res.data.client?.memberId || null,
+        clientName: res.data.client.name,
+        clientPhone: res.data.client.phone,
+        memo: res.data.memo,
+        startAt: res.data.startAt,
+        endAt: res.data.endAt,
+        counselingRecordContent: res.data.counselingRecord || '',
+      };
+      setState(counselingData);
+      console.log('API Response:', res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCounselingData();
+  }, []);
+
+  // 변경 API
+  const updateCounseling = async (counselingData: UpdateStateType): Promise<UpdateStateType | undefined> => {
+    try {
+      const res = await axiosInstance.put(`schedules/counseling/${scheduleId}`, counselingData);
+      const updatedCounseling = res.data;
       navigate('/schedules/counseling', { state: { refetch: true } });
       console.log('res.status=', res.status);
-      return createdCounseling;
+      return updatedCounseling;
     } catch (err) {
       console.log(err);
     }
@@ -45,10 +72,9 @@ const CreateCounseling = () => {
       | { target: { name: string; value: string | number } },
   ) => {
     const { name, value } = event.target;
-    setState((prev): StateType => ({ ...prev, [name]: value }));
+    setState((prev): UpdateStateType => ({ ...prev, [name]: value }));
   };
 
-  // 시간 선택
   const onTimeChange = (selectedTime: { startAt: string; endAt: string }) => {
     // 현재 날짜
     const currentDate = state.startAt.split('T')[0];
@@ -88,9 +114,9 @@ const CreateCounseling = () => {
   // 완료
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    createCounseling(state).then((createdCounseling) => {
-      if (createdCounseling) {
-        setSchedules((prevSchedules) => [...prevSchedules, createdCounseling]);
+    updateCounseling(state).then((updatedCounseling) => {
+      if (updatedCounseling) {
+        setSchedules((prevSchedules) => [...prevSchedules, updatedCounseling]);
         navigate('/schedules');
       }
     });
@@ -120,6 +146,25 @@ const CreateCounseling = () => {
             width="w-2/12"
             required
           />
+          {/* <Input
+            type="date"
+            // name="startAt"
+            value={state.startAt.split('T')[0]}
+            onChange={handleChange}
+            label="날짜 선택"
+            width="w-2/12"
+            required
+          />
+          <SelectTime
+            title="시간 선택"
+            value={{
+              startAt: state.startAt ? state.startAt.split('T')[1] : '',
+              endAt: state.endAt ? state.endAt.split('T')[1] : '',
+            }}
+            width="w-2/12"
+            onChange={handleChange}
+          /> */}
+          {/* <SelectDate title="날짜 선택" onChange={(value) => handleChange({ target: { name: 'startAt', value } })} /> */}
           <SelectDate label="날짜 선택" type="date" onChange={handleChange} />
           <SelectTime title="시간 선택" onChange={onTimeChange} />
           <Input
@@ -152,7 +197,7 @@ const CreateCounseling = () => {
             className={`my-5 py-3 w-full rounded ${
               allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
             }`}
-            type="button"
+            type="submit"
             onClick={handleSubmit}>
             완료
           </button>
@@ -162,4 +207,4 @@ const CreateCounseling = () => {
   );
 };
 
-export default CreateCounseling;
+export default UpdateCounseling;

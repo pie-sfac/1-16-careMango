@@ -6,11 +6,10 @@ interface SelectTimeProps {
     startAt: string;
     endAt: string;
   };
-  width?: string;
   onChange?: (selectedTime: { startAt: string; endAt: string }) => void;
 }
 
-const SelectTime = ({ title, defaultState, width, onChange }: SelectTimeProps) => {
+const SelectTime = ({ title, defaultState, onChange }: SelectTimeProps) => {
   const [state, setState] = useState<{ startAt: string; endAt: string }>({
     startAt: defaultState?.startAt || '',
     endAt: defaultState?.endAt || '',
@@ -30,7 +29,7 @@ const SelectTime = ({ title, defaultState, width, onChange }: SelectTimeProps) =
       </p>
       <label htmlFor="startAt">
         <input
-          className={`${width} input-select`}
+          className="input-select"
           type="time"
           id="startAt"
           name="startAt"
@@ -41,7 +40,7 @@ const SelectTime = ({ title, defaultState, width, onChange }: SelectTimeProps) =
       <span> ~ </span>
       <label htmlFor="endAt">
         <input
-          className={`${width} input-select`}
+          className="input-select"
           type="time"
           id="endAt"
           name="endAt"

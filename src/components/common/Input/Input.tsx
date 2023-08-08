@@ -5,7 +5,7 @@ interface InputProps {
   value: string | number | undefined;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   label?: string;
-  name: string;
+  name?: string;
   placeholder?: string;
   leftBtn?: React.ReactNode;
   rightBtn?: React.ReactNode;

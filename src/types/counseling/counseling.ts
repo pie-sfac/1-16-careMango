@@ -8,7 +8,7 @@ export interface StateType {
   endAt: string;
 }
 
-export interface EditStateType {
+export interface UpdateStateType {
   userId: number;
   memberId: number;
   clientName: string;

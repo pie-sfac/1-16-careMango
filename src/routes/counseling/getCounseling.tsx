@@ -22,6 +22,11 @@ const GetCounseling = () => {
     getCounseling();
   }, []);
 
+  const navigate = useNavigate();
+  const goUpdateCounseling = () => {
+    navigate(`/schedules/counseling/update/${scheduleId}`);
+  };
+
   if (!counselingData) return <p>loading...</p>;
   return (
     <>
@@ -31,7 +36,7 @@ const GetCounseling = () => {
         }분 상담`}
         rightBtn={
           <div>
-            <button className="pl-5 text-base" type="button">
+            <button className="pl-5 text-base" type="button" onClick={goUpdateCounseling}>
               변경
             </button>
             <button className="pl-5 text-base" type="button">

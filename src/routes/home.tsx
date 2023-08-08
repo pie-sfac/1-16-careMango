@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-// import { Link } from 'react-router-dom';
-// import axios from 'axios';
 import { axiosInstance } from '../utils/apiInstance';
 import { ReactComponent as BlankPerson } from '../assets/icons/BlankPerson.svg';
 import SearchBox from '../components/common/SearchBox';
@@ -23,8 +21,6 @@ interface ApiResponse {
 function Home() {
   // const planStatus: string = '플랜 이용중';
   const [data, setData] = useState<ApiResponse | null>(null);
-  const [searchInputValue, setSearchInputValue] = useState('');
-  // const token = localStorage.getItem('accessToken');
 
   const getData = useCallback(async () => {
     try {
@@ -40,34 +36,10 @@ function Home() {
     getData();
   }, [getData]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // console.log(`search for "${inputValue}"`);
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInputValue(event.target.value);
-  };
-
   return (
     <div>
       {data && (
         <>
-          {/* <div className="flex justify-end my-4">
-            <form onSubmit={handleSubmit} className="flex items-center">
-              <input
-                type="text"
-                name="search"
-                placeholder="회원/멤버 이름, 연락처로 검색하세요"
-                value={searchInputValue}
-                onChange={handleChange}
-                className="p-2 mr-2 border rounded-md min-w-[300px]"
-              />
-              <button type="submit">
-                <Search />
-              </button>
-            </form>
-          </div> */}
           <SearchBox />
           <div className="mb-5">
             <ul className="flex w-full gap-5">

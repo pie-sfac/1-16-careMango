@@ -20,6 +20,7 @@ import AllTicketList from './routes/tickets/issuedTicket/allTicketList';
 import IssuedTicketDetail from './routes/tickets/issuedTicket/issuedTicketDetail';
 import ShowStaffs from './routes/staffs/showStaffs';
 import MyPage from './routes/myPage';
+import SearchResults from './components/common/SearchResults';
 import LoginRouter from './routes/auth/LoginRouter';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/tickets/:ticketId" element={<IssuedTicketDetail />} />
             <Route path="/staffs" element={<ShowStaffs />} />
             <Route path="/myPage" element={<MyPage />} />
+            <Route path="/search-results" element={<SearchResults />} />
           </Route>
         </Routes>
       </Layout>

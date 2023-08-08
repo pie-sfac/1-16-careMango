@@ -7,17 +7,10 @@ import Input from '../../../components/common/Input/Input';
 import { axiosInstance } from '../../../utils/apiInstance';
 import { ReactComponent as Plus } from '../../../assets/icons/Plus.svg';
 import { ReactComponent as Minus } from '../../../assets/icons/Minus.svg';
+import { CreateTicketType } from '../../../types/tickets/tickets';
+import CompleteButton from '../../../components/common/CompleteButton';
 
 const CreateTicket = () => {
-  interface StateType {
-    lessonType: string;
-    title: string;
-    defaultTerm: number;
-    defaultTermUnit: string;
-    duration: number;
-    defaultCount: number;
-    maxServiceCount?: number;
-  }
   const initialState = {
     lessonType: '',
     title: '',
@@ -28,21 +21,19 @@ const CreateTicket = () => {
     maxServiceCount: 0,
   };
 
-  const [state, setState] = useState<StateType>(initialState);
+  const [state, setState] = useState<CreateTicketType>(initialState);
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = event.target;
-    setState((prev): StateType => ({ ...prev, [name]: value }));
+    setState((prev): CreateTicketType => ({ ...prev, [name]: value }));
   };
 
   const filteredState = { ...state };
   delete filteredState.maxServiceCount;
-  const inputs = Object.values(filteredState);
-  const allFieldsCompleted = () => inputs.every((input) => input !== '' && input !== 0);
 
-  const createTicket = async (ticketData: StateType): Promise<StateType | undefined> => {
+  const createTicket = async (ticketData: CreateTicketType): Promise<CreateTicketType | undefined> => {
     try {
       const res = await axiosInstance.post('/tickets', ticketData);
       const createdTicket = res.data;
@@ -176,13 +167,7 @@ const CreateTicket = () => {
           />
         </div>
 
-        <button
-          className={`my-5 py-3 rounded mt-36 w-full ${
-            allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
-          }`}
-          type="submit">
-          저장
-        </button>
+        <CompleteButton state={filteredState} text="저장" />
       </form>
     </>
   );

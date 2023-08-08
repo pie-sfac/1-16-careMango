@@ -1,17 +1,13 @@
 import React, { ChangeEvent, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { schedulesState } from '../../atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '../../utils/apiInstance';
-// import SelectCounselor from '../../components/common/SelectCounselor';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
-// import InputName from '../../components/common/InputName';
 import Input from '../../components/common/Input/Input';
 import Select from '../../components/common/Select/Select';
-// import InputContact from '../../components/common/InputContact';
 import InputMemo from '../../components/common/InputMemo';
-// import { ReactComponent as Back } from '../../assets/icons/Back.svg';
 import { StateType } from '../../types/counseling/counseling';
 import SubHeader from '../../components/common/SubHeader';
 
@@ -27,8 +23,8 @@ const initialState: StateType = {
 
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
-  const params = useParams<{ id?: string }>();
-  const schedules = useRecoilValue(schedulesState);
+  // const params = useParams<{ id?: string }>();
+  // const schedules = useRecoilValue(schedulesState);
   const setSchedules = useSetRecoilState(schedulesState);
   const navigate = useNavigate();
 
@@ -122,10 +118,15 @@ const CreateCounseling = () => {
             value={state.userId}
             onChange={handleChange}
             label="담당 강사 선택"
+            width="w-2/12"
             required
           />
-          <SelectDate title="날짜 선택" onChange={(value) => handleChange({ target: { name: 'startAt', value } })} />
-          <SelectTime title="시간 선택" onChange={onTimeChange} />
+          <SelectDate
+            title="날짜 선택"
+            width="w-2/12"
+            onChange={(value) => handleChange({ target: { name: 'startAt', value } })}
+          />
+          <SelectTime title="시간 선택" width="w-2/12" onChange={onTimeChange} />
           <Input
             type="text"
             name="clientName"
@@ -133,6 +134,7 @@ const CreateCounseling = () => {
             onChange={handleChange}
             label="이름"
             placeholder="이름을 입력해주세요."
+            width="w-4/12"
             required
           />
           <Input
@@ -142,9 +144,15 @@ const CreateCounseling = () => {
             onChange={numberChange}
             label="연락처"
             placeholder="연락처를 입력해주세요."
+            width="w-4/12"
             required
           />
-          <InputMemo title="일정 메모" onChange={(value) => handleChange({ target: { name: 'memo', value } })} />
+          <InputMemo
+            title="일정 메모"
+            width="w-4/12"
+            height="h-32"
+            onChange={(value) => handleChange({ target: { name: 'memo', value } })}
+          />
           <button
             className={`my-5 py-3 w-full rounded ${
               allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

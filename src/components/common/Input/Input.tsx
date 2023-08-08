@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 
 interface InputProps {
   type: string;
@@ -34,6 +34,13 @@ const Input: React.FC<InputProps> = ({
   maxLength,
 }) => {
   const unitPosition = align === 'text-left' ? 'left-72' : 'left-52';
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === '-') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
       {label && (
@@ -51,6 +58,7 @@ const Input: React.FC<InputProps> = ({
             name={name}
             type={type}
             value={value === 0 ? '' : value}
+            onKeyDown={handleKeyDown}
             onChange={onChange}
             placeholder={placeholder}
             maxLength={maxLength}

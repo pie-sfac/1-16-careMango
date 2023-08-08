@@ -14,6 +14,7 @@ interface InputProps {
   width?: string;
   required?: boolean;
   unitSelect?: React.ReactNode;
+  maxLength?: number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -30,8 +31,9 @@ const Input: React.FC<InputProps> = ({
   width = 'w-30',
   required,
   unitSelect,
+  maxLength,
 }) => {
-  const unitPosition = align === 'text-left' ? 'left-72' : 'left-48';
+  const unitPosition = align === 'text-left' ? 'left-72' : 'left-52';
   return (
     <>
       {label && (
@@ -51,6 +53,7 @@ const Input: React.FC<InputProps> = ({
             value={value === 0 ? '' : value}
             onChange={onChange}
             placeholder={placeholder}
+            maxLength={maxLength}
           />
           <span className={`absolute ${unitPosition} text-text-700`}>{unit}</span>
           {rightBtn}
@@ -65,8 +68,6 @@ const Input: React.FC<InputProps> = ({
             name={name}
             type={type}
             value={value === 0 ? '' : value}
-            onChange={onChange}
-            placeholder={placeholder}
             readOnly
           />
           <span className={`absolute ${unitPosition} text-text-700`}>{unit}</span>

@@ -98,6 +98,7 @@ const CreateTicket = () => {
             placeholder="수강권명을 입력해주세요(15자이내)"
             required
             width="w-80"
+            maxLength={15}
           />
 
           <div>

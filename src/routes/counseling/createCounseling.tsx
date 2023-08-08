@@ -1,25 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { ChangeEvent, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { schedulesState } from '../../atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '../../utils/apiInstance';
-import SelectCounselor from '../../components/common/SelectCounselor';
+// import SelectCounselor from '../../components/common/SelectCounselor';
 import SelectDate from '../../components/common/SelectDate';
 import SelectTime from '../../components/common/SelectTime';
-import InputName from '../../components/common/InputName';
-import InputContact from '../../components/common/InputContact';
+// import InputName from '../../components/common/InputName';
+import Input from '../../components/common/Input/Input';
+import Select from '../../components/common/Select/Select';
+// import InputContact from '../../components/common/InputContact';
 import InputMemo from '../../components/common/InputMemo';
-import { ReactComponent as Back } from '../../assets/icons/Back.svg';
-
-interface StateType {
-  userId: number;
-  memberId: number;
-  clientName: string;
-  clientPhone: string;
-  memo: string;
-  startAt: string;
-  endAt: string;
-}
+// import { ReactComponent as Back } from '../../assets/icons/Back.svg';
+import { StateType } from '../../types/counseling/counseling';
+import SubHeader from '../../components/common/SubHeader';
 
 const initialState: StateType = {
   userId: 0,
@@ -33,17 +27,17 @@ const initialState: StateType = {
 
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
+  const params = useParams<{ id?: string }>();
   const schedules = useRecoilValue(schedulesState);
   const setSchedules = useSetRecoilState(schedulesState);
   const navigate = useNavigate();
 
-  // API
+  // 생성 API
   const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
     try {
       const res = await axiosInstance.post('/schedules/counseling', counselingData);
       const createdCounseling = res.data;
       navigate('/schedules/counseling', { state: { refetch: true } });
-      // console.log(state);
       console.log('res.status=', res.status);
       return createdCounseling;
     } catch (err) {
@@ -51,7 +45,12 @@ const CreateCounseling = () => {
     }
   };
 
-  const onChange = (name: string, value: string | number) => {
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+      | { target: { name: string; value: string | number } },
+  ) => {
+    const { name, value } = event.target;
     setState((prev): StateType => ({ ...prev, [name]: value }));
   };
 
@@ -64,15 +63,8 @@ const CreateCounseling = () => {
     const updatedStartAt = `${currentDate}T${selectedTime.startAt}`;
     const updatedEndAt = `${currentDate}T${selectedTime.endAt}`;
 
-    // 겹치는 시간 확인
-    const isOverlapping = schedules.some(
-      (schedule: { endAt: string; startAt: string }) =>
-        new Date(updatedStartAt) < new Date(schedule.endAt) && new Date(updatedEndAt) > new Date(schedule.startAt),
-    );
-
-    if (isOverlapping) {
-      alert('선택하신 시간대와 겹치는 일정이 있습니다. 시간을 다시 설정해 주세요.');
-    } else if (new Date(updatedStartAt) >= new Date(updatedEndAt)) {
+    // 시작 시간과 끝나는 시간 비교
+    if (new Date(updatedStartAt) >= new Date(updatedEndAt)) {
       alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
     } else {
       setState((prev) => ({
@@ -81,6 +73,22 @@ const CreateCounseling = () => {
         endAt: updatedEndAt,
       }));
     }
+  };
+
+  // 전화번호 입력 시 자동 하이픈
+  const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value: rawValue } = event.target;
+    let value = rawValue.replace(/\D/g, '');
+
+    if (value.length > 11) return;
+
+    if (value.length <= 7) {
+      value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+    } else if (value.length <= 11) {
+      value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+    }
+
+    setState((prev) => ({ ...prev, clientPhone: value }));
   };
 
   // 완료
@@ -94,40 +102,49 @@ const CreateCounseling = () => {
     });
   };
 
-  // 이전 페이지로
-  const handleBackClick = () => {
-    navigate(-1);
-  };
-
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = (): boolean =>
     !!(state.userId && state.startAt && state.endAt && state.clientName && state.clientPhone);
 
   return (
     <>
-      <header className="flex justify-between py-3 mb-2 text-xl font-bold border-b-2 border-gray-300">
-        <div className="flex">
-          <button onClick={handleBackClick} type="submit" className="focus:outline-none">
-            <Back />
-          </button>
-          <p>일정 생성</p>
-        </div>
-      </header>
+      <SubHeader title="일정 생성" />
       <div className="flex flex-col">
         <h1 className="main-title">상담</h1>
         <form onSubmit={handleSubmit}>
-          <SelectCounselor title="담당 강사 선택" onChange={(value) => onChange('userId', value)} />
-          <SelectDate
-            title="날짜 선택"
-            onChange={(value) => {
-              onChange('startAt', value);
-              onChange('endAt', value);
-            }}
+          <Select
+            name="userId"
+            options={[
+              { label: '선택해주세요', value: '' },
+              { label: '박강사', value: '박강사' },
+              { label: '김강사', value: '김강사' },
+            ]}
+            value={state.userId}
+            onChange={handleChange}
+            label="담당 강사 선택"
+            required
           />
+          <SelectDate title="날짜 선택" onChange={(value) => handleChange({ target: { name: 'startAt', value } })} />
           <SelectTime title="시간 선택" onChange={onTimeChange} />
-          <InputName title="이름" onChange={(value) => onChange('clientName', value)} />
-          <InputContact title="연락처" onChange={(value) => onChange('clientPhone', value)} />
-          <InputMemo title="일정 메모" onChange={(value) => onChange('memo', value)} />
+          <Input
+            type="text"
+            name="clientName"
+            value={state.clientName}
+            onChange={handleChange}
+            label="이름"
+            placeholder="이름을 입력해주세요."
+            required
+          />
+          <Input
+            type="text"
+            name="clientPhone"
+            value={state.clientPhone}
+            onChange={numberChange}
+            label="연락처"
+            placeholder="연락처를 입력해주세요."
+            required
+          />
+          <InputMemo title="일정 메모" onChange={(value) => handleChange({ target: { name: 'memo', value } })} />
           <button
             className={`my-5 py-3 w-full rounded ${
               allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

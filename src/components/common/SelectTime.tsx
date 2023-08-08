@@ -22,8 +22,8 @@ const SelectTime = ({ title, defaultState, onChange }: SelectTimeProps) => {
   };
 
   return (
-    <div className="my-5">
-      <p className="small-title">
+    <div className="block mt-10 mb-2">
+      <p>
         {title}
         <span className="text-primary-300">*</span>
       </p>

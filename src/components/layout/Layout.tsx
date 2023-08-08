@@ -15,11 +15,15 @@ const Layout = ({ children }: LayoutProps) => {
   if (pathName.includes('/tickets') || pathName.includes('/staffs') || pathName.includes('/myPage')) {
     menu = true;
   }
+  let bgColor = '';
+  if (pathName === '/schedule' || pathName === '/members' || pathName === '/staffs') {
+    bgColor = 'bg-bg-100';
+  }
 
   return (
     <>
       {menu ? <MainHeader menu /> : <MainHeader />}
-      <main className="pb-24 base-mx">{children}</main>
+      <main className={`pt-12 pb-24 base-px ${bgColor} min-h-screen overflow-auto box-border`}>{children}</main>
       <BottomNav />
     </>
   );

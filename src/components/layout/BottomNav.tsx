@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const BottomNav = () => (
   <nav className="fixed bottom-0 flex items-center justify-around w-full h-24 p-4 bg-white">
-    <Link to="/home" className="flex flex-col items-center text-center group">
+    <Link to="/" className="flex flex-col items-center text-center group">
       <svg
         width="24"
         height="24"

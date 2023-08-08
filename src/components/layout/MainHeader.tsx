@@ -6,6 +6,7 @@ import { ReactComponent as Logo } from '../../assets/icons/Logo.svg';
 import { ReactComponent as Profile } from '../../assets/icons/Profile_24.svg';
 import { ReactComponent as Notifications } from '../../assets/icons/Notifications.svg';
 import { axiosInstance } from '../../utils/apiInstance';
+import { accessTokenState } from '../../atoms/token/accessTokenAtom';
 
 type MainHeaderProps = {
   menu?: boolean;
@@ -15,8 +16,9 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
   const goMain = () => {
-    navigate('/home');
+    navigate('/');
   };
+  const token = useRecoilValue(accessTokenState);
 
   const mainMenu = [
     { id: 'Members', content: '직원 관리', path: '/staffs' },
@@ -41,10 +43,10 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
   useEffect(() => {
     getUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token]);
 
   return (
-    <header className="flex justify-between py-3 border-b base-px border-line-200">
+    <header className="fixed top-0 left-0 flex justify-between w-full p-4 py-3 bg-white border-b base-px border-line-200">
       <nav className="gap-8 flex-center">
         <button onClick={goMain} type="button">
           <Logo />

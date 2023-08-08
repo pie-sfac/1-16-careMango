@@ -98,6 +98,7 @@ const CreateTicket = () => {
             placeholder="수강권명을 입력해주세요(15자이내)"
             required
             width="w-80"
+            maxLength={15}
           />
 
           <div>
@@ -121,6 +122,7 @@ const CreateTicket = () => {
                   ]}
                   value={state.defaultTermUnit}
                   onChange={handleChange}
+                  required
                 />
               }
             />
@@ -170,6 +172,7 @@ const CreateTicket = () => {
             unit="회"
             align="text-center"
             width="w-72"
+            required
           />
         </div>
 

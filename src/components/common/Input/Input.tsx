@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 
 interface InputProps {
   type: string;
@@ -14,6 +14,7 @@ interface InputProps {
   width?: string;
   required?: boolean;
   unitSelect?: React.ReactNode;
+  maxLength?: number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -30,8 +31,16 @@ const Input: React.FC<InputProps> = ({
   width = 'w-30',
   required,
   unitSelect,
+  maxLength,
 }) => {
-  const unitPosition = align === 'text-left' ? 'left-72' : 'left-48';
+  const unitPosition = align === 'text-left' ? 'left-72' : 'left-52';
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === '-') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
       {label && (
@@ -49,8 +58,10 @@ const Input: React.FC<InputProps> = ({
             name={name}
             type={type}
             value={value === 0 ? '' : value}
+            onKeyDown={handleKeyDown}
             onChange={onChange}
             placeholder={placeholder}
+            maxLength={maxLength}
           />
           <span className={`absolute ${unitPosition} text-text-700`}>{unit}</span>
           {rightBtn}
@@ -65,8 +76,6 @@ const Input: React.FC<InputProps> = ({
             name={name}
             type={type}
             value={value === 0 ? '' : value}
-            onChange={onChange}
-            placeholder={placeholder}
             readOnly
           />
           <span className={`absolute ${unitPosition} text-text-700`}>{unit}</span>

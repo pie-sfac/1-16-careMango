@@ -121,6 +121,7 @@ const CreateTicket = () => {
                   ]}
                   value={state.defaultTermUnit}
                   onChange={handleChange}
+                  required
                 />
               }
             />
@@ -170,6 +171,7 @@ const CreateTicket = () => {
             unit="회"
             align="text-center"
             width="w-72"
+            required
           />
         </div>
 

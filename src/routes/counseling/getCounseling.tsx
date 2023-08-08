@@ -4,11 +4,10 @@ import { axiosInstance } from '../../utils/apiInstance';
 import { CounselingDetail } from '../../types/counseling/counselingDetail';
 import Card from '../../components/common/Card';
 import SubHeader from '../../components/common/SubHeader';
-// import { getDay, getTime } from '../../utils/date';
 import CounselingScheduleBox from '../../components/counseling/CounselingScheduleBox';
 import CounselingScheduleDetail from '../../components/counseling/CounselingScheduleDetail';
 
-const ReadCounseling = () => {
+const GetCounseling = () => {
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [counselingData, setCounselingData] = useState<CounselingDetail | null>(null);
 
@@ -60,4 +59,4 @@ const ReadCounseling = () => {
     </>
   );
 };
-export default ReadCounseling;
+export default GetCounseling;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -27,7 +27,14 @@ function Login({ setAccessToken }: LoginProps) {
     isAdmin: false,
   });
 
-  // const navigate = useNavigate();
+  const [tabIndex, setTabIndex] = useState(0);
+
+  useEffect(() => {
+    setLoginInfo((prev) => ({
+      ...prev,
+      isAdmin: tabIndex === 1, // 관리자 탭이 선택되면 true, 직원 탭이 선택되면 false
+    }));
+  }, [tabIndex]);
 
   const mutation = useMutation((info: LoginInfo) => {
     const apiUrl = info.isAdmin
@@ -62,7 +69,7 @@ function Login({ setAccessToken }: LoginProps) {
 
   return (
     <div className="w-full max-w-xs mx-auto mt-20">
-      <Tabs>
+      <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
         <TabList className="flex w-2/4 mb-3">
           <Tab className="flex-1 py-2 text-sm text-center border-b-4 cursor-pointer focus:outline-none focus:shadow-outline focus:text-blue-500 focus:border-blue-500">
             관리자 로그인

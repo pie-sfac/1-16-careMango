@@ -16,14 +16,14 @@ const Layout = ({ children }: LayoutProps) => {
     menu = true;
   }
   let bgColor = '';
-  if (pathName.includes('/schedule') || pathName.includes('members') || pathName.includes('/staffs')) {
+  if (pathName === '/schedule' || pathName === '/members' || pathName === '/staffs') {
     bgColor = 'bg-bg-100';
   }
 
   return (
     <>
       {menu ? <MainHeader menu /> : <MainHeader />}
-      <main className={`pb-24 base-px ${bgColor}`}>{children}</main>
+      <main className={`pt-12 pb-24 base-px ${bgColor} min-h-screen overflow-auto box-border`}>{children}</main>
       <BottomNav />
     </>
   );

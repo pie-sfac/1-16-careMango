@@ -8,10 +8,12 @@ import { ReactComponent as Search } from '../../assets/icons/Search.svg';
 const ShowStaffs = () => {
   const [staffList, setStaffList] = useState<Staff[] | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isRegister, setIsRegister] = useState(false);
 
   const getStaffs = async () => {
     const res = await axiosInstance.get('staffs');
     setStaffList(res.data.datas);
+    console.log(res.data.datas);
   };
 
   useEffect(() => {
@@ -20,7 +22,9 @@ const ShowStaffs = () => {
 
   let displayedStaffs = staffList || [];
   if (searchQuery) {
-    displayedStaffs = displayedStaffs.filter((data) => data.name.includes(searchQuery));
+    displayedStaffs = displayedStaffs.filter(
+      (data) => data.name.includes(searchQuery) || data.phone.includes(searchQuery),
+    );
   }
 
   const navigate = useNavigate();
@@ -46,9 +50,20 @@ const ShowStaffs = () => {
         <div className="flex items-center justify-center">
           <h1 className="mr-2 font-bold">직원 리스트</h1>
           <p className="text-primary-500">{displayedStaffs?.length || 0}</p>
-          <button type="button">등록일</button>
-          <button type="button">이름순</button>
-          <button type="button" onClick={goCreateStaff}>
+        </div>
+
+        <div>
+          <button className="mr-2" type="button">
+            등록일
+          </button>
+          <button className="mr-2" type="button">
+            이름순
+          </button>
+
+          <button
+            className="px-2 bg-white border-2 border-solid border-line-300 rounded-xl"
+            type="button"
+            onClick={() => navigate('/staffs/createStaff')}>
             직원등록
           </button>
         </div>

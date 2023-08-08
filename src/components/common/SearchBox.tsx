@@ -26,7 +26,7 @@ function SearchBox() {
     try {
       const response = await axiosInstance.get<SearchResult>(`/search?query=${query}`);
       if (response.data && response.data.members && response.data.users) {
-        navigate('/search-results', { state: { members: response.data.members, users: response.data.users } });
+        navigate('/search-results', { state: { query } });
       } else {
         console.error('No data received');
       }

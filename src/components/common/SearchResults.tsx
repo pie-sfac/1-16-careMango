@@ -13,14 +13,18 @@ function SearchResults() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('State:', state);
+
     if (state && state.query) {
       const fetchData = async () => {
         try {
           const response = await axiosInstance.get(`/search?query=${state.query}`);
+          console.log(response.data);
           setMembers(response.data.members);
           setUsers(response.data.users);
           setLoading(false);
         } catch (err) {
+          console.error('API Error:', err); // 이 부분 추가
           setError('Error fetching search results');
           setLoading(false);
         }

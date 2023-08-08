@@ -31,8 +31,8 @@ const ScheduleApi = () => {
     navigate('/schedule/personal/new');
   };
 
-  const goCheckCounseling = () => {
-    navigate('/schedules/counseling/174');
+  const goCheckCounseling = (scheduleId: number) => {
+    navigate(`counseling/${scheduleId}`);
   };
 
   return (
@@ -45,9 +45,6 @@ const ScheduleApi = () => {
       </button>
       <button type="button" className="w-20 m-3 border-8" onClick={goCreateCounseling}>
         상담 일정 생성
-      </button>
-      <button type="button" className="w-20 m-3 border-8" onClick={goCheckCounseling}>
-        상담 일정 조회
       </button>
 
       <p>개인 수업 일정</p>
@@ -64,7 +61,7 @@ const ScheduleApi = () => {
 
       <p>상담 일정</p>
       {scheduleList?.counselingSchedules.map((counseling) => (
-        <button key={counseling.id} type="button">
+        <button key={counseling.id} type="button" onClick={() => goCheckCounseling(counseling.id)}>
           <div className="flex">
             <p>
               {counseling.startAt.split('T')[1]}~{counseling.endAt.split('T')[1]}

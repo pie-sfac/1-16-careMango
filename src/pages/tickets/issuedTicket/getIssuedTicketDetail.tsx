@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import SubHeader from '../../../components/common/SubHeader';
-import { axiosInstance } from '../../../utils/apiInstance';
-import { TicketsData } from '../../../types/tickets/tickets';
-import { LessonTypeEnum, TermUnitEnum } from '../../../enums/Ticket';
-import Input from '../../../components/common/Input/Input';
-import { calculateDate, getDay, getDay2 } from '../../../utils/date';
-import { ReactComponent as Plus } from '../../../assets/icons/Plus.svg';
-import { ReactComponent as Minus } from '../../../assets/icons/Minus.svg';
-import Select from '../../../components/common/Select/Select';
-import { memberIdState } from '../../../atoms/members/memberIdAtom';
-import Modal from '../../../components/common/Modal/Modal';
+import SubHeader from '@components/common/SubHeader';
+import { axiosInstance } from '@/utils/apiInstance';
+import { TicketsData } from '@/types/tickets/tickets';
+import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
+import Input from '@components/common/Input/Input';
+import { calculateDate, getDay, getDay2 } from '@/utils/date';
+import { ReactComponent as Plus } from '@/assets/icons/Plus.svg';
+import { ReactComponent as Minus } from '@/assets/icons/Minus.svg';
+import Select from '@components/common/Select/Select';
+import { memberIdState } from '@/atoms/members/memberIdAtom';
+import Modal from '@components/common/Modal/Modal';
 
 interface IssuedTicketData {
   memberIds: number[];

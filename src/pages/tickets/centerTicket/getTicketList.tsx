@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import TicketList from '../../../components/tickets/TicketList';
+import TicketList from '@pages/tickets/components/TicketList';
 
-const CenterTicket = () => {
+const CenterTicketPage = () => {
   const navigate = useNavigate();
 
   const onClickAdd = () => {
@@ -21,4 +21,4 @@ const CenterTicket = () => {
     </>
   );
 };
-export default CenterTicket;
+export default CenterTicketPage;

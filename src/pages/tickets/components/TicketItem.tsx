@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../common/Card';
-import { TicketsData } from '../../types/tickets/tickets';
-import { LessonTypeEnum, TermUnitEnum } from '../../enums/Ticket';
-import { ReactComponent as Ticket } from '../../assets/icons/Ticket.svg';
+import Card from '@components/common/Card';
+import { TicketsData } from '@/types/tickets/tickets';
+import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
+import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
 
 const TicketItem = ({ ticket }: { ticket: TicketsData }) => {
   const navigate = useNavigate();

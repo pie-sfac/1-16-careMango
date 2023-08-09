@@ -1,28 +1,28 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
-import CheckSchedule from './routes/schedule/checkSchedule';
-import CreateCounseling from './routes/counseling/createCounseling';
-import GetCounseling from './routes/counseling/getCounseling';
-import UpdateCounseling from './routes/counseling/updateCounseling';
-import Home from './routes/home';
-import Schedule from './routes/schedule';
-import ScheduleApi from './routes/scheduleApi';
-import ChangeSchedule from './routes/schedule/changeSchedule';
-import CenterTicket from './routes/tickets/centerTicket/centerTicketList';
-import CreateTicket from './routes/tickets/centerTicket/createTicket';
-import PersonalClass from './routes/createSchedule/PersonalClass';
-import SearchMembers from './routes/createSchedule/searchMembers/searchMembers';
-import ShowMembers from './routes/members/showMembers';
-import CheckMembers from './routes/members/checkMembers';
+import CheckSchedule from './pages/schedule/checkSchedule';
+import CreateCounseling from './pages/counseling/createCounseling';
+import GetCounseling from './pages/counseling/getCounseling';
+import UpdateCounseling from './pages/counseling/updateCounseling';
+import Home from './pages/home';
+import Schedule from './pages/schedule';
+import ScheduleApi from './pages/scheduleApi';
+import ChangeSchedule from './pages/schedule/changeSchedule';
+import CenterTicket from './pages/tickets/centerTicket/centerTicketList';
+import CreateTicket from './pages/tickets/centerTicket/createTicket';
+import PersonalClass from './pages/createSchedule/PersonalClass';
+import SearchMembers from './pages/createSchedule/searchMembers/searchMembers';
+import ShowMembers from './pages/members/showMembers';
+import CheckMembers from './pages/members/checkMembers';
 import Layout from './components/layout/Layout';
-import IssuedTicketList from './routes/tickets/issuedTicket/issuedTicketList';
-import AllTicketList from './routes/tickets/issuedTicket/allTicketList';
-import IssuedTicketDetail from './routes/tickets/issuedTicket/issuedTicketDetail';
-import ShowStaffs from './routes/staffs/showStaffs';
-import MyPage from './routes/myPage';
+import IssuedTicketList from './pages/tickets/issuedTicket/issuedTicketList';
+import AllTicketList from './pages/tickets/issuedTicket/allTicketList';
+import IssuedTicketDetail from './pages/tickets/issuedTicket/issuedTicketDetail';
+import ShowStaffs from './pages/staffs/showStaffs';
+import MyPage from './pages/myPage';
 import SearchResults from './components/common/SearchResults';
-import LoginRouter from './routes/auth/LoginRouter';
+import LoginRouter from './pages/auth/LoginRouter';
 
 function App() {
   return (

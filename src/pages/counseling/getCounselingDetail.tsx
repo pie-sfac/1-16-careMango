@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import { CounselingDetail } from '../../types/counseling/counselingDetail';
-import Card from '../../components/common/Card';
-import SubHeader from '../../components/common/SubHeader';
-import CounselingScheduleBox from '../../components/counseling/CounselingScheduleBox';
-import CounselingScheduleDetail from '../../components/counseling/CounselingScheduleDetail';
+import { axiosInstance } from '@/utils/apiInstance';
+import { CounselingDetail } from '@/types/counseling/counselingDetail';
+import Card from '@components/common/Card';
+import SubHeader from '@components/common/SubHeader';
+import CounselingScheduleBox from '@pages/counseling/components/CounselingScheduleBox';
+import CounselingScheduleDetail from '@pages/counseling/components/CounselingScheduleDetail';
 
-const GetCounseling = () => {
+const GetCounselingDetail = () => {
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [counselingData, setCounselingData] = useState<CounselingDetail | null>(null);
 
@@ -64,4 +64,4 @@ const GetCounseling = () => {
     </>
   );
 };
-export default GetCounseling;
+export default GetCounselingDetail;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import register from '../../assets/images/Graphic_Member_registered.png';
-import { ReactComponent as Close } from '../../assets/icons/Close.svg';
+import register from '@/assets/images/Graphic_Member_registered.png';
+import { ReactComponent as Close } from '@/assets/icons/Close.svg';
 
 interface CompleteMembersProps {
   onExit: () => void;

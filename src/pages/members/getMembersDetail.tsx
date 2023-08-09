@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import SubHeader from '../../components/common/SubHeader';
-import { ReactComponent as MoreVert } from '../../assets/icons/MoreVert.svg';
-import { ReactComponent as Document } from '../../assets/icons/Document.svg';
-import { ReactComponent as Message } from '../../assets/icons/Message.svg';
-import { ReactComponent as Profile40 } from '../../assets/icons/Profile_40.svg';
-import { ReactComponent as Edit } from '../../assets/icons/Edit.svg';
-// import MemberInformation from '../../components/members/MemberInformation';
-import MemberRecord from '../../components/members/MemberRecord';
-import MemberReview from '../../components/members/MemberReview';
-import MemberAlbum from '../../components/members/MemberAlbum';
-import { MembersDetail } from '../../types/members/membersDetail';
+import { axiosInstance } from '@/utils/apiInstance';
+import SubHeader from '@components/common/SubHeader';
+import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
+import { ReactComponent as Document } from '@/assets/icons/Document.svg';
+import { ReactComponent as Message } from '@/assets/icons/Message.svg';
+import { ReactComponent as Profile40 } from '@/assets/icons/Profile_40.svg';
+import { ReactComponent as Edit } from '@/assets/icons/Edit.svg';
+import MemberRecord from '@pages/members/components/MemberRecord';
+import MemberReview from '@pages/members/components/MemberReview';
+import MemberAlbum from '@pages/members/components/MemberAlbum';
+import { MembersDetail } from '@/types/members/membersDetail';
 
 type TabType = 'record' | 'review' | 'album';
 
-const MemberInfo = () => {
+const GetMembersDetail = () => {
   const [activeTab, setActiveTab] = useState<TabType>('record');
   const { memberId } = useParams<{ memberId: string | undefined }>();
 
@@ -109,4 +108,4 @@ const MemberInfo = () => {
   );
 };
 
-export default MemberInfo;
+export default GetMembersDetail;

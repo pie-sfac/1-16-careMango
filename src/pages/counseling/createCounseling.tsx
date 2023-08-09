@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { schedulesState } from '../../atoms/counseling/counselingScheduleAtom';
-import { axiosInstance } from '../../utils/apiInstance';
-import SelectDate from '../../components/common/SelectDate';
-import SelectTime from '../../components/common/SelectTime';
-import Input from '../../components/common/Input/Input';
-import Select from '../../components/common/Select/Select';
-import InputMemo from '../../components/common/InputMemo';
-import { StateType } from '../../types/counseling/counseling';
-import SubHeader from '../../components/common/SubHeader';
+import { schedulesState } from '@/atoms/counseling/counselingScheduleAtom';
+import { axiosInstance } from '@/utils/apiInstance';
+import SelectDate from '@components/common/SelectDate';
+import SelectTime from '@components/common/SelectTime';
+import Input from '@components/common/Input/Input';
+import Select from '@components/common/Select/Select';
+import InputMemo from '@components/common/InputMemo';
+import { StateType } from '@/types/counseling/counseling';
+import SubHeader from '@components/common/SubHeader';
 
 const initialState: StateType = {
   userId: 0,

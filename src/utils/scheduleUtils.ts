@@ -1,4 +1,4 @@
-import { CounselingSchedule, PrivateSchedule } from '../types/scheduleApi';
+import { CounselingSchedule, PrivateSchedule } from '@/types/scheduleApi';
 
 export interface Schedule {
   id: string;

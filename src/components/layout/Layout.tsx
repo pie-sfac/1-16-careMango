@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import MainHeader from './MainHeader';
-import BottomNav from './BottomNav';
+import MainHeader from '@components/layout/MainHeader';
+import BottomNav from '@components/layout/BottomNav';
 
 interface LayoutProps {
   children: React.ReactNode;

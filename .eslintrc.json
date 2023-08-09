@@ -27,6 +27,7 @@
   "ignorePatterns": [".eslintrc.cjs", "vite.config.ts", "tailwind.config.js"],
   "rules": {
     "no-console": "off",
+    "no-alert": "off",
     "prettier/prettier": [
       "error",
       {

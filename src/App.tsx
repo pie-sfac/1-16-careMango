@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import CheckSchedule from './routes/schedule/checkSchedule';
 import CreateCounseling from './routes/counseling/createCounseling';
-import CheckCounseling from './routes/counseling/checkCounseling';
+import GetCounseling from './routes/counseling/getCounseling';
+import UpdateCounseling from './routes/counseling/updateCounseling';
 import Home from './routes/home';
 import Schedule from './routes/schedule';
 import ScheduleApi from './routes/scheduleApi';
@@ -34,7 +35,8 @@ function App() {
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/schedules" element={<ScheduleApi />} />
             <Route path="/schedule/personal/edit/:scheduleId" element={<ChangeSchedule />} />
-            <Route path="/schedules/counseling/:scheduleId" element={<CheckCounseling />} />
+            <Route path="/schedules/counseling/update/:scheduleId" element={<UpdateCounseling />} />
+            <Route path="/schedules/counseling/:scheduleId" element={<GetCounseling />} />
             <Route path="/schedules/counseling" element={<CreateCounseling />} />
             <Route path="/tickets/centerTicket" element={<CenterTicket />} />
             <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />

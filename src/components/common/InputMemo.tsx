@@ -3,9 +3,11 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 interface InputMemoProps {
   title: string;
   onChange: (value: string) => void;
+  width?: string;
+  height?: string;
 }
 
-const InputMemo = ({ title, onChange }: InputMemoProps) => {
+const InputMemo = ({ title, width, height, onChange }: InputMemoProps) => {
   const [state, setState] = useState<string>('');
   const [memoLength, setMemoLength] = useState(0);
 
@@ -26,13 +28,13 @@ const InputMemo = ({ title, onChange }: InputMemoProps) => {
       <div className="relative">
         <textarea
           id="inputMemo"
-          className="block w-full pb-1 input-select"
+          className={`${width} ${height} block pb-1 input-select`}
           name="memo"
           value={state}
           onChange={handleChange}
           placeholder="내용을 입력해 주세요. (500자 이내)"
         />
-        <p className="mt-4 text-right text-gray-400">{memoLength}/500자</p>
+        <p className={`${width} mt-4 text-right text-gray-400`}>{memoLength}/500자</p>
       </div>
     </label>
   );

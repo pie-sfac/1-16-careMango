@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import { User, Member } from '../../types/search/search';
+import { axiosInstance } from '@/utils/apiInstance';
+import { User, Member } from '@/types/search/search';
 
 function SearchResults() {
   const location = useLocation();

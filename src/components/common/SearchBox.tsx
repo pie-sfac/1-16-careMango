@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import { User, Member } from '../../types/search/search';
-import { ReactComponent as Search } from '../../assets/icons/Search.svg';
+import { axiosInstance } from '@/utils/apiInstance';
+import { User, Member } from '@/types/search/search';
+import { ReactComponent as Search } from '@/assets/icons/Search.svg';
 
 interface SearchResult {
   searchParam: {

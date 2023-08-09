@@ -100,10 +100,6 @@ const CreateStaff = ({ onRegistered }: CreateStaffProps) => {
           완료
         </button>
       </form>
-
-      {/* <StaffRegFirst />
-      <StaffRegSecond />
-      <StaffRegThird /> */}
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import { Staff } from '../../types/staffs/staffs';
-import StaffListItem from '../../components/staffs/StaffListItem';
-import { ReactComponent as Search } from '../../assets/icons/Search.svg';
+import { axiosInstance } from '@/utils/apiInstance';
+import { Staff } from '@/types/staffs/staffs';
+import StaffListItem from '@pages/staffs/components/StaffListItem';
+import { ReactComponent as Search } from '@/assets/icons/Search.svg';
 
 const ShowStaffs = () => {
   const [staffList, setStaffList] = useState<Staff[] | null>(null);

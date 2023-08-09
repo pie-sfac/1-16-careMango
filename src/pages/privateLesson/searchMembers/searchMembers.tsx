@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Member } from '../../../types/members/members';
-import { axiosInstance } from '../../../utils/apiInstance';
-
-import MemberListItem from '../../../components/createSchedule/MemberListItem';
+import { Member } from '@/types/members/members';
+import { axiosInstance } from '@/utils/apiInstance';
+import MemberListItem from '@pages/privateLesson/components/MemberListItem';
 
 const SearchMembers = () => {
   const [memberList, setMemberList] = useState<Member[] | null>(null);

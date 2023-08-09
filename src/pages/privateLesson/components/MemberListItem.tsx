@@ -1,5 +1,5 @@
 import React from 'react';
-import { MembersData } from '../../types/members/members';
+import { MembersData } from '@/types/members/members';
 
 type MembersType = MembersData['datas'][number];
 

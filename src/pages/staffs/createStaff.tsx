@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import SubHeader from '../../components/common/SubHeader';
-import StaffRegFirst from '../../components/staffs/createStaff/registerStep/StaffRegFirst';
-import StaffRegSecond from '../../components/staffs/createStaff/registerStep/StaffRegSecond';
-import StaffRegThird from '../../components/staffs/createStaff/registerStep/StaffRegThird';
-import InputName from '../../components/common/InputName';
-import InputContact from '../../components/common/InputContact';
-import InputPw from '../../components/common/InputPw';
+import { axiosInstance } from '@/utils/apiInstance';
+import SubHeader from '@/components/common/SubHeader';
+import InputName from '@components/common/InputName';
+import InputContact from '@components/common/InputContact';
+import InputPw from '@components/common/InputPw';
 
 interface StaffRegType {
   loginId: string;

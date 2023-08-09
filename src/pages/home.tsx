@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { axiosInstance } from '../utils/apiInstance';
-import { ReactComponent as BlankPerson } from '../assets/icons/BlankPerson.svg';
-import SearchBox from '../components/common/SearchBox';
+import { axiosInstance } from '@/utils/apiInstance';
+import { ReactComponent as BlankPerson } from '@/assets/icons/BlankPerson.svg';
+import SearchBox from '@components/common/SearchBox';
 
 import '../index.css';
 

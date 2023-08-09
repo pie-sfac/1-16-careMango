@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScheduleItemData } from '../../types/schedule/schedule';
-import { getDay, getTime } from '../../utils/date';
+import { ScheduleItemData } from '@/types/schedule/schedule';
+import { getDay, getTime } from '@/utils/date';
 
 const ScheduleBox = ({ itemData }: { itemData: ScheduleItemData }) => (
   <section className="relative h-40 bg-bg-100">

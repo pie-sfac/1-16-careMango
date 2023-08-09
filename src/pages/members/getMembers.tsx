@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import { Member } from '../../types/members/members';
-import NoMembers from '../../components/members/Nomembers';
-import MembersItem from '../../components/members/MembersItem';
-import RegisterMembers from './registerMembers';
-import CreateMembers from './createMembers';
-import { ReactComponent as Search } from '../../assets/icons/Search.svg';
+import { axiosInstance } from '@/utils/apiInstance';
+import { Member } from '@/types/members/members';
+import NoMembers from '@pages/members/components/NoMembers';
+import MembersItem from '@pages/members/components/MembersItem';
+import RegisterMembers from '@pages/members/registerMembers';
+import CreateMembers from '@pages/members/createMembers';
+import { ReactComponent as Search } from '@/assets/icons/Search.svg';
 
-const ShowMembers = () => {
+const GetMembers = () => {
   const [memberList, setMemberList] = useState<Member[] | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isRegister, setIsRegister] = useState(false);
@@ -87,4 +87,4 @@ const ShowMembers = () => {
   );
 };
 
-export default ShowMembers;
+export default GetMembers;

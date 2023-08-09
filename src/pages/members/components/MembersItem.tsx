@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MembersData } from '../../types/members/members';
-import { ReactComponent as Profile24 } from '../../assets/icons/Profile_24.svg';
+import { MembersData } from '@/types/members/members';
+import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
 
 type MembersType = MembersData['datas'][number];
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../../utils/apiInstance';
-import SubHeader from '../../components/common/SubHeader';
-import InputName from '../../components/common/InputName';
-import SelectSex from '../../components/common/SelectSex';
-import InputContact from '../../components/common/InputContact';
-import InputBirth from '../../components/common/InputBirth';
-import SelectJob from '../../components/common/SelectJob';
-import SelectVisitRoute from '../../components/common/SelectVisitRoute';
-import AgreeCondition from '../../components/members/AgreeCondition';
+import { axiosInstance } from '@/utils/apiInstance';
+import SubHeader from '@components/common/SubHeader';
+import InputName from '@components/common/InputName';
+import SelectSex from '@components/common/SelectSex';
+import InputContact from '@components/common/InputContact';
+import InputBirth from '@components/common/InputBirth';
+import SelectJob from '@components/common/SelectJob';
+import SelectVisitRoute from '@components/common/SelectVisitRoute';
+import AgreeCondition from '@pages/members/components/AgreeCondition';
 
 interface StateType {
   name: string;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { CounselingDetail } from '../../types/counseling/counselingDetail';
-import { getDay, getTime } from '../../utils/date';
+import { CounselingDetail } from '@/types/counseling/counselingDetail';
+import { getDay, getTime } from '@/utils/date';
 
 const CounselingScheduleBox = ({ itemData }: { itemData: CounselingDetail }) => (
   <section className="relative h-40 bg-bg-100">

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import Login from '../login';
-import { accessTokenState } from '../../atoms/token/accessTokenAtom';
+import Login from '@pages/login';
+import { accessTokenState } from '@/atoms/token/accessTokenAtom';
 
 const LoginRouter = () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);

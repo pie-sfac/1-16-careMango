@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SubHeader from '../../../components/common/SubHeader';
-import { LessonTypeEnum, TermUnitEnum } from '../../../enums/Ticket';
-import Select from '../../../components/common/Select/Select';
-import Input from '../../../components/common/Input/Input';
-import { axiosInstance } from '../../../utils/apiInstance';
-import { ReactComponent as Plus } from '../../../assets/icons/Plus.svg';
-import { ReactComponent as Minus } from '../../../assets/icons/Minus.svg';
-import { CreateTicketType } from '../../../types/tickets/tickets';
-import CompleteButton from '../../../components/common/CompleteButton';
+import SubHeader from '@components/common/SubHeader';
+import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
+import Select from '@components/common/Select/Select';
+import Input from '@components/common/Input/Input';
+import { axiosInstance } from '@/utils/apiInstance';
+import { ReactComponent as Plus } from '@/assets/icons/Plus.svg';
+import { ReactComponent as Minus } from '@/assets/icons/Minus.svg';
+import { CreateTicketType } from '@/types/tickets/tickets';
+import CompleteButton from '@components/common/CompleteButton';
 
-const CreateTicket = () => {
+const CreateTicketPage = () => {
   const initialState = {
     lessonType: '',
     title: '',
@@ -172,4 +172,4 @@ const CreateTicket = () => {
     </>
   );
 };
-export default CreateTicket;
+export default CreateTicketPage;

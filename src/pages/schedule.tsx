@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import Calendar from '@toast-ui/react-calendar';
 // import { CounselingSchedule, PrivateSchedule, SchedulApiData } from '../types/scheduleApi';
-import { convertToDisplayData, Schedule } from '../utils/scheduleUtils';
-import { axiosInstance } from '../utils/apiInstance';
+import { convertToDisplayData, Schedule } from '@/utils/scheduleUtils';
+import { axiosInstance } from '@/utils/apiInstance';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
-import { ReactComponent as Search } from '../assets/icons/Search.svg';
-import { ReactComponent as Setting } from '../assets/icons/Setting.svg';
-import { ReactComponent as CalendarIcon } from '../assets/icons/Calendar.svg';
-import Modal from '../components/common/Modal/Modal';
+import { ReactComponent as Search } from '@/assets/icons/Search.svg';
+import { ReactComponent as Setting } from '@/assets/icons/Setting.svg';
+import { ReactComponent as CalendarIcon } from '@/assets/icons/Calendar.svg';
+import Modal from '@components/common/Modal/Modal';
 
 function ScheduleCalendar() {
   const [isOpen, setIsOpen] = useState(false);

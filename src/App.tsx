@@ -11,15 +11,15 @@ import ScheduleApi from './pages/scheduleApi';
 import ChangeSchedule from './pages/schedule/changeSchedule';
 import CenterTicket from './pages/tickets/centerTicket/centerTicketList';
 import CreateTicket from './pages/tickets/centerTicket/createTicket';
-import PersonalClass from './pages/createSchedule/PersonalClass';
-import SearchMembers from './pages/createSchedule/searchMembers/searchMembers';
+import PrivateLesson from './pages/privateLesson/PersonalClass';
+import SearchMembers from './pages/privateLesson/searchMembers/searchMembers';
 import ShowMembers from './pages/members/showMembers';
 import CheckMembers from './pages/members/checkMembers';
 import Layout from './components/layout/Layout';
 import IssuedTicketList from './pages/tickets/issuedTicket/issuedTicketList';
 import AllTicketList from './pages/tickets/issuedTicket/allTicketList';
 import IssuedTicketDetail from './pages/tickets/issuedTicket/issuedTicketDetail';
-import ShowStaffs from './pages/staffs/showStaffs';
+import ShowStaffs from '@pages/staffs/getStaffs';
 import MyPage from '@pages/myPage';
 import SearchResults from '@components/common/SearchResults';
 import LoginRouter from '@pages/auth/LoginRouter';
@@ -40,7 +40,7 @@ function App() {
             <Route path="/schedules/counseling" element={<CreateCounseling />} />
             <Route path="/tickets/centerTicket" element={<CenterTicket />} />
             <Route path="/tickets/centerTicket/new" element={<CreateTicket />} />
-            <Route path="/schedule/personal/new" element={<PersonalClass />} />
+            <Route path="/schedule/personal/new" element={<PrivateLesson />} />
             <Route path="/schedule/personal/searchMembers" element={<SearchMembers />} />
             <Route path="/members" element={<ShowMembers />} />
             <Route path="/members/:memberId" element={<CheckMembers />} />

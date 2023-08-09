@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import SelectCounselor from '../../components/common/SelectCounselor';
-import SelectClass from '../../components/createSchedule/SelectClass';
-import SelectDate from '../../components/common/SelectDate';
-import SelectTime from '../../components/common/SelectTime';
-import ButtonComplete from '../../components/createSchedule/ButtonComplete';
-import ButtonAddMembers from '../../components/createSchedule/ButtonAddMembers';
+import { useNavigate } from 'react-router-dom';
+import SelectDate from '@/components/common/SelectDate';
+import SelectTime from '@/components/common/SelectTime';
+import CompleteButton from '@/components/common/CompleteButton';
+import ButtonAddMembers from '@pages/privateLesson/components/ButtonAddMembers';
 
 interface Class {
   instructor: string;
@@ -17,7 +14,7 @@ interface Class {
   endAt: string;
 }
 
-const PersonalClass = () => {
+const PrivateLesson = () => {
   const [state, setState] = useState<Class>({
     instructor: '',
     member: '',
@@ -69,14 +66,12 @@ const PersonalClass = () => {
       </header>
       <div className="flex flex-col">
         <h1 className="main-title">개인 수업</h1>
-        <SelectCounselor title="담당 강사 선택" />
         <ButtonAddMembers />
-        <SelectClass title="수업(수강권) 선택" flag={true} count={3} />
+
         <h2>참여 회원</h2>
         {/* 참여 회원 목록은 강사/회원 선택 시 자동으로 입력됨 */}
-        <SelectDate title="일자 선택" />
+        <SelectDate label="일자 선택" />
         <SelectTime title="시간 선택" />
-        {/* <ButtonComplete /> */}
         <button
           className={`my-5 py-3 rounded ${
             allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
@@ -90,4 +85,4 @@ const PersonalClass = () => {
   );
 };
 
-export default PersonalClass;
+export default PrivateLesson;

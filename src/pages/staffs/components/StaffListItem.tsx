@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StaffsData } from '../../types/staffs/staffs';
-import { ReactComponent as Profile24 } from '../../assets/icons/Profile_24.svg';
+import { StaffsData } from '@/types/staffs/staffs';
+import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
 
 type StaffsType = StaffsData['datas'][number];
 

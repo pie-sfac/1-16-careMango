@@ -12,7 +12,7 @@ import ScheduleApi from '@pages/scheduleApi';
 import CenterTicketPage from '@pages/tickets/centerTicket/getTicketList';
 import CreateTicketPage from '@pages/tickets/centerTicket/createTicket';
 import CreatePrivateLesson from '@/pages/privateLesson/createPrivateLesson';
-import SearchMembers from './pages/createSchedule/searchMembers/searchMembers';
+import SearchMembers from '@pages/privateLesson/searchMembers/searchMembers';
 import GetMembers from '@pages/members/getMembers';
 import GetMembersDetail from '@pages/members/getMembersDetail';
 import Layout from './components/layout/Layout';

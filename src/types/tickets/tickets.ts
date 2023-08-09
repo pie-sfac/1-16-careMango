@@ -34,3 +34,13 @@ export interface IssuedTicketsData extends Tickets {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CreateTicketType {
+  lessonType: string;
+  title: string;
+  defaultTerm: number;
+  defaultTermUnit: string;
+  duration: number;
+  defaultCount: number;
+  maxServiceCount?: number;
+}

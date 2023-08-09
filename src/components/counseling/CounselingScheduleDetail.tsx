@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../common/Modal/Modal';
+import { axiosInstance } from '../../utils/apiInstance';
 import { CounselingDetail } from '../../types/counseling/counselingDetail';
 import { ReactComponent as Profile24 } from '../../assets/icons/Profile_24.svg';
 import { ReactComponent as Close } from '../../assets/icons/Close.svg';
@@ -12,6 +13,9 @@ interface CounselingScheduleDetailProps {
 const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) => {
   const [counselingContent, setCounselingContent] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [isContentEmpty, setIsContentEmpty] = useState(true);
+  const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
+  // const [counselingData, setCounselingData] = useState<CounselingDetail | null>(null);
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -21,9 +25,34 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
     setShowModal(false);
   };
 
-  const handleConfirmModal = () => {
-    // 상담 내용 저장 로직 구현 (예: API 호출)
+  const handleConfirmModal = async () => {
+    // ... (다른 코드는 그대로 유지)
+
+    // 3. 상담 기록 데이터 준비
+    const newCounselingRecord = {
+      counselingRecordContent: counselingContent,
+      // 필요하다면 다른 정보도 여기에 추가
+    };
+
+    // 4. API 호출
+    try {
+      // '/your-api-endpoint'는 실제 API endpoint로 바꿔야 합니다.
+      const response = await axiosInstance.put(`schedules/counseling/${scheduleId}`, newCounselingRecord);
+
+      if (response.status === 200 || response.status === 201) {
+        console.log('Data successfully saved.');
+        // 필요한 후속 처리 작업을 여기에 추가합니다. (예: 알림 표시)
+      }
+    } catch (error) {
+      console.error('Error saving the data:', error);
+    }
+
     handleCloseModal();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCounselingContent(e.target.value);
+    setIsContentEmpty(e.target.value.trim().length === 0); // 내용이 비어있는지 확인
   };
 
   // 회원 정보 등록 페이지로
@@ -31,6 +60,17 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
   const goCreatMembers = () => {
     navigate('/members', { state: { register: true } });
   };
+
+  // // API
+  // const getCounselingRecord = async () => {
+  //   const res = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
+  //   setCounselingData(res.data);
+  //   console.log(res.data.counselingRecord);
+  // };
+
+  // useEffect(() => {
+  //   getCounselingRecord();
+  // }, []);
 
   return (
     <>
@@ -63,6 +103,8 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
         isOpen={showModal}
         onClose={handleCloseModal}
         onConfirm={handleConfirmModal}
+        width="w-6/12"
+        isDisabled={isContentEmpty}
         content={
           <>
             <div className="flex justify-between mb-3">
@@ -76,7 +118,8 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
               className="w-full p-2 border rounded"
               placeholder="내용을 입력해 주세요. (1000자 이내)"
               value={counselingContent}
-              onChange={(e) => setCounselingContent(e.target.value)}
+              // onChange={(e) => setCounselingContent(e.target.value)}
+              onChange={handleChange}
             />
           </>
         }

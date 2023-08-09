@@ -14,7 +14,7 @@ interface Class {
   endAt: string;
 }
 
-const PrivateLesson = () => {
+const CreatePrivateLesson = () => {
   const [state, setState] = useState<Class>({
     instructor: '',
     member: '',
@@ -85,4 +85,4 @@ const PrivateLesson = () => {
   );
 };
 
-export default PrivateLesson;
+export default CreatePrivateLesson;

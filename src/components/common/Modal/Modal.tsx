@@ -5,9 +5,11 @@ interface ModalProps {
   content: React.ReactNode;
   onClose: () => void;
   onConfirm: () => void;
+  width?: string;
+  isDisabled?: boolean;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, content, onClose, onConfirm }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, content, onClose, onConfirm, width, isDisabled = false }) => {
   if (!isOpen) {
     return null;
   }
@@ -38,10 +40,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, content, onClose, onConfirm }) =>
       <div className="p-10 bg-white rounded shadow-md" onClick={stopPropagation}>
         {content}
         <div className="flex justify-end mt-4">
-          <button className="px-4 py-2 mr-2 bg-gray-300 rounded" onClick={onClose} type="button">
+          {/* <button className="px-4 py-2 mr-2 bg-gray-300 rounded" onClick={onClose} type="button"> */}
+          <button className={`${width} px-4 py-2 mr-2 bg-gray-300 rounded`} onClick={onClose} type="button">
             취소
           </button>
-          <button className="px-4 py-2 text-white bg-blue-500 rounded" onClick={handleConfirm} type="button">
+          {/* <button className="px-4 py-2 text-white bg-blue-500 rounded" onClick={handleConfirm} type="button"> */}
+          <button
+            className={`${width} px-4 py-2 ${isDisabled ? 'bg-gray-300' : 'text-white bg-blue-500'} rounded`}
+            onClick={handleConfirm}
+            type="button"
+            disabled={isDisabled}>
             확인
           </button>
         </div>

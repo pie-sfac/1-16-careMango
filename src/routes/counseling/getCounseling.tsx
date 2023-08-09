@@ -4,11 +4,10 @@ import { axiosInstance } from '../../utils/apiInstance';
 import { CounselingDetail } from '../../types/counseling/counselingDetail';
 import Card from '../../components/common/Card';
 import SubHeader from '../../components/common/SubHeader';
-// import { getDay, getTime } from '../../utils/date';
 import CounselingScheduleBox from '../../components/counseling/CounselingScheduleBox';
 import CounselingScheduleDetail from '../../components/counseling/CounselingScheduleDetail';
 
-const CheckCounseling = () => {
+const GetCounseling = () => {
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [counselingData, setCounselingData] = useState<CounselingDetail | null>(null);
 
@@ -23,6 +22,11 @@ const CheckCounseling = () => {
     getCounseling();
   }, []);
 
+  const navigate = useNavigate();
+  const goUpdateCounseling = () => {
+    navigate(`/schedules/counseling/update/${scheduleId}`);
+  };
+
   if (!counselingData) return <p>loading...</p>;
   return (
     <>
@@ -32,7 +36,7 @@ const CheckCounseling = () => {
         }분 상담`}
         rightBtn={
           <div>
-            <button className="pl-5 text-base" type="button">
+            <button className="pl-5 text-base" type="button" onClick={goUpdateCounseling}>
               변경
             </button>
             <button className="pl-5 text-base" type="button">
@@ -60,4 +64,4 @@ const CheckCounseling = () => {
     </>
   );
 };
-export default CheckCounseling;
+export default GetCounseling;

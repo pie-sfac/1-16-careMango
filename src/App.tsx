@@ -5,8 +5,8 @@ import CheckSchedule from './pages/schedule/checkSchedule';
 import CreateCounseling from './pages/counseling/createCounseling';
 import GetCounseling from './pages/counseling/getCounseling';
 import UpdateCounseling from './pages/counseling/updateCounseling';
-import Home from './pages/home';
-import Schedule from './pages/schedule';
+import Home from '@pages/home';
+import Schedule from '@pages/schedule';
 import ScheduleApi from './pages/scheduleApi';
 import ChangeSchedule from './pages/schedule/changeSchedule';
 import CenterTicket from './pages/tickets/centerTicket/centerTicketList';
@@ -20,9 +20,9 @@ import IssuedTicketList from './pages/tickets/issuedTicket/issuedTicketList';
 import AllTicketList from './pages/tickets/issuedTicket/allTicketList';
 import IssuedTicketDetail from './pages/tickets/issuedTicket/issuedTicketDetail';
 import ShowStaffs from './pages/staffs/showStaffs';
-import MyPage from './pages/myPage';
-import SearchResults from './components/common/SearchResults';
-import LoginRouter from './pages/auth/LoginRouter';
+import MyPage from '@pages/myPage';
+import SearchResults from '@components/common/SearchResults';
+import LoginRouter from '@pages/auth/LoginRouter';
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { axiosInstance } from '../utils/apiInstance';
+import { axiosInstance } from '@/utils/apiInstance';
 
 interface Role {
   id: number;

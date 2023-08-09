@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ScheduleItemData } from '../../types/schedule/schedule';
-import { ReactComponent as Profile } from '../../assets/icons/Profile_24.svg';
-import Modal from '../common/Modal/Modal';
-import { axiosInstance } from '../../utils/apiInstance';
+import { ScheduleItemData } from '@/types/schedule/schedule';
+import { ReactComponent as Profile } from '@/assets/icons/Profile_24.svg';
+import Modal from '@components/common/Modal/Modal';
+import { axiosInstance } from '@/utils/apiInstance';
 
 interface ScheduleDetailProps {
   itemData: ScheduleItemData;

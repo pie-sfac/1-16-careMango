@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import SelectDate from '../../components/common/SelectDate';
-import SelectTime from '../../components/common/SelectTime';
-import SubHeader from '../../components/common/SubHeader';
-import { itemDataState } from '../../atoms/itemDataAtom';
-import { getDay, getTime } from '../../utils/date';
-import NameTag from '../../components/common/NameTag';
+import SelectDate from '@components/common/SelectDate';
+import SelectTime from '@components/common/SelectTime';
+import SubHeader from '@components/common/SubHeader';
+import NameTag from '@components/common/NameTag';
+import { itemDataState } from '@/atoms/itemDataAtom';
+import { getDay, getTime } from '@/utils/date';
 
-const ChangeSchedule = () => {
+const ScheduleUpdatePage = () => {
   const [itemData, setItemData] = useRecoilState(itemDataState);
   console.log(itemData);
 
@@ -42,4 +42,4 @@ const ChangeSchedule = () => {
   );
 };
 
-export default ChangeSchedule;
+export default ScheduleUpdatePage;

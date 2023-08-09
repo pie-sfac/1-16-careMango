@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { axiosInstance } from '../../utils/apiInstance';
-import { TicketsData } from '../../types/tickets/tickets';
+import { axiosInstance } from '@/utils/apiInstance';
+import { TicketsData } from '@/types/tickets/tickets';
 import TicketItem from './TicketItem';
 
 const TicketList = () => {

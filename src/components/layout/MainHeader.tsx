@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { userState } from '../../atoms/user/userAtom';
-import { ReactComponent as Logo } from '../../assets/icons/Logo.svg';
-import { ReactComponent as Profile } from '../../assets/icons/Profile_24.svg';
-import { ReactComponent as Notifications } from '../../assets/icons/Notifications.svg';
-import { axiosInstance } from '../../utils/apiInstance';
-import { accessTokenState } from '../../atoms/token/accessTokenAtom';
+import { userState } from '@/atoms/user/userAtom';
+import { ReactComponent as Logo } from '@/assets/icons/Logo.svg';
+import { ReactComponent as Profile } from '@/assets/icons/Profile_24.svg';
+import { ReactComponent as Notifications } from '@/assets/icons/Notifications.svg';
+import { axiosInstance } from '@/utils/apiInstance';
+import { accessTokenState } from '@/atoms/token/accessTokenAtom';
 
 type MainHeaderProps = {
   menu?: boolean;

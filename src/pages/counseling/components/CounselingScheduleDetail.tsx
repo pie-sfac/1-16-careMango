@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Modal from '../common/Modal/Modal';
-import { axiosInstance } from '../../utils/apiInstance';
-import { CounselingDetail } from '../../types/counseling/counselingDetail';
-import { ReactComponent as Profile24 } from '../../assets/icons/Profile_24.svg';
-import { ReactComponent as Close } from '../../assets/icons/Close.svg';
+import Modal from '@components/common/Modal/Modal';
+import { axiosInstance } from '@/utils/apiInstance';
+import { CounselingDetail } from '@/types/counseling/counselingDetail';
+import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
+import { ReactComponent as Close } from '@/assets/icons/Close.svg';
 
 interface CounselingScheduleDetailProps {
   itemData: CounselingDetail;
@@ -26,25 +26,20 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
   };
 
   const handleConfirmModal = async () => {
-    // ... (다른 코드는 그대로 유지)
-
-    // 3. 상담 기록 데이터 준비
+    // 상담 기록 데이터 준비
     const newCounselingRecord = {
       counselingRecordContent: counselingContent,
-      // 필요하다면 다른 정보도 여기에 추가
     };
 
-    // 4. API 호출
+    // API 호출
     try {
-      // '/your-api-endpoint'는 실제 API endpoint로 바꿔야 합니다.
       const response = await axiosInstance.put(`schedules/counseling/${scheduleId}`, newCounselingRecord);
 
       if (response.status === 200 || response.status === 201) {
-        console.log('Data successfully saved.');
-        // 필요한 후속 처리 작업을 여기에 추가합니다. (예: 알림 표시)
+        console.log('성공');
       }
     } catch (error) {
-      console.error('Error saving the data:', error);
+      console.error('실패', error);
     }
 
     handleCloseModal();

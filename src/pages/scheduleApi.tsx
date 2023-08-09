@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../utils/apiInstance';
-import { SchedulApiData } from '../types/scheduleApi';
+import { axiosInstance } from '@/utils/apiInstance';
+import { SchedulApiData } from '@/types/scheduleApi';
 
 const ScheduleApi = () => {
   const [scheduleList, setScheduleList] = useState<SchedulApiData | null>(null);

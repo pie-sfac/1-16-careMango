@@ -58,6 +58,13 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
 
   return (
     <header className="fixed top-0 left-0 flex justify-between w-full p-4 py-3 bg-white border-b base-px border-line-200">
+      {showLogoutButton && (
+        <div className="absolute top-20 right-24 transform -translate-x-1/2 -translate-y-full p-2 bg-white border border-gray-300 rounded-md shadow-lg">
+          <button onClick={handleLogout} type="button">
+            로그아웃
+          </button>
+        </div>
+      )}
       <nav className="gap-8 flex-center">
         <button onClick={goMain} type="button">
           <Logo />
@@ -85,11 +92,6 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
           <p className="mx-2 text-base" onClick={toggleLogoutButton}>
             {user?.name}
           </p>
-          {showLogoutButton && (
-            <button onClick={handleLogout} type="button" className="ml-2">
-              로그아웃
-            </button>
-          )}
           <span className="px-2 py-1 mr-4 text-xs rounded-md bg-bg-100 text-primary-500">
             {user?.active && '플랜 이용중'}
           </span>

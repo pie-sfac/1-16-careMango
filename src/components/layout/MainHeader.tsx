@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '@/atoms/user/userAtom';
@@ -13,6 +13,17 @@ type MainHeaderProps = {
 };
 
 const MainHeader = ({ menu }: MainHeaderProps) => {
+  const [showLogoutButton, setShowLogoutButton] = useState(false);
+
+  const toggleLogoutButton = useCallback(() => {
+    setShowLogoutButton((prev) => !prev);
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    window.location.reload();
+  }, []);
+
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
   const goMain = () => {
@@ -68,10 +79,17 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
         <div
           className="flex items-center after:content-['|'] after:float-right after:block after:text-line-200
         before:content-['|'] before:float-right before:block before:text-line-200">
-          <button type="button" className="ml-4">
+          <button type="button" className="ml-4" onClick={toggleLogoutButton}>
             <Profile />
           </button>
-          <p className="mx-2 text-base">{user?.name}</p>
+          <p className="mx-2 text-base" onClick={toggleLogoutButton}>
+            {user?.name}
+          </p>
+          {showLogoutButton && (
+            <button onClick={handleLogout} type="button" className="ml-2">
+              로그아웃
+            </button>
+          )}
           <span className="px-2 py-1 mr-4 text-xs rounded-md bg-bg-100 text-primary-500">
             {user?.active && '플랜 이용중'}
           </span>

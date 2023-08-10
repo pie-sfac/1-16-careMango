@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '@/atoms/user/userAtom';
@@ -13,6 +13,17 @@ type MainHeaderProps = {
 };
 
 const MainHeader = ({ menu }: MainHeaderProps) => {
+  const [showLogoutButton, setShowLogoutButton] = useState(false);
+
+  const toggleLogoutButton = useCallback(() => {
+    setShowLogoutButton((prev) => !prev);
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    window.location.reload();
+  }, []);
+
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
   const goMain = () => {
@@ -47,6 +58,13 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
 
   return (
     <header className="fixed top-0 left-0 flex justify-between w-full p-4 py-3 bg-white border-b base-px border-line-200">
+      {showLogoutButton && (
+        <div className="absolute top-20 right-24 transform -translate-x-1/2 -translate-y-full p-2 bg-white border border-gray-300 rounded-md shadow-lg">
+          <button onClick={handleLogout} type="button">
+            로그아웃
+          </button>
+        </div>
+      )}
       <nav className="gap-8 flex-center">
         <button onClick={goMain} type="button">
           <Logo />
@@ -68,10 +86,12 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
         <div
           className="flex items-center after:content-['|'] after:float-right after:block after:text-line-200
         before:content-['|'] before:float-right before:block before:text-line-200">
-          <button type="button" className="ml-4">
+          <button type="button" className="ml-4" onClick={toggleLogoutButton}>
             <Profile />
           </button>
-          <p className="mx-2 text-base">{user?.name}</p>
+          <p className="mx-2 text-base" onClick={toggleLogoutButton}>
+            {user?.name}
+          </p>
           <span className="px-2 py-1 mr-4 text-xs rounded-md bg-bg-100 text-primary-500">
             {user?.active && '플랜 이용중'}
           </span>

@@ -5,6 +5,7 @@ import SubHeader from '@/components/common/SubHeader';
 import InputName from '@components/common/InputName';
 import InputContact from '@components/common/InputContact';
 import InputPw from '@components/common/InputPw';
+import { info } from 'console';
 
 interface StateType {
   loginId: string;
@@ -28,7 +29,8 @@ interface CreateStaffProps {
 
 const CreateStaff = ({ onRegistered }: CreateStaffProps) => {
   const [state, setState] = useState<StateType>(initialState);
-  const [permissions, setPermissions] = useState([]);
+  const [infoChecked, setInfoChecked] = useState(false);
+  const [managerChecked, setManagerChecked] = useState(false);
   const navigate = useNavigate();
 
   const onChange = (name: string, value: string) => {
@@ -88,26 +90,36 @@ const CreateStaff = ({ onRegistered }: CreateStaffProps) => {
         <div className="flex flex-col">
           <input
             type="button"
-            className="p-4 card-border cursor-pointer"
+            className="p-4 border-solid border-2 border-primary-500 cursor-pointer"
             value={'일반 직원 (기본) 가장 기본적인 권한만 가지고 있습니다.'}
             onClick={() => console.log('basic clicked')}
           />
           <input
             type="button"
-            className="p-4 card-border cursor-pointer"
+            className={
+              infoChecked
+                ? 'p-4 border-solid border-2 border-primary-500 cursor-pointer'
+                : 'p-4 border-solid border-2 cursor-pointer'
+            }
             value={'인포 직원 직원 관리, 수업/수강권 관리, 일정 관리 권한을 소유하고 있습니다.'}
             onClick={() => {
               console.log('info clicked');
               addRole(3);
+              setInfoChecked(!infoChecked);
             }}
           />
           <input
             type="button"
-            className="p-4 card-border cursor-pointer"
+            className={
+              managerChecked
+                ? 'p-4 border-solid border-2 border-primary-500 cursor-pointer'
+                : 'p-4 border-solid border-2 cursor-pointer'
+            }
             value={'총괄 매니저 모든 권한을 소유하고 있습니다.'}
             onClick={() => {
               console.log('manager clicked');
               addRole(4);
+              setManagerChecked(!managerChecked);
             }}
           />
         </div>

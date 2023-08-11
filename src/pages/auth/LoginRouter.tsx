@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import Login from '@pages/login';
+import Login from '@pages/auth/login';
 import { accessTokenState } from '@/atoms/token/accessTokenAtom';
 
 const LoginRouter = () => {

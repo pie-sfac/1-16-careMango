@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
 import { ReactComponent as Document } from '@/assets/icons/Document.svg';
 import { ReactComponent as Message } from '@/assets/icons/Message.svg';

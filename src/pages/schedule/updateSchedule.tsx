@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import SelectDate from '@components/common/SelectDate';
 import SelectTime from '@components/common/SelectTime';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import NameTag from '@components/common/NameTag';
-import { itemDataState } from '@/atoms/itemDataAtom';
+import { itemDataState } from '@/atoms/schedule/itemDataAtom';
 import { getDay, getTime } from '@/utils/date';
 
 const ScheduleUpdatePage = () => {

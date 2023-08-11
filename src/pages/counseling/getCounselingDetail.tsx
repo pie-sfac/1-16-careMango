@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { CounselingDetail } from '@/types/counseling/counselingDetail';
-import Card from '@components/common/Card';
-import SubHeader from '@components/common/SubHeader';
+import Card from '@components/common/Card/Card';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import CounselingScheduleBox from '@pages/counseling/components/CounselingScheduleBox';
 import CounselingScheduleDetail from '@pages/counseling/components/CounselingScheduleDetail';
 

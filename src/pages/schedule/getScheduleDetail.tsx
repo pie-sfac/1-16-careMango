@@ -3,12 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { axiosInstance } from '@/utils/apiInstance';
-import Card from '@components/common/Card';
-import SubHeader from '@components/common/SubHeader';
+import Card from '@components/common/Card/Card';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import { ScheduleItemData } from '@/types/schedule/schedule';
 import ScheduleBox from '@pages/schedule/components/ScheduleBox';
 import ScheduleDetail from '@pages/schedule/components/ScheduleDetail';
-import { itemDataState } from '@/atoms/itemDataAtom';
+import { itemDataState } from '@/atoms/schedule/itemDataAtom';
 
 const ScheduleDetailPage = () => {
   const [itemData, setItemData] = useRecoilState(itemDataState);

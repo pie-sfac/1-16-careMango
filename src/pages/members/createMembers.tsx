@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import InputName from '@components/common/InputName';
 import SelectSex from '@components/common/SelectSex';
 import InputContact from '@components/common/InputContact';

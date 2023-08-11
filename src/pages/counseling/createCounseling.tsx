@@ -9,7 +9,7 @@ import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
 import InputMemo from '@components/common/InputMemo';
 import { StateType } from '@/types/counseling/counseling';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 
 const initialState: StateType = {
   userId: 0,

@@ -61,23 +61,6 @@ const CreateCounseling = () => {
       setState((prev): StateType => ({ ...prev, [name]: value }));
     }
   };
-  // // 시간 선택
-  // const onStartTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const time = event.target.value;
-  //   const updatedStartAt = `${date}T${time}`;
-  //   setState((prev) => ({ ...prev, startAt: updatedStartAt }));
-  // };
-
-  // const onEndTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const time = event.target.value;
-  //   const updatedEndAt = `${date}T${time}`;
-
-  //   if (new Date(state.startAt) >= new Date(updatedEndAt)) {
-  //     alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
-  //   } else {
-  //     setState((prev) => ({ ...prev, endAt: updatedEndAt }));
-  //   }
-  // };
 
   const onDate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDate(event.target.value);
@@ -102,6 +85,13 @@ const CreateCounseling = () => {
   // 완료
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    // 시작 시간이 끝나는 시간보다 늦은지 확인
+    if (new Date(state.startAt) >= new Date(state.endAt)) {
+      alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
+      return;
+    }
+
     createCounseling(state).then((createdCounseling) => {
       if (createdCounseling) {
         setSchedules((prevSchedules) => [...prevSchedules, createdCounseling]);

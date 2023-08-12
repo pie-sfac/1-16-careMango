@@ -20,7 +20,7 @@ const ScheduleApi = () => {
 
   const navigate = useNavigate();
   const goCreateCounseling = () => {
-    navigate('counseling');
+    navigate('counseling/new');
   };
 
   const goCheckSchedule = () => {

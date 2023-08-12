@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { schedulesState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
+import { getDay, getTime } from '@/utils/date';
 import SelectDate from '@components/common/SelectDate';
 import SelectTime from '@components/common/SelectTime';
 import Input from '@components/common/Input/Input';
@@ -24,6 +25,7 @@ const initialState: StateType = {
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
   const setSchedules = useSetRecoilState(schedulesState);
+  const [date, setDate] = useState('');
   const navigate = useNavigate();
 
   // 생성 API
@@ -31,7 +33,7 @@ const CreateCounseling = () => {
     try {
       const res = await axiosInstance.post('/schedules/counseling', counselingData);
       const createdCounseling = res.data;
-      navigate('/schedules/counseling', { state: { refetch: true } });
+      navigate('/schedules/counseling/new', { state: { refetch: true } });
       console.log('res.status=', res.status);
       return createdCounseling;
     } catch (err) {
@@ -40,33 +42,45 @@ const CreateCounseling = () => {
   };
 
   const handleChange = (
-    event:
-      | React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-      | { target: { name: string; value: string | number } },
+    eventOrValue: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement> | string,
   ) => {
-    const { name, value } = event.target;
-    setState((prev): StateType => ({ ...prev, [name]: value }));
-  };
+    let name: string, value: string;
 
-  // 시간 선택
-  const onTimeChange = (selectedTime: { startAt: string; endAt: string }) => {
-    // 현재 날짜
-    const currentDate = state.startAt.split('T')[0];
-
-    // 선택된 시간에 현재 날짜 추가
-    const updatedStartAt = `${currentDate}T${selectedTime.startAt}`;
-    const updatedEndAt = `${currentDate}T${selectedTime.endAt}`;
-
-    // 시작 시간과 끝나는 시간 비교
-    if (new Date(updatedStartAt) >= new Date(updatedEndAt)) {
-      alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
+    if (typeof eventOrValue === 'string') {
+      name = 'memo';
+      value = eventOrValue;
     } else {
-      setState((prev) => ({
-        ...prev,
-        startAt: updatedStartAt,
-        endAt: updatedEndAt,
-      }));
+      name = eventOrValue.target.name;
+      value = eventOrValue.target.value;
     }
+
+    if (name === 'startAt' || name === 'endAt') {
+      const combinedDateTime = `${date}T${value}`;
+      setState((prev): StateType => ({ ...prev, [name]: combinedDateTime }));
+    } else {
+      setState((prev): StateType => ({ ...prev, [name]: value }));
+    }
+  };
+  // // 시간 선택
+  // const onStartTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const time = event.target.value;
+  //   const updatedStartAt = `${date}T${time}`;
+  //   setState((prev) => ({ ...prev, startAt: updatedStartAt }));
+  // };
+
+  // const onEndTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const time = event.target.value;
+  //   const updatedEndAt = `${date}T${time}`;
+
+  //   if (new Date(state.startAt) >= new Date(updatedEndAt)) {
+  //     alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
+  //   } else {
+  //     setState((prev) => ({ ...prev, endAt: updatedEndAt }));
+  //   }
+  // };
+
+  const onDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value);
   };
 
   // 전화번호 입력 시 자동 하이픈
@@ -120,8 +134,16 @@ const CreateCounseling = () => {
             width="w-2/12"
             required
           />
-          <SelectDate label="날짜 선택" type="date" onChange={handleChange} />
-          <SelectTime title="시간 선택" onChange={onTimeChange} />
+          {/* <SelectDate label="날짜 선택" type="date" onChange={handleChange} /> */}
+          <Input type="date" label="날짜 선택" value={date} onChange={onDate} required />
+          {/* <SelectTime title="시간 선택" onChange={onTimeChange} /> */}
+          <label htmlFor="startAt" className="block mt-10 mb-2">
+            시간 선택 <span className="text-primary-300">*</span>
+          </label>
+          <div className="flex items-center">
+            <Input name="startAt" type="time" value={getTime(state.startAt)} onChange={handleChange} required /> ~
+            <Input name="endAt" type="time" value={getTime(state.endAt)} onChange={handleChange} required />
+          </div>
           <Input
             type="text"
             name="clientName"
@@ -144,10 +166,13 @@ const CreateCounseling = () => {
           />
           <InputMemo
             title="일정 메모"
+            // name="memo"
+            value={state.memo}
             width="w-4/12"
             height="h-32"
-            onChange={(value) => handleChange({ target: { name: 'memo', value } })}
+            onChange={handleChange}
           />
+          <p className="mt-4 text-right text-gray-400">{state.memo.length}/500자</p>
           <button
             className={`my-5 py-3 w-full rounded ${
               allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

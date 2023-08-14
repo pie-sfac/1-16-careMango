@@ -9,11 +9,13 @@ import { ScheduleItemData } from '@/types/schedule/schedule';
 import ScheduleBox from '@pages/schedule/components/ScheduleBox';
 import ScheduleDetail from '@pages/schedule/components/ScheduleDetail';
 import { itemDataState } from '@/atoms/schedule/itemDataAtom';
+import Modal from '@components/common/Modal/Modal';
 
 const ScheduleDetailPage = () => {
   const [itemData, setItemData] = useRecoilState(itemDataState);
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const fetchCheckSchedule = useCallback(async () => {
@@ -30,6 +32,19 @@ const ScheduleDetailPage = () => {
     navigate(`/schedule/personal/edit/${scheduleId}`);
   };
 
+  const openCancelModal = () => {
+    setCancelModalOpen(true);
+  };
+  const closeCancelModal = () => {
+    setCancelModalOpen(false);
+  };
+
+  const handleConfirmCancel = async () => {
+    console.log('일정 취소');
+    const res = await axiosInstance.post(`/schedules/${scheduleId}/cancel`);
+    console.log(res.data);
+  };
+
   useEffect(() => {
     fetchCheckSchedule();
   }, [fetchCheckSchedule]);
@@ -44,9 +59,15 @@ const ScheduleDetailPage = () => {
             <button className="pl-5 text-base" type="button" onClick={() => goEditSchedule()}>
               변경
             </button>
-            <button className="pl-5 text-base" type="button">
+            <button className="pl-5 text-base" type="button" onClick={openCancelModal}>
               취소
             </button>
+            <Modal
+              isOpen={cancelModalOpen}
+              content="해당 일정을 취소하시겠습니까?"
+              onClose={closeCancelModal}
+              onConfirm={handleConfirmCancel}
+            />
           </div>
         }
       />

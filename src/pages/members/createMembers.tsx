@@ -1,30 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
+import { StateType } from '@/types/members/members';
 import SubHeader from '@components/common/SubHeader';
-import InputName from '@components/common/InputName';
-import SelectSex from '@components/common/SelectSex';
-import InputContact from '@components/common/InputContact';
-import InputBirth from '@components/common/InputBirth';
-import SelectJob from '@components/common/SelectJob';
-import SelectVisitRoute from '@components/common/SelectVisitRoute';
+import Input from '@components/common/Input/Input';
+import Select from '@components/common/Select/Select';
+import SelectSex from '@pages/members/components/SelectSex';
 import AgreeCondition from '@pages/members/components/AgreeCondition';
-
-interface StateType {
-  name: string;
-  birthDate: string;
-  phone: string;
-  sex: string;
-  job: string;
-  acqusitionFunnel: string;
-  acquisitionFunnel: string;
-  // toss: [
-  //   {
-  //     id: number;
-  //     agree: boolean;
-  //   },
-  // ];
-}
 
 const initialState: StateType = {
   name: '',
@@ -32,8 +14,8 @@ const initialState: StateType = {
   phone: '',
   sex: '',
   job: '',
-  acqusitionFunnel: 'string',
-  acquisitionFunnel: 'string',
+  acqusitionFunnel: '',
+  acquisitionFunnel: '',
   // toss: [
   //   {
   //     id: 10,
@@ -42,71 +24,68 @@ const initialState: StateType = {
   // ],
 };
 
-interface CreateMembersProps {
-  onRegisterd: () => void;
-}
-
-const CreateMembers = ({ onRegisterd }: CreateMembersProps) => {
+const CreateMembers = () => {
   const [state, setState] = useState<StateType>(initialState);
   const navigate = useNavigate();
 
   const onChange = (name: string, value: string) => {
-    setState((prev): StateType => ({ ...prev, [name]: value }));
+    setState((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 약관 동의
-  // const handleAgree = (agreement: boolean) => {
-  //   setState((prev) => ({
-  //     ...prev,
-  //     toss: [
-  //       {
-  //         ...prev.toss[0],
-  //         agree: agreement,
-  //       },
-  //     ],
-  //   }));
-  // };
-
-  // 회원 조회 페이지로
-  const goMainMembers = () => {
-    console.log(state);
-    navigate('/members');
-  };
-
-  const createMembers = async (membersData: StateType): Promise<StateType | undefined> => {
+  const createMembers = async (membersData: StateType) => {
     try {
       const res = await axiosInstance.post('/members', membersData);
       if (res.status === 200 || res.status === 201) {
-        // HTTP 상태 코드가 200(성공) 또는 201(생성됨)인 경우
-        onRegisterd(); // 여기에서 onCompletion (즉, setIsComplete(true)를 호출합니다)
-        navigate('/members', { state: { refetch: true } });
+        console.log('성공');
       }
-      return res.data;
     } catch (err) {
       console.log(err);
     }
   };
-  //   try {
-  //     const res = await axiosInstance.post('/members', membersData);
-  //     const createdMembers = res.data;
-  //     navigate('/members', { state: { refetch: true } });
-  //     console.log('res.status=', res.status);
-  //     return createdMembers;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setState((prev): StateType => ({ ...prev, [name]: value }));
+  };
+
+  // 자동 하이픈
+  const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value: rawValue } = event.target;
+    let value = rawValue.replace(/\D/g, '');
+
+    // 휴대폰 번호 처리
+    if (name === 'phone') {
+      if (value.length > 11) return;
+
+      if (value.length <= 7) {
+        value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+      } else if (value.length <= 11) {
+        value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+      }
+    }
+
+    // 생년월일 처리
+    else {
+      if (value.length > 8) return;
+
+      if (value.length <= 6) {
+        value = value.replace(/(\d{4})(\d{1,2})/, '$1-$2');
+      } else if (value.length <= 8) {
+        value = value.replace(/(\d{4})(\d{2})(\d{1,2})/, '$1-$2-$3');
+      }
+    }
+    setState((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(state);
     createMembers(state);
+    navigate('/members/new/register', { state: { memberName: state.name } });
   };
 
-  // 필수 입력 값들이 채워지면 완료 버튼 활성화
-  // const allFieldsCompleted = () => !!(state.birthDate && state.sex && state.name && state.phone && state.toss[0].agree);
-  const allFieldsCompleted = () => !!(state.birthDate && state.sex && state.name && state.phone);
+  const allFieldsCompleted = state.birthDate && state.sex && state.name && state.phone;
 
+  console.log(state);
   return (
     <>
       <SubHeader title="회원등록" />
@@ -117,20 +96,76 @@ const CreateMembers = ({ onRegisterd }: CreateMembersProps) => {
             <p>회원 정보를 등록하세요</p>
           </div>
           <form onSubmit={handleSubmit}>
-            <InputName title="이름" onChange={(value) => onChange('name', value)} />
+            <Input
+              type="text"
+              name="name"
+              value={state.name}
+              onChange={handleChange}
+              label="이름"
+              placeholder="이름을 입력해주세요."
+              width="w-full"
+              required
+            />
             <SelectSex title="성별" onChange={(value) => onChange('sex', value)} />
-            <InputBirth title="생년월일" onChange={(value) => onChange('birthDate', value)} />
-            <InputContact title="휴대폰 번호" onChange={(value) => onChange('phone', value)} />
-            <SelectJob title="직업" onChange={(value) => onChange('job', value)} />
-            <SelectVisitRoute title="방문 경로" onChange={(value) => onChange('acquisitionFunnel', value)} />
+            <Input
+              type="text"
+              name="birthDate"
+              value={state.birthDate}
+              onChange={numberChange}
+              label="생년월일"
+              placeholder="0000-00-00"
+              width="w-full"
+              required
+            />
+            <Input
+              type="text"
+              name="phone"
+              value={state.phone}
+              onChange={numberChange}
+              label="휴대폰 번호"
+              placeholder="010-0000-0000"
+              width="w-full"
+              required
+            />
+            <Select
+              name="job"
+              options={[
+                { label: '선택해주세요', value: 0 },
+                { label: '사무직', value: '사무직' },
+                { label: '현장직', value: '현장직' },
+                { label: '가사노동자', value: '가사노동자' },
+                { label: '학생', value: '학생' },
+                { label: '무직', value: '무직' },
+                { label: '기타 - 직접입력', value: 6 },
+              ]}
+              value={state.job}
+              onChange={handleChange}
+              label="직업"
+              width="w-full"
+              required
+            />
+            <Select
+              name="acquisitionFunnel"
+              options={[
+                { label: '선택해주세요', value: 0 },
+                { label: '주변 추천', value: '주변 추천' },
+                { label: '오프라인 광고 (배너, 현수막)', value: '오프라인 광고 (배너, 현수막)' },
+                { label: 'SNS 광고 (페이스북, 인스타)', value: 'SNS 광고 (페이스북, 인스타)' },
+                { label: '네이버 지도', value: '네이버 지도' },
+                { label: '기타 - 직접입력', value: 5 },
+              ]}
+              value={state.acquisitionFunnel}
+              onChange={handleChange}
+              label="방문 경로"
+              width="w-full"
+              required
+            />
             <AgreeCondition title="회원 약관 동의" />
-            {/* <AgreeCondition title="회원 약관 동의" onChange={handleAgree} /> */}
             <button
               className={`my-5 py-3 w-full rounded ${
-                allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
+                allFieldsCompleted ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
               }`}
-              type="submit"
-              onClick={handleSubmit}>
+              type="submit">
               완료
             </button>
           </form>

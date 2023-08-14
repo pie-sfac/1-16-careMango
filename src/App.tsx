@@ -13,6 +13,9 @@ import CenterTicketPage from '@pages/tickets/centerTicket/getTicketList';
 import CreateTicketPage from '@pages/tickets/centerTicket/createTicket';
 import CreatePrivateLesson from '@/pages/privateLesson/createPrivateLesson';
 import SearchPeople from '@pages/privateLesson/searchPeople/searchPeople';
+import CreateMembers from '@pages/members/createMembers';
+import RegisterMembers from '@pages/members/registerMembers';
+import UpdateMembers from '@pages/members/components/updateMembers';
 import GetMembers from '@pages/members/getMembers';
 import GetMembersDetail from '@pages/members/getMembersDetail';
 import Layout from './components/layout/Layout';
@@ -43,6 +46,9 @@ function App() {
             <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />
             <Route path="/schedule/privateLesson/new/searchPeople" element={<SearchPeople />} />
             <Route path="/members" element={<GetMembers />} />
+            <Route path="/members/new" element={<CreateMembers />} />
+            <Route path="/members/new/register" element={<RegisterMembers />} />
+            <Route path="/members/update/:memberId" element={<UpdateMembers />} />
             <Route path="/members/:memberId" element={<GetMembersDetail />} />
             <Route path="/members/:memberId/issued-tickets" element={<IssuedTicketPage />} />
             <Route path="/tickets" element={<TicketListPage />} />

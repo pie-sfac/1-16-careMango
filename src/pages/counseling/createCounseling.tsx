@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { schedulesState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
-import { getDay, getTime } from '@/utils/date';
-import SelectDate from '@components/common/SelectDate';
-import SelectTime from '@components/common/SelectTime';
+import { getTime } from '@/utils/date';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
 import InputMemo from '@components/common/InputMemo';
@@ -124,9 +122,7 @@ const CreateCounseling = () => {
             width="w-2/12"
             required
           />
-          {/* <SelectDate label="날짜 선택" type="date" onChange={handleChange} /> */}
           <Input type="date" label="날짜 선택" value={date} onChange={onDate} required />
-          {/* <SelectTime title="시간 선택" onChange={onTimeChange} /> */}
           <label htmlFor="startAt" className="block mt-10 mb-2">
             시간 선택 <span className="text-primary-300">*</span>
           </label>
@@ -154,14 +150,7 @@ const CreateCounseling = () => {
             width="w-4/12"
             required
           />
-          <InputMemo
-            title="일정 메모"
-            // name="memo"
-            value={state.memo}
-            width="w-4/12"
-            height="h-32"
-            onChange={handleChange}
-          />
+          <InputMemo title="일정 메모" value={state.memo} width="w-4/12" height="h-32" onChange={handleChange} />
           <p className="mt-4 text-right text-gray-400">{state.memo.length}/500자</p>
           <button
             className={`my-5 py-3 w-full rounded ${

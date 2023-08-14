@@ -23,12 +23,13 @@ const initialState: UpdateStateType = {
 
 const UpdateCounseling = () => {
   const [state, setState] = useState<UpdateStateType>(initialState);
-  const { userId, startAt, endAt, clientName, clientPhone, memo } = state;
+  const { userId, startAt, endAt, clientName, clientPhone } = state;
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const date = startAt.split('T')[0];
   const setSchedules = useSetRecoilState(schedulesState);
   const navigate = useNavigate();
 
+  // 기존 데이터 불러오기
   const fetchCounselingData = useCallback(async () => {
     try {
       const res = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
@@ -51,6 +52,7 @@ const UpdateCounseling = () => {
     fetchCounselingData();
   }, [fetchCounselingData]);
 
+  // 변경 api 연결
   const updateCounseling = async (counselingData: UpdateStateType): Promise<UpdateStateType | undefined> => {
     try {
       const res = await axiosInstance.put(`schedules/counseling/${scheduleId}`, counselingData);
@@ -61,6 +63,7 @@ const UpdateCounseling = () => {
     }
   };
 
+  // 날짜 변경 시 시간도 같이 변경
   const onDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = event.target.value;
     setState((prev) => ({
@@ -92,24 +95,32 @@ const UpdateCounseling = () => {
     [date],
   );
 
+  // 전화번호 입력 시 자동 하이픈
   const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const rawValue = event.target.value;
-    let processedValue = rawValue.replace(/\D/g, '');
+    const { value: rawValue } = event.target;
+    let value = rawValue.replace(/\D/g, '');
 
-    if (processedValue.length > 11) return;
+    if (value.length > 11) return;
 
-    if (processedValue.length <= 7) {
-      processedValue = processedValue.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-    } else {
-      processedValue = processedValue.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+    if (value.length <= 7) {
+      value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+    } else if (value.length <= 11) {
+      value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
     }
 
-    setState((prev) => ({ ...prev, clientPhone: processedValue }));
+    setState((prev) => ({ ...prev, clientPhone: value }));
   };
 
+  // 완료
   const handleSubmit = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
+
+      // 시작 시간이 끝나는 시간보다 늦은지 확인
+      if (new Date(state.startAt) >= new Date(state.endAt)) {
+        alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
+        return;
+      }
       updateCounseling(state).then((updatedCounseling) => {
         if (updatedCounseling) {
           setSchedules((prevSchedules) => [...prevSchedules, updatedCounseling]);
@@ -170,15 +181,17 @@ const UpdateCounseling = () => {
             width="w-4/12"
             required
           />
-          <GetInputMemo
-            label="일정 메모"
-            name="memo"
-            value={state.memo}
-            width="w-4/12"
-            height="h-32"
-            onChange={handleChange}
-          />
-          <p className="mt-4 text-right text-gray-400">{state.memo.length}/500자</p>
+          <div className="relative">
+            <GetInputMemo
+              label="일정 메모"
+              name="memo"
+              value={state.memo}
+              width="w-4/12"
+              height="h-32"
+              onChange={handleChange}
+            />
+            <p className="w-4/12 mt-4 text-right text-gray-400">{state.memo.length}/500자</p>
+          </div>
           <button
             className={`my-5 py-3 w-full rounded ${
               allFieldsCompleted ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

@@ -22,21 +22,13 @@ const initialState: StateType = {
 
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
+  const { userId, startAt, endAt, clientName, clientPhone } = state;
   const setSchedules = useSetRecoilState(schedulesState);
   const [date, setDate] = useState('');
   const navigate = useNavigate();
 
-  // 생성 API
-  const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
-    try {
-      const res = await axiosInstance.post('/schedules/counseling', counselingData);
-      const createdCounseling = res.data;
-      navigate('/schedules/counseling/new', { state: { refetch: true } });
-      console.log('res.status=', res.status);
-      return createdCounseling;
-    } catch (err) {
-      console.log(err);
-    }
+  const onDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value);
   };
 
   const handleChange = (
@@ -60,10 +52,6 @@ const CreateCounseling = () => {
     }
   };
 
-  const onDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(event.target.value);
-  };
-
   // 전화번호 입력 시 자동 하이픈
   const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value: rawValue } = event.target;
@@ -81,26 +69,23 @@ const CreateCounseling = () => {
   };
 
   // 완료
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    // 시작 시간이 끝나는 시간보다 늦은지 확인
     if (new Date(state.startAt) >= new Date(state.endAt)) {
       alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
       return;
     }
-
-    createCounseling(state).then((createdCounseling) => {
-      if (createdCounseling) {
-        setSchedules((prevSchedules) => [...prevSchedules, createdCounseling]);
-        navigate('/schedules');
-      }
-    });
+    try {
+      const res = await axiosInstance.post('/schedules/counseling', state);
+      setSchedules((prevSchedules) => [...prevSchedules, res.data]);
+      navigate('/schedules');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
-  const allFieldsCompleted = (): boolean =>
-    !!(state.userId && state.startAt && state.endAt && state.clientName && state.clientPhone);
+  const allFieldsCompleted = userId && startAt && endAt && clientName && clientPhone;
 
   console.log(state);
   return (
@@ -122,7 +107,7 @@ const CreateCounseling = () => {
             width="w-2/12"
             required
           />
-          <Input type="date" label="날짜 선택" value={date} onChange={onDate} required />
+          <Input type="date" label="날짜 선택" value={date} onChange={onDateChange} required />
           <label htmlFor="startAt" className="block mt-10 mb-2">
             시간 선택 <span className="text-primary-300">*</span>
           </label>
@@ -151,10 +136,9 @@ const CreateCounseling = () => {
             required
           />
           <InputMemo title="일정 메모" value={state.memo} width="w-4/12" height="h-32" onChange={handleChange} />
-          <p className="mt-4 text-right text-gray-400">{state.memo.length}/500자</p>
           <button
             className={`my-5 py-3 w-full rounded ${
-              allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
+              allFieldsCompleted ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
             }`}
             type="button"
             onClick={handleSubmit}>

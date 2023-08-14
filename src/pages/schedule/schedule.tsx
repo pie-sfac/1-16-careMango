@@ -109,6 +109,16 @@ function ScheduleCalendar() {
     return <div className={`w-3 h-3 ${bgColor}`} />;
   };
 
+  // 1. 총 일정 수 계산
+  const totalEvents = events.length;
+
+  // 2. 취소된 일정 수 계산
+  // 여기서는 'attendance' 속성이 '결석'으로 표시된 일정을 취소된 것으로 간주하였습니다.
+  const cancelledEvents = events.filter((event) => event.attendance === '결석').length;
+
+  // 3. 취소율 계산
+  const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2); // 소수점 둘째 자리까지 표시
+
   return (
     <div className="flex flex-col justify-between">
       <div className="flex items-center justify-between p-4">
@@ -134,11 +144,11 @@ function ScheduleCalendar() {
           <span>이번 달 : </span>
           <span className="font-bold">박사장</span>
           <span>총 일정 : </span>
-          <span className="font-bold">100건</span>
+          <span className="font-bold">{totalEvents}건</span>
           <span>취소 일정 : </span>
-          <span className="font-bold text-red-600">100건</span>
+          <span className="font-bold text-red-600">{cancelledEvents}건</span>
           <span>취소율 : </span>
-          <span className="font-bold text-red-600">100%</span>
+          <span className="font-bold text-red-600">{cancellationRate}%</span>
         </div>
         <div className="flex items-center gap-4">
           <button type="button" className="focus:outline-none">
@@ -179,9 +189,9 @@ function ScheduleCalendar() {
           <div className="mb-4">
             <p className="mb-2 text-lg font-semibold">02.01(수)</p>
             <ul className="flex mb-2 space-x-4">
-              <li className="inline-block text-sm">총 일정 : 100건</li>
-              <li className="inline-block text-sm">취소 일정 : 100건</li>
-              <li className="inline-block text-sm">취소율 : 100%</li>
+              <li className="inline-block text-sm">총 일정 : {totalEvents}건</li>
+              <li className="inline-block text-sm">취소 일정 : {cancelledEvents}건</li>
+              <li className="inline-block text-sm">취소율 : {cancellationRate}%</li>
             </ul>
           </div>
           <div className="flex justify-around">

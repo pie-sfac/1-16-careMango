@@ -6,7 +6,7 @@ import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
-import InputMemo from '@components/common/InputMemo';
+import InputMemo from '@pages/counseling/components/InputMemo';
 import { StateType } from '@/types/counseling/counseling';
 import SubHeader from '@components/common/SubHeader';
 

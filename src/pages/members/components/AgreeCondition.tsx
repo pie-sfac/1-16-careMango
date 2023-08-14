@@ -20,7 +20,7 @@ const AgreeCondition = ({ title, defaultState, onChange }: AgreeConditonProps) =
 
   return (
     <div className="my-5">
-      <p className="small-title">
+      <p className="block mt-10 mb-2 font-bold">
         {title}
         <span className="text-primary-300">*</span>
       </p>

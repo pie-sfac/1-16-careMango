@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import Calendar from '@toast-ui/react-calendar';
@@ -16,7 +16,7 @@ function ScheduleCalendar() {
 
   const [view, setView] = useState('month');
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setView(event.target.value);
   };
 

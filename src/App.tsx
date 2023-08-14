@@ -7,7 +7,7 @@ import CreateCounseling from '@pages/counseling/createCounseling';
 import GetCounselingDetail from '@pages/counseling/getCounselingDetail';
 import UpdateCounseling from '@pages/counseling/updateCounseling';
 import Home from '@pages/home';
-import Schedule from '@pages/schedule';
+import Schedule from '@pages/schedule/schedule';
 import ScheduleApi from '@pages/scheduleApi';
 import CenterTicketPage from '@pages/tickets/centerTicket/getTicketList';
 import CreateTicketPage from '@pages/tickets/centerTicket/createTicket';

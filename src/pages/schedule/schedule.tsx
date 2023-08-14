@@ -39,7 +39,7 @@ function ScheduleCalendar() {
   };
 
   const goCreateSchedule = () => {
-    navigate('/schedule/personal/new');
+    navigate('/schedule/privateLesson/new');
   };
 
   const goCheckCounseling = () => {

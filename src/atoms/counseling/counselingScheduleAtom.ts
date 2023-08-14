@@ -5,3 +5,8 @@ export const schedulesState = atom<StateType[]>({
   key: 'schedules',
   default: [],
 });
+
+export const cancelScheduleIdState = atom<string | null>({
+  key: 'cancelScheduleIdState',
+  default: null,
+});

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { SchedulApiData } from '@/types/scheduleApi';
+import { CounselingDetail } from '@/types/counseling/counselingDetail';
 
 const ScheduleApi = () => {
   const [scheduleList, setScheduleList] = useState<SchedulApiData | null>(null);
@@ -9,9 +10,19 @@ const ScheduleApi = () => {
   const getScheduleApi = async () => {
     const from = '2023-01-21';
     const to = '2023-12-31';
-    const res = await axiosInstance.get(`schedules?from=${from}&to=${to}`);
-    setScheduleList(res.data);
-    console.log(res.data);
+    let apiUrl = `schedules?from=${from}&to=${to}`;
+
+    const res = await axiosInstance.get(apiUrl);
+    console.log(res.data.counselingSchedules);
+
+    const filteredCounselingSchedules = res.data.counselingSchedules.filter(
+      (item: CounselingDetail) => !item.isCanceled,
+    );
+
+    setScheduleList({
+      ...res.data,
+      counselingSchedules: filteredCounselingSchedules,
+    });
   };
 
   useEffect(() => {

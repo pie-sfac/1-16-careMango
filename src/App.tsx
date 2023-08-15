@@ -5,7 +5,7 @@ import ScheduleUpdatePage from '@pages/schedule/updateSchedule';
 import CreateCounseling from '@pages/counseling/createCounseling';
 import GetCounselingDetail from '@pages/counseling/getCounselingDetail';
 import UpdateCounseling from '@pages/counseling/updateCounseling';
-import Home from '@pages/home';
+import Home from '@pages/home/home';
 import Schedule from '@pages/schedule/schedule';
 import ScheduleApi from '@pages/scheduleApi';
 import CenterTicketPage from '@pages/tickets/centerTicket/getTicketList';

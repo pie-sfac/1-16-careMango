@@ -1,15 +1,31 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from '@toast-ui/react-calendar';
+import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 import { convertToDisplayData, Schedule } from '@/utils/scheduleUtils';
 import { axiosInstance } from '@/utils/apiInstance';
-import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 import { ReactComponent as Search } from '@/assets/icons/Search.svg';
 import { ReactComponent as Setting } from '@/assets/icons/Setting.svg';
-import { ReactComponent as CalendarIcon } from '@/assets/icons/Calendar.svg';
+// import { ReactComponent as CalendarIcon } from '@/assets/icons/Calendar.svg';
 import Modal from '@components/common/Modal/Modal';
 
 function ScheduleCalendar() {
+  const calendarRef = useRef<any>(null);
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = new Date(e.target.value);
+    setCurrentDate(selectedDate);
+  };
+
+  function formatDateForUsage(date: Date): string {
+    const yyyy = date.getFullYear().toString();
+    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+    const dd = date.getDate().toString().padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [view, setView] = useState('month');
@@ -49,10 +65,13 @@ function ScheduleCalendar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
         const response = await axiosInstance.get(`/schedules`, {
           params: {
-            from: '2023-01-01',
-            to: '2024-01-01',
+            from: formatDateForUsage(firstDayOfMonth),
+            to: formatDateForUsage(lastDayOfMonth),
           },
         });
         const convertedData = convertToDisplayData(response.data);
@@ -63,7 +82,13 @@ function ScheduleCalendar() {
     };
 
     fetchData();
-  }, []);
+  }, [currentDate]);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      calendarRef.current.getInstance().setDate(currentDate);
+    }
+  }, [currentDate]);
 
   const calendars = [
     {
@@ -117,10 +142,16 @@ function ScheduleCalendar() {
     <div className="flex flex-col justify-between">
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-4">
-          <span className="text-lg font-semibold">2023년 8월</span>
+          {/* <span className="text-lg font-semibold">{formatDate(currentDate)}</span>
           <button type="button" className="text-black focus:outline-none">
             <CalendarIcon />
-          </button>
+          </button> */}
+          <input
+            type="date"
+            value={formatDateForUsage(currentDate)} // YYYY-MM-DD 형식
+            onChange={handleDateChange}
+            className="text-lg font-semibold focus:outline-none rounded-sm"
+          />
         </div>
         <div>
           <select name="selectManager" id="manager" className="p-1 border rounded">
@@ -172,11 +203,11 @@ function ScheduleCalendar() {
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               eventView: true,
               taskView: true,
-              // eventView: true,
               collapseDuplicateEvents: true,
             }}
             calendars={calendars}
             events={events}
+            ref={calendarRef}
           />
         </div>
         <aside className="w-64 p-4 bg-white border-l rounded-lg">

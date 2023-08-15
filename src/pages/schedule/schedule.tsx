@@ -1,8 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
 import Calendar from '@toast-ui/react-calendar';
-// import { CounselingSchedule, PrivateSchedule, SchedulApiData } from '../types/scheduleApi';
 import { convertToDisplayData, Schedule } from '@/utils/scheduleUtils';
 import { axiosInstance } from '@/utils/apiInstance';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
@@ -109,14 +107,10 @@ function ScheduleCalendar() {
     return <div className={`w-3 h-3 ${bgColor}`} />;
   };
 
-  // 1. 총 일정 수 계산
   const totalEvents = events.length;
 
-  // 2. 취소된 일정 수 계산
-  // 여기서는 'attendance' 속성이 '결석'으로 표시된 일정을 취소된 것으로 간주하였습니다.
   const cancelledEvents = events.filter((event) => event.attendance === '결석').length;
 
-  // 3. 취소율 계산
   const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2); // 소수점 둘째 자리까지 표시
 
   return (
@@ -165,8 +159,8 @@ function ScheduleCalendar() {
           + 일정생성
         </button>
       </div>
-      <main className="flex flex-1">
-        <div className="flex-1 p-4">
+      <main className="flex flex-1 gap-3 mb-4">
+        <div className="flex-1 rounded-xl overflow-hidden h-full">
           <Calendar
             height="500px"
             view={view}
@@ -185,7 +179,7 @@ function ScheduleCalendar() {
             events={events}
           />
         </div>
-        <aside className="w-64 p-4 bg-gray-100 border-l">
+        <aside className="w-64 p-4 bg-white border-l rounded-lg">
           <div className="mb-4">
             <p className="mb-2 text-lg font-semibold">02.01(수)</p>
             <ul className="flex mb-2 space-x-4">

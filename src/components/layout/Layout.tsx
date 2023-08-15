@@ -16,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
     menu = true;
   }
   let bgColor = '';
-  if (pathName === '/schedule' || pathName === '/members' || pathName === '/staffs') {
+  if (pathName === '/schedule' || pathName === '/members' || pathName === '/staffs' || pathName === '/myPage') {
     bgColor = 'bg-bg-100';
   }
 

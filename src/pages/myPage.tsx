@@ -55,7 +55,7 @@ const MyPage: React.FC = () => {
 
   return (
     <div className="p-6">
-      <section className="flex items-center justify-between p-4 border-2 rounded-xl mt-5">
+      <section className="flex items-center justify-between p-4 border-2 rounded-xl mt-5  bg-bg-50">
         <div className="flex items-center">
           <ProfileEdit />
           <p className="ml-5 text-primary-500 font-extrabold text-xl">{user.name}</p>
@@ -70,7 +70,7 @@ const MyPage: React.FC = () => {
           <p className="ml-2 text-primary-500 font-bold">{user.center.code}</p>
         </div>
       </section>
-      <section className="flex flex-col justify-between p-5 mt-5 border-2 rounded-xl">
+      <section className="flex flex-col justify-between p-5 mt-5 border-2 rounded-xl  bg-bg-50">
         <div className="w-full flex justify-between items-center mb-5">
           <div className="font-extrabold text-lg text-text-700">내 정보</div>
           <button className="border-2 rounded-xl p-1 text-xs font-bold text-text-400">내 정보 수정</button>

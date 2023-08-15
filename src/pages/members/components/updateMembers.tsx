@@ -1,40 +1,48 @@
-import React, { useState, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
-import { StateType } from '@/types/members/members';
+import { UpdateStateType } from '@/types/members/members';
 import SubHeader from '@components/common/SubHeader';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
 import SelectSex from '@pages/members/components/SelectSex';
 import AgreeCondition from '@pages/members/components/AgreeCondition';
 
-const initialState: StateType = {
+const initialState: UpdateStateType = {
   name: '',
   birthDate: '',
   phone: '',
   sex: '',
   job: '',
-  acqusitionFunnel: '',
   acquisitionFunnel: '',
-  // toss: [
-  //   {
-  //     id: 10,
-  //     agree: false,
-  //   },
-  // ],
 };
 
-const CreateMembers = () => {
-  const [state, setState] = useState<StateType>(initialState);
+const UpdateMembers = () => {
+  const [state, setState] = useState<UpdateStateType>(initialState);
+  const { memberId } = useParams<{ memberId: string | undefined }>();
   const navigate = useNavigate();
 
-  const onChange = (name: string, value: string) => {
-    setState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const createMembers = async (membersData: StateType) => {
+  // 기존 데이터 불러오기
+  const fetchMembersData = useCallback(async () => {
     try {
-      const res = await axiosInstance.post('/members', membersData);
+      const res = await axiosInstance.get(`members/${memberId}`);
+      setState({
+        name: res.data.name,
+        birthDate: res.data.birthDate,
+        phone: res.data.phone,
+        sex: res.data.sex,
+        job: res.data.job,
+        acquisitionFunnel: res.data.acquisitionFunnel,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }, [memberId]);
+
+  // 변경 api 연결
+  const updateMembers = async (membersData: UpdateStateType) => {
+    try {
+      const res = await axiosInstance.put(`members/${memberId}`, membersData);
       if (res.status === 200 || res.status === 201) {
         console.log('성공');
       }
@@ -43,9 +51,17 @@ const CreateMembers = () => {
     }
   };
 
+  useEffect(() => {
+    fetchMembersData();
+  }, [fetchMembersData]);
+
+  const onChange = (name: string, value: string) => {
+    setState((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = event.target;
-    setState((prev): StateType => ({ ...prev, [name]: value }));
+    setState((prev): UpdateStateType => ({ ...prev, [name]: value }));
   };
 
   // 자동 하이픈
@@ -79,8 +95,8 @@ const CreateMembers = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    createMembers(state);
-    navigate('/members/new/register', { state: { memberName: state.name } });
+    updateMembers(state);
+    navigate(`/members/${memberId}`);
   };
 
   const allFieldsCompleted = state.birthDate && state.sex && state.name && state.phone;
@@ -93,7 +109,7 @@ const CreateMembers = () => {
         <div className="flex flex-col w-full max-w-md">
           <div className="flex flex-col items-center justify-center my-6">
             <h1 className="mb-3 text-4xl font-bold">회원정보</h1>
-            <p>회원 정보를 등록하세요</p>
+            <p>등록된 환자 정보 입니다.</p>
           </div>
           <form onSubmit={handleSubmit}>
             <Input
@@ -106,7 +122,7 @@ const CreateMembers = () => {
               width="w-full"
               required
             />
-            <SelectSex title="성별" onChange={(value) => onChange('sex', value)} />
+            <SelectSex title="성별" defaultState={state.sex} onChange={(value) => onChange('sex', value)} />
             <Input
               type="text"
               name="birthDate"
@@ -175,4 +191,4 @@ const CreateMembers = () => {
   );
 };
 
-export default CreateMembers;
+export default UpdateMembers;

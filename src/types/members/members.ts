@@ -20,3 +20,27 @@ export interface MembersData {
   datas: Member[];
   message: string;
 }
+
+export interface StateType {
+  name: string;
+  birthDate: string;
+  phone: string;
+  sex: string;
+  job: string;
+  acqusitionFunnel: string;
+  acquisitionFunnel: string;
+  // toss: [
+  //   {
+  //     id: number;
+  //     agree: boolean;
+  //   },
+  // ];
+}
+export interface UpdateStateType {
+  name: string;
+  birthDate: string;
+  phone: string;
+  sex: string;
+  job: string;
+  acquisitionFunnel: string
+}

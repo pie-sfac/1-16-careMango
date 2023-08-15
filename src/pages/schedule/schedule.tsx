@@ -31,7 +31,7 @@ function ScheduleCalendar() {
   const navigate = useNavigate();
 
   const goCreateCounseling = () => {
-    navigate('/schedules/counseling');
+    navigate('/schedules/counseling/new');
   };
 
   const goCheckSchedule = () => {
@@ -233,29 +233,29 @@ function ScheduleCalendar() {
       <Modal
         isOpen={isOpen}
         content={
-          <div className="flex h-64 items-center">
+          <div className="flex items-center h-64">
             <button
               type="button"
               onClick={goCreateSchedule}
-              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 mr-2 w-64 h-32">
+              className="w-64 h-32 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               개인 수업 일정 생성
             </button>
             <button
               type="button"
               onClick={goCheckSchedule}
-              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 mr-2  w-64 h-32">
+              className="w-64 h-32 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               개인 수업 일정 조회(mock 데이터)
             </button>
             <button
               type="button"
               onClick={goCreateCounseling}
-              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 mr-2  w-64 h-32">
+              className="w-64 h-32 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               상담 일정 생성
             </button>
             <button
               type="button"
               onClick={goCheckCounseling}
-              className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600  w-64 h-32">
+              className="w-64 h-32 px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               상담 일정 조회
             </button>
           </div>

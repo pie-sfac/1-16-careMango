@@ -25,7 +25,7 @@ const GetMembers = () => {
       params: {
         page,
         size: membersPerPage,
-        sort: 'createdAt,Desc',
+        sort: 'createdAt,Asc',
       },
     });
     setMemberList(res.data.datas);

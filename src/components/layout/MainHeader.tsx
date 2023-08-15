@@ -20,8 +20,25 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
   }, []);
 
   const handleLogout = useCallback(() => {
-    localStorage.clear();
-    window.location.reload();
+    // API를 통해 로그아웃 요청
+    fetch(`${import.meta.env.VITE_API_URL}/logout`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          localStorage.clear();
+          window.location.reload();
+        } else {
+          console.error('로그아웃 요청 실패');
+        }
+      })
+      .catch((error) => {
+        console.error('로그아웃 요청 중 에러 발생:', error);
+      });
   }, []);
 
   const [user, setUser] = useRecoilState(userState);

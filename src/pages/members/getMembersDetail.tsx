@@ -64,7 +64,7 @@ const GetMembersDetail = () => {
             <Document />
           </button>
           <button type="button" className="flex">
-            퍼스널 레포트 보내기
+            알림메시지 보내기
             <Message />
           </button>
         </div>

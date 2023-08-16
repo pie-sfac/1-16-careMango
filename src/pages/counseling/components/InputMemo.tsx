@@ -1,13 +1,15 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface InputMemoProps {
   title: string;
+  name?: string;
+  value?: string;
   onChange: (value: string) => void;
   width?: string;
   height?: string;
 }
 
-const InputMemo = ({ title, width, height, onChange }: InputMemoProps) => {
+const InputMemo = ({ title, width, height, name, value, onChange }: InputMemoProps) => {
   const [state, setState] = useState<string>('');
   const [memoLength, setMemoLength] = useState(0);
 
@@ -29,7 +31,7 @@ const InputMemo = ({ title, width, height, onChange }: InputMemoProps) => {
         <textarea
           id="inputMemo"
           className={`${width} ${height} block pb-1 input-select`}
-          name="memo"
+          name={name}
           value={state}
           onChange={handleChange}
           placeholder="내용을 입력해 주세요. (500자 이내)"

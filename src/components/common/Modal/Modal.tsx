@@ -40,11 +40,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, content, onClose, onConfirm, widt
       <div className="p-10 bg-white rounded shadow-md" onClick={stopPropagation}>
         {content}
         <div className="flex justify-end mt-4">
-          {/* <button className="px-4 py-2 mr-2 bg-gray-300 rounded" onClick={onClose} type="button"> */}
           <button className={`${width} px-4 py-2 mr-2 bg-gray-300 rounded`} onClick={onClose} type="button">
             취소
           </button>
-          {/* <button className="px-4 py-2 text-white bg-blue-500 rounded" onClick={handleConfirm} type="button"> */}
           <button
             className={`${width} px-4 py-2 ${isDisabled ? 'bg-gray-300' : 'text-white bg-blue-500'} rounded`}
             onClick={handleConfirm}

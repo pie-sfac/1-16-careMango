@@ -6,7 +6,6 @@ import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
 type MembersType = MembersData['datas'][number];
 
 const MembersItem = ({ members }: { members: MembersType }) => {
-  // 회원 누르면 해당 회원 정보 페이지로
   const navigate = useNavigate();
   const goMemberInfo = () => {
     navigate(`/members/${members.id}`);

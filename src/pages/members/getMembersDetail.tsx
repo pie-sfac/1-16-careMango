@@ -17,11 +17,14 @@ type TabType = 'record' | 'review' | 'album';
 const GetMembersDetail = () => {
   const [activeTab, setActiveTab] = useState<TabType>('record');
   const { memberId } = useParams<{ memberId: string | undefined }>();
-
-  // 이용중인 수강권 보는 페이지로
   const navigate = useNavigate();
+
   const goMainMembers = () => {
     navigate(`/members/${memberId}/issued-tickets`);
+  };
+
+  const goUpdateMembers = () => {
+    navigate(`/members/update/${memberId}`);
   };
 
   const [memberDetail, setMemberDetail] = useState<MembersDetail | null>(null);
@@ -61,7 +64,7 @@ const GetMembersDetail = () => {
             <Document />
           </button>
           <button type="button" className="flex">
-            퍼스널 레포트 보내기
+            알림메시지 보내기
             <Message />
           </button>
         </div>
@@ -76,7 +79,9 @@ const GetMembersDetail = () => {
             </React.Fragment>
           ))}
         </div>
-        <Edit />
+        <button type="button" onClick={goUpdateMembers}>
+          <Edit />
+        </button>
       </section>
       <section className="mt-8">
         <div className="flex border-b tabs border-line-300">

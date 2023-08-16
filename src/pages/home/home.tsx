@@ -51,6 +51,7 @@ function Home() {
                     secondaryInfo={card.getSecondaryInfo?.(data)}
                     icon={card.icon}
                     bottomInfo={card.getBottomInfo(data)}
+                    navigateTo={card.navigateTo}
                   />
                 ))}
             </ul>

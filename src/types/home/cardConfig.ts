@@ -6,4 +6,5 @@ export interface CardConfig {
   getSecondaryInfo?: (data: ApiResponse) => string;
   icon: React.ReactNode;
   getBottomInfo: (data: ApiResponse) => number;
+  navigateTo: string;
 }

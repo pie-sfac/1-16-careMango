@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import SearchPeople from '../searchPeople/searchPeople';
 
 interface ButtonAddPersonProps {
   title: string;
@@ -8,6 +7,7 @@ interface ButtonAddPersonProps {
 }
 
 const ButtonAddPeople = ({ title, value }: ButtonAddPersonProps) => {
+  const [isClicked, setIsClicked] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -16,8 +16,14 @@ const ButtonAddPeople = ({ title, value }: ButtonAddPersonProps) => {
         {title}
         <span className="text-primary-300">*</span>
       </p>
-      <button onClick={() => navigate('/schedule/privateLesson/new/searchPeople', { state: { value: value } })}>
-        선택하기
+      <button
+        className={
+          isClicked
+            ? 'p-2 border border-2 border-primary-300 rounded-lg text-primary-300'
+            : 'p-2 border border-2 border-primary-300 rounded-lg text-primary-300'
+        }
+        onClick={() => navigate('/schedule/privateLesson/new/searchPeople', { state: { value: value } })}>
+        선택하기 +
       </button>
     </label>
   );

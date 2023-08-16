@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { schedulesState } from '@/atoms/counseling/counselingScheduleAtom';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { schedulesState, timeListState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
 import Input from '@components/common/Input/Input';
@@ -24,6 +24,7 @@ const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
   const { userId, startAt, endAt, clientName, clientPhone } = state;
   const setSchedules = useSetRecoilState(schedulesState);
+  const timeList = useRecoilValue(timeListState);
   const [date, setDate] = useState('');
   const navigate = useNavigate();
 
@@ -71,10 +72,28 @@ const CreateCounseling = () => {
   // 완료
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    // 선택한 시작시간과 종료시간이 겹치는지 확인
+    const hasOverlap = timeList.some(([existingStart, existingEnd]) => {
+      return (
+        (new Date(existingStart) <= new Date(state.startAt) && new Date(state.startAt) < new Date(existingEnd)) ||
+        (new Date(existingStart) < new Date(state.endAt) && new Date(state.endAt) <= new Date(existingEnd)) ||
+        (new Date(state.startAt) <= new Date(existingStart) && new Date(existingStart) < new Date(state.endAt)) ||
+        (new Date(state.startAt) < new Date(existingEnd) && new Date(existingEnd) <= new Date(state.endAt))
+      );
+    });
+
+    if (hasOverlap) {
+      alert('선택하신 시간대와 겹치는 일정이 있습니다. 시간을 다시 설정해 주세요.');
+      return;
+    }
+
+    // 시작 시간이 끝나는 시간보다 늦는 지 확인
     if (new Date(state.startAt) >= new Date(state.endAt)) {
       alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
       return;
     }
+
     try {
       const res = await axiosInstance.post('/schedules/counseling', state);
       setSchedules((prevSchedules) => [...prevSchedules, res.data]);
@@ -87,7 +106,6 @@ const CreateCounseling = () => {
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = userId && startAt && endAt && clientName && clientPhone;
 
-  console.log(state);
   return (
     <>
       <SubHeader title="일정 생성" />

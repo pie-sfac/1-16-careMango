@@ -190,10 +190,10 @@ function ScheduleCalendar() {
           + 일정생성
         </button>
       </div>
-      <main className="flex flex-1 gap-3 mb-4">
+      <main className="flex gap-3">
         <div className="flex-1 rounded-xl overflow-hidden h-full">
           <Calendar
-            height="500px"
+            height="40rem"
             view={view}
             month={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
@@ -210,49 +210,51 @@ function ScheduleCalendar() {
             ref={calendarRef}
           />
         </div>
-        <aside className="w-64 p-4 bg-white border-l rounded-lg">
-          <div className="mb-4">
-            <p className="mb-2 text-lg font-semibold">02.01(수)</p>
-            <ul className="flex mb-2 space-x-4">
-              <li className="inline-block text-sm">총 일정 : {totalEvents}건</li>
-              <li className="inline-block text-sm">취소 일정 : {cancelledEvents}건</li>
-              <li className="inline-block text-sm">취소율 : {cancellationRate}%</li>
-            </ul>
-          </div>
-          <div className="flex justify-around">
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-blue-500" /> 출석
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-red-500" /> 결석
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-gray-500" /> 예약
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-transparent border border-green-500" /> 상담
-            </span>
-          </div>
-          <table className="w-full table-auto">
-            <thead>
-              <tr>
-                <th className="text-xs">출결</th>
-                <th className="text-xs">진행시간</th>
-                <th className="text-xs">내용</th>
-                <th className="text-xs">잔여횟수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event) => (
-                <tr key={event.id}>
-                  <td className="px-4 py-2 text-xs border">{renderAttendance(event.attendance)}</td>
-                  <td className="px-4 py-2 text-xs border">{getDuration(event.start, event.end)}</td>
-                  <td className="px-4 py-2 text-xs border">{event.title}</td>
-                  <td className="px-4 py-2 text-xs border">{event.remainingTimes}</td>
+        <aside className="w-64 p-4 bg-white border-l rounded-lg box-content">
+          <div className="h-full overflow-auto">
+            <div className="mb-4">
+              <p className="mb-2 text-lg font-semibold">02.01(수)</p>
+              <ul className="flex mb-2 space-x-4">
+                <li className="inline-block text-sm">총 일정 : {totalEvents}건</li>
+                <li className="inline-block text-sm">취소 일정 : {cancelledEvents}건</li>
+                <li className="inline-block text-sm">취소율 : {cancellationRate}%</li>
+              </ul>
+            </div>
+            <div className="flex justify-around">
+              <span className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-blue-500" /> 출석
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-red-500" /> 결석
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-gray-500" /> 예약
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-transparent border border-green-500" /> 상담
+              </span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th className="text-xs">출결</th>
+                  <th className="text-xs">진행시간</th>
+                  <th className="text-xs">내용</th>
+                  <th className="text-xs">잔여횟수</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {events.map((event) => (
+                  <tr key={event.id}>
+                    <td className="px-4 py-2 text-xs border">{renderAttendance(event.attendance)}</td>
+                    <td className="px-4 py-2 text-xs border">{getDuration(event.start, event.end)}</td>
+                    <td className="px-4 py-2 text-xs border">{event.title}</td>
+                    <td className="px-4 py-2 text-xs border">{event.remainingTimes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </aside>
       </main>
       <Modal

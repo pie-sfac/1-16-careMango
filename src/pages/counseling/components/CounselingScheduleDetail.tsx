@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '@components/common/Modal/Modal';
 import { axiosInstance } from '@/utils/apiInstance';
 import { CounselingDetail } from '@/types/counseling/counselingDetail';
+import { UpdateStateType } from '@/types/counseling/counseling';
 import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
 import { ReactComponent as Close } from '@/assets/icons/Close.svg';
 
@@ -16,19 +17,42 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
   const navigate = useNavigate();
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
 
-  const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const handleOpenModal = async () => {
+    try {
+      // 기존 상담 내용 로드
+      const response = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
+      if (response.status === 200 || response.status === 201) {
+        setCounselingContent(response.data.counselingRecord.content);
+        console.log('성공');
+        console.log(response.data.counselingRecord.content);
+      }
+      setShowModal(true);
+    } catch (error) {
+      console.error('상담 내용 로드 실패', error);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const content = e.target.value;
     setCounselingContent(content);
   };
 
+  // 새로 입력된 상담 기록 데이터 api로 보내기
   const handleConfirmModal = async () => {
     try {
-      const response = await axiosInstance.put(`schedules/counseling/${scheduleId}`, {
-        counselingRecordContent: counselingContent,
-      });
+      const updateData: UpdateStateType = {
+        userId: itemData.id,
+        memberId: itemData.client.memberId,
+        clientName: itemData.client.name,
+        clientPhone: itemData.client.phone,
+        memo: itemData.memo,
+        startAt: itemData.startAt,
+        endAt: itemData.endAt,
+        counselingRecordContent: counselingContent, // 실제로 변경된 상담 내용
+      };
+
+      const response = await axiosInstance.put(`schedules/counseling/${scheduleId}`, updateData);
       if (response.status === 200 || response.status === 201) {
         console.log('성공');
         handleCloseModal();
@@ -58,7 +82,7 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
           <button
             type="button"
             className="px-5 py-2 border border-[#E7E7E7] rounded text-primary-300 active:bg-gray-200"
-            onClick={() => navigate('/members', { state: { register: true } })}>
+            onClick={() => navigate('/members/new', { state: { register: true } })}>
             회원 정보 등록
           </button>
         </div>

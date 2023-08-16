@@ -8,18 +8,21 @@ const Cards: CardConfig[] = [
     getSecondaryInfo: (data) => `수업 ${data.mySchedule.lessonCount}건, 상담 ${data.mySchedule.counselingCount}건`,
     icon: <BlankPerson />,
     getBottomInfo: (data) => data.mySchedule.lessonCount + data.mySchedule.counselingCount,
+    navigateTo: 'schedule',
   },
   {
     title: '나의 회원',
     getMainInfo: () => '나의 회원 수',
     icon: <BlankPerson />,
     getBottomInfo: (data) => data.center.memberCount,
+    navigateTo: 'members',
   },
   {
     title: '전체 직원',
     getMainInfo: () => '전체 직원 수',
     icon: <BlankPerson />,
     getBottomInfo: (data) => data.center.staffCount,
+    navigateTo: 'staffs',
   },
 ];
 

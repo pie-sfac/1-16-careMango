@@ -73,10 +73,10 @@ const GetMembersDetail = () => {
         <div className="flex items-center">
           <Profile40 />
           {memberInformation.map((info) => (
-            <React.Fragment key={info.id}>
+            <div key={info.id} className="flex">
               <p className="ml-5 text-text-400">{info.label}</p>
               <p className="ml-2">{info.value}</p>
-            </React.Fragment>
+            </div>
           ))}
         </div>
         <button type="button" onClick={goUpdateMembers}>

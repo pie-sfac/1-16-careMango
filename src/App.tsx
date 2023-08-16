@@ -14,7 +14,7 @@ import CreatePrivateLesson from '@/pages/privateLesson/createPrivateLesson';
 import SearchPeople from '@pages/privateLesson/searchPeople/searchPeople';
 import CreateMembers from '@pages/members/createMembers';
 import RegisterMembers from '@pages/members/registerMembers';
-import UpdateMembers from '@pages/members/components/updateMembers';
+import UpdateMembers from '@pages/members/updateMembers';
 import GetMembers from '@pages/members/getMembers';
 import GetMembersDetail from '@pages/members/getMembersDetail';
 import Layout from './components/layout/Layout';

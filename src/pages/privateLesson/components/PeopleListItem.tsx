@@ -9,9 +9,8 @@ type StaffsType = StaffsData['datas'][number];
 
 const PeopleListItem = ({ people }: { people: MembersType | StaffsType }) => {
   const navigate = useNavigate();
-  const itemSelectClick = (id: number) => {
+  const itemSelectClick = (id?: number) => {
     navigate('/schedule/privateLesson/new', { state: { selectedId: id } });
-    console.log('선택된 id값', id);
   };
   return (
     <button className="w-full" onDoubleClick={() => itemSelectClick(people.id)}>

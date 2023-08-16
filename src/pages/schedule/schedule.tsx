@@ -1,15 +1,40 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from '@toast-ui/react-calendar';
+import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 import { convertToDisplayData, Schedule } from '@/utils/scheduleUtils';
 import { axiosInstance } from '@/utils/apiInstance';
-import '@toast-ui/calendar/dist/toastui-calendar.min.css';
-import { ReactComponent as Search } from '@/assets/icons/Search.svg';
-import { ReactComponent as Setting } from '@/assets/icons/Setting.svg';
-import { ReactComponent as CalendarIcon } from '@/assets/icons/Calendar.svg';
 import Modal from '@components/common/Modal/Modal';
 
+import SubHeader from './components/SubHeader';
+import Legend from './components/Legend';
+import EventTable from './components/EventTable';
+
 function ScheduleCalendar() {
+  const calendarRef = useRef<any>(null);
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = new Date(e.target.value);
+    setCurrentDate(selectedDate);
+  };
+
+  function formatDateForUsage(date: Date): string {
+    const yyyy = date.getFullYear().toString();
+    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+    const dd = date.getDate().toString().padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  const getFormattedDate = (date: Date): string => {
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayName = dayNames[date.getDay()];
+    const dd = date.getDate().toString().padStart(2, '0');
+    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${mm}.${dd}(${dayName})`;
+  };
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [view, setView] = useState('month');
@@ -49,10 +74,13 @@ function ScheduleCalendar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
         const response = await axiosInstance.get(`/schedules`, {
           params: {
-            from: '2023-01-01',
-            to: '2024-01-01',
+            from: formatDateForUsage(firstDayOfMonth),
+            to: formatDateForUsage(lastDayOfMonth),
           },
         });
         const convertedData = convertToDisplayData(response.data);
@@ -63,7 +91,13 @@ function ScheduleCalendar() {
     };
 
     fetchData();
-  }, []);
+  }, [currentDate]);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      calendarRef.current.getInstance().setDate(currentDate);
+    }
+  }, [currentDate]);
 
   const calendars = [
     {
@@ -115,54 +149,19 @@ function ScheduleCalendar() {
 
   return (
     <div className="flex flex-col justify-between">
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center gap-4">
-          <span className="text-lg font-semibold">2023년 8월</span>
-          <button type="button" className="text-black focus:outline-none">
-            <CalendarIcon />
-          </button>
-        </div>
-        <div>
-          <select name="selectManager" id="manager" className="p-1 border rounded">
-            <option value="">관리자명</option>
-          </select>
-        </div>
-        <div>
-          <select name="selectView" id="calendarView" className="p-1 border rounded" onChange={handleChange}>
-            <option value="month">월</option>
-            <option value="week">주</option>
-            <option value="day">일</option>
-          </select>
-        </div>
-        <div className="flex items-center gap-3">
-          <span>이번 달 : </span>
-          <span className="font-bold">박사장</span>
-          <span>총 일정 : </span>
-          <span className="font-bold">{totalEvents}건</span>
-          <span>취소 일정 : </span>
-          <span className="font-bold text-red-600">{cancelledEvents}건</span>
-          <span>취소율 : </span>
-          <span className="font-bold text-red-600">{cancellationRate}%</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <button type="button" className="focus:outline-none">
-            <Search />
-          </button>
-          <button type="button" className="focus:outline-none">
-            <Setting />
-          </button>
-        </div>
-        <button
-          type="submit"
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-          onClick={handleOpen}>
-          + 일정생성
-        </button>
-      </div>
-      <main className="flex flex-1 gap-3 mb-4">
+      <SubHeader
+        currentDate={currentDate}
+        onDateChange={handleDateChange}
+        view={view}
+        onViewChange={handleChange}
+        totalEvents={totalEvents}
+        cancelledEvents={cancelledEvents}
+        onOpenModal={handleOpen}
+      />
+      <main className="flex gap-3">
         <div className="flex-1 rounded-xl overflow-hidden h-full">
           <Calendar
-            height="500px"
+            height="40rem"
             view={view}
             month={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
@@ -172,56 +171,29 @@ function ScheduleCalendar() {
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               eventView: true,
               taskView: true,
-              // eventView: true,
               collapseDuplicateEvents: true,
             }}
             calendars={calendars}
             events={events}
+            ref={calendarRef}
           />
         </div>
-        <aside className="w-64 p-4 bg-white border-l rounded-lg">
-          <div className="mb-4">
-            <p className="mb-2 text-lg font-semibold">02.01(수)</p>
-            <ul className="flex mb-2 space-x-4">
-              <li className="inline-block text-sm">총 일정 : {totalEvents}건</li>
-              <li className="inline-block text-sm">취소 일정 : {cancelledEvents}건</li>
-              <li className="inline-block text-sm">취소율 : {cancellationRate}%</li>
-            </ul>
+        <aside className="w-64 p-4 bg-white border-l rounded-lg box-content">
+          <div className="h-full overflow-auto">
+            <div className="mb-4">
+              <p className="mb-2 text-lg font-semibold">{getFormattedDate(currentDate)}</p>
+
+              <ul className="flex mb-2 space-x-4">
+                <li className="inline-block text-sm">총 일정 : {totalEvents}건</li>
+                <li className="inline-block text-sm">취소 일정 : {cancelledEvents}건</li>
+                <li className="inline-block text-sm">취소율 : {cancellationRate}%</li>
+              </ul>
+            </div>
+
+            <Legend />
+
+            <EventTable events={events} renderAttendance={renderAttendance} getDuration={getDuration} />
           </div>
-          <div className="flex justify-around">
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-blue-500" /> 출석
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-red-500" /> 결석
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-gray-500" /> 예약
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-transparent border border-green-500" /> 상담
-            </span>
-          </div>
-          <table className="w-full table-auto">
-            <thead>
-              <tr>
-                <th className="text-xs">출결</th>
-                <th className="text-xs">진행시간</th>
-                <th className="text-xs">내용</th>
-                <th className="text-xs">잔여횟수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event) => (
-                <tr key={event.id}>
-                  <td className="px-4 py-2 text-xs border">{renderAttendance(event.attendance)}</td>
-                  <td className="px-4 py-2 text-xs border">{getDuration(event.start, event.end)}</td>
-                  <td className="px-4 py-2 text-xs border">{event.title}</td>
-                  <td className="px-4 py-2 text-xs border">{event.remainingTimes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </aside>
       </main>
       <Modal

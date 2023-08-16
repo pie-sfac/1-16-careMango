@@ -10,3 +10,8 @@ export const cancelScheduleIdState = atom<string | null>({
   key: 'cancelScheduleIdState',
   default: null,
 });
+
+export const timeListState = atom<string[][]>({
+  key: 'timeListState',
+  default: [],
+});

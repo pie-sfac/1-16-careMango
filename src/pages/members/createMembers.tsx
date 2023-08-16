@@ -167,7 +167,7 @@ const CreateMembers = () => {
                 onChange={handleChange}
                 label="직업"
                 width="w-full"
-                // required
+                required
               />
             ) : (
               <Input
@@ -196,7 +196,7 @@ const CreateMembers = () => {
                 onChange={handleChange}
                 label="방문 경로"
                 width="w-full"
-                // required
+                required
               />
             ) : (
               <Input

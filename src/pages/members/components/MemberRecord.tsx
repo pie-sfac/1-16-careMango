@@ -58,15 +58,13 @@ const MemberRecord = () => {
 
         {activeTab === '문진'
           ? mujinRecords.map((record, index) => (
-              <>
-                <div key={index} className="flex items-center justify-between p-3 my-1 bg-white rounded-md base-font">
-                  <div className="flex">
-                    <p className="mr-5">{record.date}</p>
-                    <p>{record.template}</p>
-                  </div>
-                  <p className="px-2 py-1 mr-5 rounded-md bg-bg-100">{record.name}</p>
+              <div key={index} className="flex items-center justify-between p-3 my-1 bg-white rounded-md base-font">
+                <div className="flex">
+                  <p className="mr-5">{record.date}</p>
+                  <p>{record.template}</p>
                 </div>
-              </>
+                <p className="px-2 py-1 mr-5 rounded-md bg-bg-100">{record.name}</p>
+              </div>
             ))
           : cheochiRecords.map((record, index) => (
               <div key={index} className="flex items-center justify-between p-3 my-1 bg-white rounded-md base-font">

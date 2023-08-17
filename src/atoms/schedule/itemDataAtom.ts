@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { ScheduleItemData } from '../types/schedule/schedule';
+import { ScheduleItemData } from '@/types/schedule/schedule';
 
 export const itemDataState = atom<ScheduleItemData | null>({
   key: 'itemDataState',

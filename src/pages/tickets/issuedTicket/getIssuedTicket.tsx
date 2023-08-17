@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { axiosInstance } from '@/utils/apiInstance';
 import { IssuedTicketsData } from '@/types/tickets/tickets';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import IssuedTicketItem from '@pages/tickets/components/IssuedTicketItem';
 import { memberIdState } from '@/atoms/members/memberIdAtom';
 

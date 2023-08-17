@@ -1,5 +1,5 @@
 import React from 'react';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import TicketList from '@pages/tickets/components/TicketList';
 
 const TicketListPage = () => (

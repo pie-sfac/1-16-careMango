@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '@components/common/Card';
+import Card from '@components/common/Card/Card';
 import { IssuedTicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';

@@ -1,9 +1,9 @@
-import React from 'react';
-import { allFieldsCompleted } from '../../utils/button';
-import { CreateTicketType } from '../../types/tickets/tickets';
+import { allFieldsCompleted } from '@/utils/button';
+import { CreateTicketType } from '@/types/tickets/tickets';
+import { ScheduleEditData } from '@/types/schedule/schedule';
 
 interface CompleteButtonProps {
-  state: CreateTicketType;
+  state: CreateTicketType | ScheduleEditData;
   text: string;
 }
 

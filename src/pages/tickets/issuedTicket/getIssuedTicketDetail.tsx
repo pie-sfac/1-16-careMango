@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import { axiosInstance } from '@/utils/apiInstance';
 import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';

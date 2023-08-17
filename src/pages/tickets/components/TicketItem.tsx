@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '@components/common/Card';
+import Card from '@components/common/Card/Card';
 import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';

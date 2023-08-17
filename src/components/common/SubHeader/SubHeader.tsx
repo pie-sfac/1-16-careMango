@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Back } from '../../assets/icons/Back.svg';
+import { ReactComponent as Back } from '@/assets/icons/Back.svg';
 
 type HeaderProps = {
   title: string;

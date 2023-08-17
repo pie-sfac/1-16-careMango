@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
-import SubHeader from '@/components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import InputName from '@components/common/InputName';
 import InputContact from '@components/common/InputContact';
 import InputPw from '@components/common/InputPw';

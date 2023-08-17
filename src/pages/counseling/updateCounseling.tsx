@@ -1,13 +1,14 @@
-import React, { ChangeEvent, useState, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { ChangeEvent, useState, useEffect, useCallback } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 import { schedulesState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
+import { Staff } from '@/types/staffs/staffs';
 import Input from '@components/common/Input/Input';
-import Select from '@components/common/Select/Select';
 import GetInputMemo from '@pages/counseling/components/GetInputMemo';
+import SelectStaffs from './components/SelectStaffs';
 import { UpdateStateType } from '@/types/counseling/counseling';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 
@@ -24,11 +25,21 @@ const initialState: UpdateStateType = {
 
 const UpdateCounseling = () => {
   const [state, setState] = useState<UpdateStateType>(initialState);
+  const [selectedStaff, setSelectedStaff] = useState<null | Staff>(null);
   const { userId, startAt, endAt, clientName, clientPhone } = state;
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const date = startAt.split('T')[0];
   const setSchedules = useSetRecoilState(schedulesState);
   const navigate = useNavigate();
+
+  const location = useLocation() as { state: { selectedStaff: Staff } };
+
+  useEffect(() => {
+    if (location.state && location.state.selectedStaff) {
+      setSelectedStaff(location.state.selectedStaff);
+      setState((prev) => ({ ...prev, userId: location.state.selectedStaff.id }));
+    }
+  }, [location.state]);
 
   // 기존 데이터 불러오기
   useQuery(['schedules', scheduleId], async () => {
@@ -122,18 +133,10 @@ const UpdateCounseling = () => {
       <div className="flex flex-col">
         <h1 className="main-title">상담</h1>
         <form onSubmit={handleSubmit}>
-          <Select
-            name="userId"
-            options={[
-              { label: '선택해주세요', value: 0 },
-              { label: '박강사', value: 1 },
-              { label: '김강사', value: 2 },
-            ]}
-            value={state.userId}
-            onChange={handleChange}
-            label="담당 강사 선택"
-            width="w-2/12"
-            required
+          <SelectStaffs<UpdateStateType>
+            selectedStaff={selectedStaff}
+            setSelectedStaff={setSelectedStaff}
+            setState={setState}
           />
           <Input type="date" name="date" label="날짜 선택" value={date} onChange={handleChange} required />
           <label htmlFor="startAt" className="block mt-10 mb-2">

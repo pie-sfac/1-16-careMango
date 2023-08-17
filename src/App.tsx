@@ -6,6 +6,7 @@ import ScheduleUpdatePage from '@pages/schedule/updateSchedule';
 import CreateCounseling from '@pages/counseling/createCounseling';
 import GetCounselingDetail from '@pages/counseling/getCounselingDetail';
 import UpdateCounseling from '@pages/counseling/updateCounseling';
+import GetStaffsList from '@pages/counseling/getStaffsList';
 import Home from '@pages/home/home';
 import Schedule from '@pages/schedule/schedule';
 import ScheduleApi from '@pages/scheduleApi';
@@ -47,6 +48,7 @@ function App() {
               <Route path="/schedules/counseling/update/:scheduleId" element={<UpdateCounseling />} />
               <Route path="/schedules/counseling/:scheduleId" element={<GetCounselingDetail />} />
               <Route path="/schedules/counseling/new" element={<CreateCounseling />} />
+              <Route path="/schedules/counseling/new/staffs" element={<GetStaffsList />} />
               <Route path="/tickets/centerTicket" element={<CenterTicketPage />} />
               <Route path="/tickets/centerTicket/new" element={<CreateTicketPage />} />
               <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />

@@ -1,13 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { schedulesState } from '@/atoms/counseling/counselingScheduleAtom';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { schedulesState, timeListState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
-import SelectDate from '@components/common/SelectDate';
-import SelectTime from '@components/common/SelectTime';
+import { getTime } from '@/utils/date';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
-import InputMemo from '@components/common/InputMemo';
+import InputMemo from '@pages/counseling/components/InputMemo';
 import { StateType } from '@/types/counseling/counseling';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 
@@ -23,49 +22,34 @@ const initialState: StateType = {
 
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
+  const { userId, startAt, endAt, clientName, clientPhone } = state;
   const setSchedules = useSetRecoilState(schedulesState);
+  const timeList = useRecoilValue(timeListState);
+  const [date, setDate] = useState('');
   const navigate = useNavigate();
 
-  // 생성 API
-  const createCounseling = async (counselingData: StateType): Promise<StateType | undefined> => {
-    try {
-      const res = await axiosInstance.post('/schedules/counseling', counselingData);
-      const createdCounseling = res.data;
-      navigate('/schedules/counseling', { state: { refetch: true } });
-      console.log('res.status=', res.status);
-      return createdCounseling;
-    } catch (err) {
-      console.log(err);
-    }
+  const onDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value);
   };
 
   const handleChange = (
-    event:
-      | React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-      | { target: { name: string; value: string | number } },
+    eventOrValue: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement> | string,
   ) => {
-    const { name, value } = event.target;
-    setState((prev): StateType => ({ ...prev, [name]: value }));
-  };
+    let name: string, value: string;
 
-  // 시간 선택
-  const onTimeChange = (selectedTime: { startAt: string; endAt: string }) => {
-    // 현재 날짜
-    const currentDate = state.startAt.split('T')[0];
-
-    // 선택된 시간에 현재 날짜 추가
-    const updatedStartAt = `${currentDate}T${selectedTime.startAt}`;
-    const updatedEndAt = `${currentDate}T${selectedTime.endAt}`;
-
-    // 시작 시간과 끝나는 시간 비교
-    if (new Date(updatedStartAt) >= new Date(updatedEndAt)) {
-      alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
+    if (typeof eventOrValue === 'string') {
+      name = 'memo';
+      value = eventOrValue;
     } else {
-      setState((prev) => ({
-        ...prev,
-        startAt: updatedStartAt,
-        endAt: updatedEndAt,
-      }));
+      name = eventOrValue.target.name;
+      value = eventOrValue.target.value;
+    }
+
+    if (name === 'startAt' || name === 'endAt') {
+      const combinedDateTime = `${date}T${value}`;
+      setState((prev): StateType => ({ ...prev, [name]: combinedDateTime }));
+    } else {
+      setState((prev): StateType => ({ ...prev, [name]: value }));
     }
   };
 
@@ -86,21 +70,42 @@ const CreateCounseling = () => {
   };
 
   // 완료
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    createCounseling(state).then((createdCounseling) => {
-      if (createdCounseling) {
-        setSchedules((prevSchedules) => [...prevSchedules, createdCounseling]);
-        navigate('/schedules');
-      }
+
+    // 선택한 시작시간과 종료시간이 겹치는지 확인
+    const hasOverlap = timeList.some(([existingStart, existingEnd]) => {
+      return (
+        (new Date(existingStart) <= new Date(state.startAt) && new Date(state.startAt) < new Date(existingEnd)) ||
+        (new Date(existingStart) < new Date(state.endAt) && new Date(state.endAt) <= new Date(existingEnd)) ||
+        (new Date(state.startAt) <= new Date(existingStart) && new Date(existingStart) < new Date(state.endAt)) ||
+        (new Date(state.startAt) < new Date(existingEnd) && new Date(existingEnd) <= new Date(state.endAt))
+      );
     });
+
+    if (hasOverlap) {
+      alert('선택하신 시간대와 겹치는 일정이 있습니다. 시간을 다시 설정해 주세요.');
+      return;
+    }
+
+    // 시작 시간이 끝나는 시간보다 늦는 지 확인
+    if (new Date(state.startAt) >= new Date(state.endAt)) {
+      alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
+      return;
+    }
+
+    try {
+      const res = await axiosInstance.post('/schedules/counseling', state);
+      setSchedules((prevSchedules) => [...prevSchedules, res.data]);
+      navigate('/schedules');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // 필수 입력 값들이 채워지면 완료 버튼 활성화
-  const allFieldsCompleted = (): boolean =>
-    !!(state.userId && state.startAt && state.endAt && state.clientName && state.clientPhone);
+  const allFieldsCompleted = userId && startAt && endAt && clientName && clientPhone;
 
-  console.log(state);
   return (
     <>
       <SubHeader title="일정 생성" />
@@ -120,8 +125,14 @@ const CreateCounseling = () => {
             width="w-2/12"
             required
           />
-          <SelectDate label="날짜 선택" type="date" onChange={handleChange} />
-          <SelectTime title="시간 선택" onChange={onTimeChange} />
+          <Input type="date" label="날짜 선택" value={date} onChange={onDateChange} required />
+          <label htmlFor="startAt" className="block mt-10 mb-2">
+            시간 선택 <span className="text-primary-300">*</span>
+          </label>
+          <div className="flex items-center">
+            <Input name="startAt" type="time" value={getTime(state.startAt)} onChange={handleChange} required /> ~
+            <Input name="endAt" type="time" value={getTime(state.endAt)} onChange={handleChange} required />
+          </div>
           <Input
             type="text"
             name="clientName"
@@ -142,15 +153,10 @@ const CreateCounseling = () => {
             width="w-4/12"
             required
           />
-          <InputMemo
-            title="일정 메모"
-            width="w-4/12"
-            height="h-32"
-            onChange={(value) => handleChange({ target: { name: 'memo', value } })}
-          />
+          <InputMemo title="일정 메모" value={state.memo} width="w-4/12" height="h-32" onChange={handleChange} />
           <button
             className={`my-5 py-3 w-full rounded ${
-              allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
+              allFieldsCompleted ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
             }`}
             type="button"
             onClick={handleSubmit}>

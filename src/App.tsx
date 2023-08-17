@@ -10,6 +10,7 @@ import Schedule from '@pages/schedule/schedule';
 import ScheduleApi from '@pages/scheduleApi';
 import CenterTicketPage from '@pages/tickets/centerTicket/getTicketList';
 import TicketDetailPage from '@pages/tickets/centerTicket/getTicketDetail';
+import IssuedListPage from '@pages/tickets/centerTicket/getIssuedList';
 import CreateTicketPage from '@pages/tickets/centerTicket/createTicket';
 import CreatePrivateLesson from '@/pages/privateLesson/createPrivateLesson';
 import SearchPeople from '@pages/privateLesson/searchPeople/searchPeople';
@@ -45,6 +46,7 @@ function App() {
             <Route path="/tickets/center" element={<CenterTicketPage />} />
             <Route path="/tickets/center/new" element={<CreateTicketPage />} />
             <Route path="/tickets/:ticketId/center" element={<TicketDetailPage />} />
+            <Route path="/tickets/:ticketId/issued-tickets" element={<IssuedListPage />} />
             <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />
             <Route path="/schedule/privateLesson/new/searchPeople" element={<SearchPeople />} />
             <Route path="/members" element={<GetMembers />} />

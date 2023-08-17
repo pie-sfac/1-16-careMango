@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50"
       role="button"
       onClick={onClose}
       onKeyDown={handleKeyDown}

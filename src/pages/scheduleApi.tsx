@@ -1,56 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
 import { timeListState } from '@/atoms/counseling/counselingScheduleAtom';
 import { SchedulApiData } from '@/types/scheduleApi';
 import { CounselingDetail } from '@/types/counseling/counselingDetail';
 
-const ScheduleApi = () => {
-  const [scheduleList, setScheduleList] = useState<SchedulApiData | null>(null);
-  const [timeList, setTimeList] = useRecoilState(timeListState);
+const fetchSchedules = async (): Promise<SchedulApiData> => {
+  const from = '2023-01-21';
+  const to = '2023-12-31';
+  let apiUrl = `schedules?from=${from}&to=${to}`;
 
-  const getScheduleApi = async () => {
-    const from = '2023-01-21';
-    const to = '2023-12-31';
-    let apiUrl = `schedules?from=${from}&to=${to}`;
-
-    const res = await axiosInstance.get(apiUrl);
-    console.log(res.data.counselingSchedules);
-
-    const filteredCounselingSchedules = res.data.counselingSchedules.filter(
-      (item: CounselingDetail) => !item.isCanceled,
-    );
-
-    setScheduleList({
-      ...res.data,
-      counselingSchedules: filteredCounselingSchedules,
-    });
+  const res = await axiosInstance.get(apiUrl);
+  return {
+    ...res.data,
+    counselingSchedules: res.data.counselingSchedules.filter((item: CounselingDetail) => !item.isCanceled),
   };
+};
 
-  useEffect(() => {
-    getScheduleApi();
-  }, []);
-
+const ScheduleApi = () => {
+  const { data: scheduleList, isLoading } = useQuery('schedules', fetchSchedules);
+  const [timeList, setTimeList] = useRecoilState(timeListState);
   const navigate = useNavigate();
+
   const goCreateCounseling = () => {
     const timeListData = scheduleList?.counselingSchedules?.map((e) => [e.startAt, e.endAt]) || [];
-    console.log(timeListData);
     setTimeList(timeListData);
     navigate('counseling/new');
   };
 
-  const goCheckSchedule = () => {
-    navigate('/schedule/personal/1');
-  };
+  const goCheckSchedule = () => navigate('/schedule/personal/1');
+  const goCreateSchedule = () => navigate('/schedule/personal/new');
+  const goCheckCounseling = (scheduleId: number) => navigate(`counseling/${scheduleId}`);
 
-  const goCreateSchedule = () => {
-    navigate('/schedule/personal/new');
-  };
-
-  const goCheckCounseling = (scheduleId: number) => {
-    navigate(`counseling/${scheduleId}`);
-  };
+  if (isLoading) return <div>loading...</div>;
 
   return (
     <div className="flex flex-col">

@@ -1,5 +1,6 @@
-import React, { ChangeEvent, useState, useEffect, useCallback } from 'react';
+import React, { ChangeEvent, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery, useMutation } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 import { schedulesState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
@@ -30,9 +31,9 @@ const UpdateCounseling = () => {
   const navigate = useNavigate();
 
   // 기존 데이터 불러오기
-  const fetchCounselingData = useCallback(async () => {
-    try {
-      const res = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
+  useQuery(['schedules', scheduleId], async () => {
+    const res = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
+    if (res.data) {
       setState({
         userId: res.data.counselor.id,
         memberId: res.data.client?.memberId || null,
@@ -41,75 +42,60 @@ const UpdateCounseling = () => {
         memo: res.data.memo,
         startAt: res.data.startAt,
         endAt: res.data.endAt,
-        counselingRecordContent: res.data.counselingRecord || '',
+        counselingRecordContent: res.data.counselingRecord.content || '',
       });
-    } catch (err) {
-      console.error(err);
     }
-  }, [scheduleId]);
-
-  useEffect(() => {
-    fetchCounselingData();
-  }, [fetchCounselingData]);
+  });
 
   // 변경 api 연결
-  const updateCounseling = async (counselingData: UpdateStateType): Promise<UpdateStateType | undefined> => {
-    try {
-      const res = await axiosInstance.put(`schedules/counseling/${scheduleId}`, counselingData);
-      navigate('/schedules/counseling', { state: { refetch: true } });
-      return res.data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const mutation = useMutation(
+    (counselingData: UpdateStateType) => axiosInstance.put(`schedules/counseling/${scheduleId}`, counselingData),
+    {
+      onSuccess: (data) => {
+        navigate('/schedules/counseling', { state: { refetch: true } });
 
-  // 날짜 변경 시 시간도 같이 변경
-  const onDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const newDate = event.target.value;
-    setState((prev) => ({
-      ...prev,
-      startAt: `${newDate}T${getTime(prev.startAt)}`,
-      endAt: `${newDate}T${getTime(prev.endAt)}`,
-    }));
-  }, []);
+        const updatedCounseling = data.data;
+        setSchedules((prevSchedules) => [...prevSchedules, updatedCounseling]);
+        navigate('/schedules');
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    },
+  );
 
   const handleChange = useCallback(
-    (eventOrValue: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement> | string) => {
-      let name: string, value: string;
+    (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      const { name, value: rawValue } = event.target;
 
-      if (typeof eventOrValue === 'string') {
-        name = 'memo';
-        value = eventOrValue;
-      } else {
-        name = eventOrValue.target.name;
-        value = eventOrValue.target.value;
+      let value = rawValue;
+
+      if (name === 'clientPhone') {
+        value = rawValue.replace(/\D/g, '');
+
+        if (value.length > 11) return;
+
+        if (value.length <= 7) {
+          value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        } else if (value.length <= 11) {
+          value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+        }
+      } else if (name === 'startAt' || name === 'endAt') {
+        value = `${date}T${rawValue}`;
+      } else if (name === 'date') {
+        const newDate = rawValue;
+        setState((prev) => ({
+          ...prev,
+          startAt: `${newDate}T${getTime(prev.startAt)}`,
+          endAt: `${newDate}T${getTime(prev.endAt)}`,
+        }));
+        return;
       }
 
-      if (name === 'startAt' || name === 'endAt') {
-        const combinedDateTime = `${date}T${value}`;
-        setState((prev) => ({ ...prev, [name]: combinedDateTime }));
-      } else {
-        setState((prev) => ({ ...prev, [name]: value }));
-      }
+      setState((prev) => ({ ...prev, [name]: value }));
     },
     [date],
   );
-
-  // 전화번호 입력 시 자동 하이픈
-  const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value: rawValue } = event.target;
-    let value = rawValue.replace(/\D/g, '');
-
-    if (value.length > 11) return;
-
-    if (value.length <= 7) {
-      value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-    } else if (value.length <= 11) {
-      value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
-    }
-
-    setState((prev) => ({ ...prev, clientPhone: value }));
-  };
 
   // 완료
   const handleSubmit = useCallback(
@@ -121,19 +107,15 @@ const UpdateCounseling = () => {
         alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
         return;
       }
-      updateCounseling(state).then((updatedCounseling) => {
-        if (updatedCounseling) {
-          setSchedules((prevSchedules) => [...prevSchedules, updatedCounseling]);
-          navigate('/schedules');
-        }
-      });
+
+      mutation.mutate(state);
     },
-    [state, updateCounseling, setSchedules, navigate],
+    [state, mutation, navigate, setSchedules],
   );
 
   const allFieldsCompleted = userId && startAt && endAt && clientName && clientPhone;
-  console.log(state);
 
+  console.log(state);
   return (
     <>
       <SubHeader title="일정 생성" />
@@ -153,7 +135,7 @@ const UpdateCounseling = () => {
             width="w-2/12"
             required
           />
-          <Input type="date" label="날짜 선택" value={date} onChange={onDateChange} required />
+          <Input type="date" name="date" label="날짜 선택" value={date} onChange={handleChange} required />
           <label htmlFor="startAt" className="block mt-10 mb-2">
             시간 선택 <span className="text-primary-300">*</span>
           </label>
@@ -175,7 +157,7 @@ const UpdateCounseling = () => {
             type="text"
             name="clientPhone"
             value={state.clientPhone}
-            onChange={numberChange}
+            onChange={handleChange}
             label="연락처"
             placeholder="연락처를 입력해주세요."
             width="w-4/12"

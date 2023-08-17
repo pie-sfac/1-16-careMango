@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { cancelScheduleIdState } from '@/atoms/counseling/counselingScheduleAtom';
+import { useQuery, useMutation } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
-import { CounselingDetail } from '@/types/counseling/counselingDetail';
 import Card from '@components/common/Card';
 import Modal from '@components/common/Modal/Modal';
 import SubHeader from '@components/common/SubHeader';
@@ -13,59 +11,52 @@ import CounselingScheduleDetail from '@pages/counseling/components/CounselingSch
 const GetCounselingDetail = () => {
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [showModal, setShowModal] = useState(false);
-  const [counselingData, setCounselingData] = useState<CounselingDetail | null>(null);
-  const [cancelScheduleId, setCancelScheduleId] = useRecoilState(cancelScheduleIdState);
   const navigate = useNavigate();
 
-  // API
-  const getCounseling = async () => {
-    const res = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
-    setCounselingData(res.data);
+  const time = (datetime: string) => {
+    const [hours, minutes] = datetime.split('T')[1].split(':');
+    return { hours, minutes };
   };
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
+  const goUpdateCounseling = () => navigate(`/schedules/counseling/update/${scheduleId}`);
+
+  const { data: counselingData } = useQuery(
+    ['counselingDetail', scheduleId],
+    () => axiosInstance.get(`schedules/counseling/${scheduleId}`).then((res) => res.data),
+    { enabled: !!scheduleId },
+  );
+
+  const cancelCounselingMutation = useMutation(() => axiosInstance.post(`schedules/${scheduleId}/cancel`, {}), {
+    onSuccess: () => {
+      console.log('성공');
+      handleCloseModal();
+    },
+    onError: (error) => {
+      console.error('실패', error);
+    },
+  });
+
+  const handleConfirmModal = () => cancelCounselingMutation.mutate();
 
   const handleCloseModal = () => {
-    setCancelScheduleId(cancelScheduleId);
     setShowModal(false);
     navigate('/schedules');
   };
 
-  useEffect(() => {
-    getCounseling();
-  }, []);
-
-  const goUpdateCounseling = () => {
-    navigate(`/schedules/counseling/update/${scheduleId}`);
-  };
-
-  const handleConfirmModal = async () => {
-    try {
-      const response = await axiosInstance.post(`schedules/${scheduleId}/cancel`, {});
-      if (response.status === 200 || response.status === 201) {
-        console.log('성공');
-        handleCloseModal();
-      }
-    } catch (error) {
-      console.error('실패', error);
-    }
-  };
-
   if (!counselingData) return <p>loading...</p>;
+
+  const { hours, minutes } = time(counselingData.startAt);
+
   return (
     <>
       <SubHeader
-        title={`${counselingData.startAt.split('T')[1].split(':')[0]}시 ${
-          counselingData.startAt.split('T')[1].split(':')[1]
-        }분 상담`}
+        title={`${hours}시 ${minutes}분 상담`}
         rightBtn={
           <div>
             <button className="pl-5 text-base" type="button" onClick={goUpdateCounseling}>
               변경
             </button>
-            <button className="pl-5 text-base" type="button" onClick={handleOpenModal}>
+            <button className="pl-5 text-base" type="button" onClick={() => setShowModal(true)}>
               취소
             </button>
           </div>

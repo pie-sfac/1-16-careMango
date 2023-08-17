@@ -25,6 +25,7 @@ import UpdateMembers from '@pages/members/updateMembers';
 import GetMembers from '@pages/members/getMembers';
 import GetMembersDetail from '@pages/members/getMembersDetail';
 import Layout from './components/layout/Layout';
+import GetStaffsList from '@pages/counseling/getStaffsList';
 import ShowStaffs from '@pages/staffs/getStaffs';
 import MyPage from '@pages/myPage';
 import SearchResults from '@components/common/SearchResults';
@@ -41,6 +42,7 @@ function App() {
             <Route path="/schedules/counseling/update/:scheduleId" element={<UpdateCounseling />} />
             <Route path="/schedules/counseling/:scheduleId" element={<GetCounselingDetail />} />
             <Route path="/schedules/counseling/new" element={<CreateCounseling />} />
+            <Route path="/schedules/counseling/new/staffs" element={<GetStaffsList />} />
             <Route path="/schedule/personal/:scheduleId" element={<ScheduleDetailPage />} />
             <Route path="/schedule/personal/edit/:scheduleId" element={<ScheduleUpdatePage />} />
             <Route path="/tickets/center" element={<CenterTicketPage />} />

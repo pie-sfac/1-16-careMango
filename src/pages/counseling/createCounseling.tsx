@@ -1,13 +1,14 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { timeListState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
+import { Staff } from '@/types/staffs/staffs';
 import Input from '@components/common/Input/Input';
-import Select from '@components/common/Select/Select';
 import InputMemo from '@pages/counseling/components/InputMemo';
+import SelectStaffs from './components/SelectStaffs';
 import { StateType } from '@/types/counseling/counseling';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 
@@ -23,11 +24,21 @@ const initialState: StateType = {
 
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
+  const [selectedStaff, setSelectedStaff] = useState<null | Staff>(null);
   const { userId, startAt, endAt, clientName, clientPhone } = state;
   const [_, setSchedules] = useState<StateType[]>([]);
   const timeList = useRecoilValue(timeListState);
   const [date, setDate] = useState('');
   const navigate = useNavigate();
+
+  const location = useLocation() as { state: { selectedStaff: Staff } };
+
+  useEffect(() => {
+    if (location.state && location.state.selectedStaff) {
+      setSelectedStaff(location.state.selectedStaff);
+      setState((prev) => ({ ...prev, userId: location.state.selectedStaff.id }));
+    }
+  }, [location.state]);
 
   const onDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDate(event.target.value);
@@ -113,25 +124,14 @@ const CreateCounseling = () => {
 
   const allFieldsCompleted = userId && startAt && endAt && clientName && clientPhone;
 
+  console.log(state);
   return (
     <>
       <SubHeader title="일정 생성" />
       <div className="flex flex-col">
         <h1 className="main-title">상담</h1>
         <form onSubmit={handleSubmit}>
-          <Select
-            name="userId"
-            options={[
-              { label: '선택해주세요', value: 0 },
-              { label: '박강사', value: 1 },
-              { label: '김강사', value: 2 },
-            ]}
-            value={state.userId}
-            onChange={handleChange}
-            label="담당 강사 선택"
-            width="w-2/12"
-            required
-          />
+          <SelectStaffs selectedStaff={selectedStaff} setSelectedStaff={setSelectedStaff} setState={setState} />
           <Input type="date" label="날짜 선택" value={date} onChange={onDateChange} required />
           <label htmlFor="startAt" className="block mt-10 mb-2">
             시간 선택 <span className="text-primary-300">*</span>

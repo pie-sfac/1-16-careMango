@@ -44,3 +44,14 @@ export interface CreateTicketType {
   defaultCount: number;
   maxServiceCount?: number;
 }
+
+export interface IssuedTicketData extends IssuedTicketsData {
+  privateTutor: {
+    id: number;
+    type: 'ADMIN' | 'STAFF';
+    loginId: string;
+    name: string;
+    phone: string;
+    isActive: boolean;
+  };
+}

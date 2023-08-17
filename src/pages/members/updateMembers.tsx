@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { UpdateStateType } from '@/types/members/members';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
 import SelectSex from '@pages/members/components/SelectSex';

@@ -6,7 +6,7 @@ import SelectDate from '@/components/common/SelectDate';
 import SelectTime from '@/components/common/SelectTime';
 import CompleteButton from '@/components/common/CompleteButton';
 import ButtonAddPeople from '@pages/privateLesson/components/ButtonAddPeople';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
 import { Staff } from '@/types/staffs/staffs';

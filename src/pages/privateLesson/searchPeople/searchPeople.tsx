@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Member } from '@/types/members/members';
 import { axiosInstance } from '@/utils/apiInstance';
 import PeopleListItem from '@pages/privateLesson/components/PeopleListItem';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 
 const SearchPeople = () => {
   const [peopleList, setPeopleList] = useState<Member[] | null>(null);

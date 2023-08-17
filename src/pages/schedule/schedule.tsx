@@ -99,12 +99,7 @@ function ScheduleCalendar() {
     }
   }, [currentDate]);
 
-  const calendars = [
-    {
-      id: 'cal1',
-      name: 'Personal',
-    },
-  ];
+  const calendars = [{}];
 
   const getDuration = (start: string, end: string): string => {
     const startDate = new Date(start);
@@ -145,7 +140,19 @@ function ScheduleCalendar() {
 
   const cancelledEvents = events.filter((event) => event.attendance === '결석').length;
 
-  const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2); // 소수점 둘째 자리까지 표시
+  const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2);
+
+  const myTheme = {
+    common: {
+      backgroundColor: 'white',
+    },
+    week: {
+      today: {
+        color: 'blue',
+      },
+    },
+    month: {},
+  };
 
   return (
     <div className="flex flex-col justify-between">
@@ -166,6 +173,8 @@ function ScheduleCalendar() {
             month={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               visibleWeeksCount: 5,
+              isAlways6Weeks: false,
+              visibleEventCount: 1,
             }}
             week={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
@@ -176,6 +185,9 @@ function ScheduleCalendar() {
             calendars={calendars}
             events={events}
             ref={calendarRef}
+            theme={myTheme}
+            // gridSelection={false}
+            isReadOnly={true}
           />
         </div>
         <aside className="w-96 p-4 bg-white rounded-lg box-content">

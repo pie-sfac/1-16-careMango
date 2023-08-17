@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
 import { ReactComponent as Document } from '@/assets/icons/Document.svg';
 import { ReactComponent as Message } from '@/assets/icons/Message.svg';
@@ -73,10 +73,10 @@ const GetMembersDetail = () => {
         <div className="flex items-center">
           <Profile40 />
           {memberInformation.map((info) => (
-            <React.Fragment key={info.id}>
+            <div key={info.id} className="flex">
               <p className="ml-5 text-text-400">{info.label}</p>
               <p className="ml-2">{info.value}</p>
-            </React.Fragment>
+            </div>
           ))}
         </div>
         <button type="button" onClick={goUpdateMembers}>

@@ -2,10 +2,10 @@ import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { StateType } from '@/types/members/members';
-import SubHeader from '@components/common/SubHeader';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
 import SelectSex from '@pages/members/components/SelectSex';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import AgreeCondition from '@pages/members/components/AgreeCondition';
 
 const initialState: StateType = {
@@ -26,6 +26,8 @@ const initialState: StateType = {
 
 const CreateMembers = () => {
   const [state, setState] = useState<StateType>(initialState);
+  const [showJobInput, setShowJobInput] = useState<boolean>(false);
+  const [showAcqInput, setShowAcqInput] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const onChange = (name: string, value: string) => {
@@ -45,7 +47,29 @@ const CreateMembers = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = event.target;
-    setState((prev): StateType => ({ ...prev, [name]: value }));
+
+    if (event.target instanceof HTMLSelectElement) {
+      if (name === 'job') {
+        setShowJobInput(value === ' ');
+      }
+      if (name === 'acquisitionFunnel') {
+        setShowAcqInput(value === ' ');
+      }
+    }
+
+    setState((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 직접 입력 값 넣기
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    if (name === 'jobInput') {
+      setState((prev) => ({ ...prev, job: value }));
+    } else if (name === 'acquisitionFunnelInput') {
+      setState((prev) => ({ ...prev, acquisitionFunnel: value }));
+    } else {
+      setState((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   // 자동 하이픈
@@ -127,39 +151,64 @@ const CreateMembers = () => {
               width="w-full"
               required
             />
-            <Select
-              name="job"
-              options={[
-                { label: '선택해주세요', value: 0 },
-                { label: '사무직', value: '사무직' },
-                { label: '현장직', value: '현장직' },
-                { label: '가사노동자', value: '가사노동자' },
-                { label: '학생', value: '학생' },
-                { label: '무직', value: '무직' },
-                { label: '기타 - 직접입력', value: 6 },
-              ]}
-              value={state.job}
-              onChange={handleChange}
-              label="직업"
-              width="w-full"
-              required
-            />
-            <Select
-              name="acquisitionFunnel"
-              options={[
-                { label: '선택해주세요', value: 0 },
-                { label: '주변 추천', value: '주변 추천' },
-                { label: '오프라인 광고 (배너, 현수막)', value: '오프라인 광고 (배너, 현수막)' },
-                { label: 'SNS 광고 (페이스북, 인스타)', value: 'SNS 광고 (페이스북, 인스타)' },
-                { label: '네이버 지도', value: '네이버 지도' },
-                { label: '기타 - 직접입력', value: 5 },
-              ]}
-              value={state.acquisitionFunnel}
-              onChange={handleChange}
-              label="방문 경로"
-              width="w-full"
-              required
-            />
+            {!showJobInput ? (
+              <Select
+                name="job"
+                options={[
+                  { label: '선택해주세요', value: 0 },
+                  { label: '사무직', value: '사무직' },
+                  { label: '현장직', value: '현장직' },
+                  { label: '가사노동자', value: '가사노동자' },
+                  { label: '학생', value: '학생' },
+                  { label: '무직', value: '무직' },
+                  { label: '기타 - 직접입력', value: ' ' },
+                ]}
+                value={state.job}
+                onChange={handleChange}
+                label="직업"
+                width="w-full"
+                required
+              />
+            ) : (
+              <Input
+                type="text"
+                name="jobInput"
+                value={state.job}
+                onChange={handleInputChange}
+                label="직업 (직접입력)"
+                width="w-full"
+                required
+              />
+            )}
+
+            {!showAcqInput ? (
+              <Select
+                name="acquisitionFunnel"
+                options={[
+                  { label: '선택해주세요', value: 0 },
+                  { label: '주변 추천', value: '주변 추천' },
+                  { label: '오프라인 광고 (배너, 현수막)', value: '오프라인 광고 (배너, 현수막)' },
+                  { label: 'SNS 광고 (페이스북, 인스타)', value: 'SNS 광고 (페이스북, 인스타)' },
+                  { label: '네이버 지도', value: '네이버 지도' },
+                  { label: '기타 - 직접입력', value: ' ' },
+                ]}
+                value={state.acquisitionFunnel}
+                onChange={handleChange}
+                label="방문 경로"
+                width="w-full"
+                required
+              />
+            ) : (
+              <Input
+                type="text"
+                name="acquisitionFunnelInput"
+                value={state.acquisitionFunnel}
+                onChange={handleInputChange}
+                label="방문 경로 (직접입력)"
+                width="w-full"
+                required
+              />
+            )}
             <AgreeCondition title="회원 약관 동의" />
             <button
               className={`my-5 py-3 w-full rounded ${

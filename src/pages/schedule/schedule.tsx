@@ -192,7 +192,12 @@ function ScheduleCalendar() {
 
             <Legend />
 
-            <EventTable events={events} renderAttendance={renderAttendance} getDuration={getDuration} />
+            <EventTable
+              events={events}
+              renderAttendance={renderAttendance}
+              getDuration={getDuration}
+              currentDate={currentDate}
+            />
           </div>
         </aside>
       </main>

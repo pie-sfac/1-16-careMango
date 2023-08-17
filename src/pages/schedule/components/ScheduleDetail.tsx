@@ -52,6 +52,19 @@ const ScheduleDetail = ({ itemData, fetchCheckSchedule, attendanceHistoryId }: S
     return '예약';
   };
 
+  const statusColorClass = () => {
+    const status = itemData.attendanceHistories[0].status;
+    if (status === 'PRESENT') {
+      return 'text-primary-500';
+    }
+    if (status === 'ABSENT') {
+      return 'text-red-500';
+    }
+    if (status === 'WAIT') {
+      return 'text-text-900';
+    }
+  };
+
   return (
     <>
       <div className="flex items-center p-5 border-b gap-28 border-line-200">
@@ -104,7 +117,7 @@ const ScheduleDetail = ({ itemData, fetchCheckSchedule, attendanceHistoryId }: S
           <li>예약 가능</li>
         </ul>
         <ul className="flex flex-col gap-2 font-bold">
-          <li>{attendanceStatus(itemData.attendanceHistories[0].status)}</li>
+          <li className={statusColorClass()}>{attendanceStatus(itemData.attendanceHistories[0].status)}</li>
           <li>{itemData.issuedTicket.title}</li>
           <li>
             {itemData.issuedTicket.remainingCount}회 (총 {itemData.issuedTicket.defaultCount}회)

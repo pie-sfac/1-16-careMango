@@ -22,7 +22,6 @@ const CreateTicketPage = () => {
   };
 
   const [state, setState] = useState<CreateTicketType>(initialState);
-  const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -37,7 +36,7 @@ const CreateTicketPage = () => {
     try {
       const res = await axiosInstance.post('/tickets', ticketData);
       const createdTicket = res.data;
-      navigate('/tickets/centerTicket');
+      navigate('/tickets/center');
       return createdTicket;
     } catch (err) {
       console.log(err);
@@ -46,17 +45,21 @@ const CreateTicketPage = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    setState((prev) => ({ ...prev, maxServiceCount: count }));
     console.log(state);
     createTicket(state);
   };
 
   const decreaseCount = () => {
-    if (count > 0) setCount((prev) => prev - 1);
+    if (state.maxServiceCount !== undefined && state.maxServiceCount > 0) {
+      setState((prev) => ({
+        ...prev,
+        maxServiceCount: prev.maxServiceCount && prev.maxServiceCount - 1,
+      }));
+    }
   };
 
   const increaseCount = () => {
-    setCount((prev) => prev + 1);
+    setState((prev) => ({ ...prev, maxServiceCount: (prev.maxServiceCount || 0) + 1 }));
   };
 
   return (
@@ -147,10 +150,10 @@ const CreateTicketPage = () => {
           <Input
             name="maxServiceCount"
             type="number"
-            value={count}
+            value={state.maxServiceCount}
             onChange={handleChange}
             label="서비스 횟수"
-            placeholder={count.toString()}
+            placeholder="0"
             leftBtn={
               <button type="button" onClick={decreaseCount} className="mr-2 icon-btn">
                 <Minus />

@@ -35,7 +35,7 @@ const CreateTicketPage = () => {
 
   const createTicketMutation = useMutation(
     async (ticketData: CreateTicketType) => {
-      const res = await axiosInstance.put(`/tickets`, ticketData);
+      const res = await axiosInstance.post(`/tickets`, ticketData);
       return res.data;
     },
     {

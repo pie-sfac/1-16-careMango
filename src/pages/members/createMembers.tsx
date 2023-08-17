@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { StateType } from '@/types/members/members';
@@ -16,22 +17,55 @@ const initialState: StateType = {
   job: '',
   acqusitionFunnel: '',
   acquisitionFunnel: '',
-  // toss: [
-  //   {
-  //     id: 10,
-  //     agree: false,
-  //   },
-  // ],
 };
 
 const CreateMembers = () => {
   const [state, setState] = useState<StateType>(initialState);
   const [showJobInput, setShowJobInput] = useState<boolean>(false);
   const [showAcqInput, setShowAcqInput] = useState<boolean>(false);
+  const [hasAgreed, setHasAgreed] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const onChange = (name: string, value: string) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+
+    if (event.target instanceof HTMLSelectElement) {
+      if (name === 'job' && value === ' ') {
+        setShowJobInput(true);
+        return;
+      } else if (name === 'acquisitionFunnel' && value === ' ') {
+        setShowAcqInput(true);
+        return;
+      }
+    }
+
     setState((prev) => ({ ...prev, [name]: value }));
+    if (name === 'phone' || name === 'birthDate') {
+      let formattedValue = value.replace(/\D/g, '');
+      if (name === 'phone' && formattedValue.length <= 11) {
+        if (formattedValue.length <= 7) formattedValue = formattedValue.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        else formattedValue = formattedValue.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+      }
+      if (name === 'birthDate' && formattedValue.length <= 8) {
+        if (formattedValue.length <= 6) formattedValue = formattedValue.replace(/(\d{4})(\d{1,2})/, '$1-$2');
+        else formattedValue = formattedValue.replace(/(\d{4})(\d{2})(\d{1,2})/, '$1-$2-$3');
+      }
+      setState((prev) => ({ ...prev, [name]: formattedValue }));
+    } else {
+      setState((prev) => ({ ...prev, [name]: value }));
+    }
+
+    if (name === 'jobInput') {
+      setState((prev) => ({ ...prev, job: value }));
+    } else if (name === 'acquisitionFunnelInput') {
+      setState((prev) => ({ ...prev, acquisitionFunnel: value }));
+    } else {
+      setState((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSexChange = (selectedSex: string) => {
+    setState((prev) => ({ ...prev, sex: selectedSex }));
   };
 
   const createMembers = async (membersData: StateType) => {
@@ -45,71 +79,23 @@ const CreateMembers = () => {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    if (event.target instanceof HTMLSelectElement) {
-      if (name === 'job') {
-        setShowJobInput(value === ' ');
-      }
-      if (name === 'acquisitionFunnel') {
-        setShowAcqInput(value === ' ');
-      }
-    }
-
-    setState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // 직접 입력 값 넣기
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === 'jobInput') {
-      setState((prev) => ({ ...prev, job: value }));
-    } else if (name === 'acquisitionFunnelInput') {
-      setState((prev) => ({ ...prev, acquisitionFunnel: value }));
-    } else {
-      setState((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  // 자동 하이픈
-  const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value: rawValue } = event.target;
-    let value = rawValue.replace(/\D/g, '');
-
-    // 휴대폰 번호 처리
-    if (name === 'phone') {
-      if (value.length > 11) return;
-
-      if (value.length <= 7) {
-        value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-      } else if (value.length <= 11) {
-        value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
-      }
-    }
-
-    // 생년월일 처리
-    else {
-      if (value.length > 8) return;
-
-      if (value.length <= 6) {
-        value = value.replace(/(\d{4})(\d{1,2})/, '$1-$2');
-      } else if (value.length <= 8) {
-        value = value.replace(/(\d{4})(\d{2})(\d{1,2})/, '$1-$2-$3');
-      }
-    }
-    setState((prev) => ({ ...prev, [name]: value }));
-  };
+  const mutation = useMutation(createMembers, {
+    onSuccess: () => {
+      console.log('성공');
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    createMembers(state);
+    mutation.mutate(state);
     navigate('/members/new/register', { state: { memberName: state.name } });
   };
 
-  const allFieldsCompleted = state.birthDate && state.sex && state.name && state.phone;
+  const allFieldsCompleted = state.birthDate && state.sex && state.name && state.phone && hasAgreed;
 
-  console.log(state);
   return (
     <>
       <SubHeader title="회원등록" />
@@ -130,12 +116,12 @@ const CreateMembers = () => {
               width="w-full"
               required
             />
-            <SelectSex title="성별" onChange={(value) => onChange('sex', value)} />
+            <SelectSex title="성별" onChange={handleSexChange} />
             <Input
               type="text"
               name="birthDate"
               value={state.birthDate}
-              onChange={numberChange}
+              onChange={handleChange}
               label="생년월일"
               placeholder="0000-00-00"
               width="w-full"
@@ -145,7 +131,7 @@ const CreateMembers = () => {
               type="text"
               name="phone"
               value={state.phone}
-              onChange={numberChange}
+              onChange={handleChange}
               label="휴대폰 번호"
               placeholder="010-0000-0000"
               width="w-full"
@@ -174,7 +160,7 @@ const CreateMembers = () => {
                 type="text"
                 name="jobInput"
                 value={state.job}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 label="직업 (직접입력)"
                 width="w-full"
                 required
@@ -203,18 +189,19 @@ const CreateMembers = () => {
                 type="text"
                 name="acquisitionFunnelInput"
                 value={state.acquisitionFunnel}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 label="방문 경로 (직접입력)"
                 width="w-full"
                 required
               />
             )}
-            <AgreeCondition title="회원 약관 동의" />
+            <AgreeCondition title="회원 약관 동의" onChange={setHasAgreed} />
             <button
               className={`my-5 py-3 w-full rounded ${
                 allFieldsCompleted ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
               }`}
-              type="submit">
+              type="submit"
+              disabled={!allFieldsCompleted || mutation.isLoading}>
               완료
             </button>
           </form>

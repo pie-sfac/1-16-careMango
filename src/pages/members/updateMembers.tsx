@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
+import { useQuery, useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { UpdateStateType } from '@/types/members/members';
@@ -25,60 +26,91 @@ const UpdateMembers = () => {
   const navigate = useNavigate();
 
   // 기존 데이터 불러오기
-  const fetchMembersData = useCallback(async () => {
-    try {
+  const { isLoading } = useQuery(
+    ['memberData', memberId],
+    async () => {
+      if (!memberId) return;
+
       const res = await axiosInstance.get(`members/${memberId}`);
-      setState({
-        name: res.data.name,
-        birthDate: res.data.birthDate,
-        phone: res.data.phone,
-        sex: res.data.sex,
-        job: res.data.job,
-        acquisitionFunnel: res.data.acquisitionFunnel,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }, [memberId]);
+      return res.data;
+    },
+    {
+      enabled: !!memberId,
+      onSuccess: (data) => {
+        if (data) {
+          setState({
+            name: data.name,
+            birthDate: data.birthDate,
+            phone: data.phone,
+            sex: data.sex,
+            job: data.job,
+            acquisitionFunnel: data.acquisitionFunnel,
+          });
+        }
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    },
+  );
 
-  // 변경 api 연결
-  const updateMembers = async (membersData: UpdateStateType) => {
-    try {
-      const res = await axiosInstance.put(`members/${memberId}`, membersData);
-      if (res.status === 200 || res.status === 201) {
-        console.log('성공');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // 새로운 데이터 업데이트
+  const mutation = useMutation(
+    (membersData: UpdateStateType) => axiosInstance.put(`members/${memberId}`, membersData),
+    {
+      onSuccess: () => {
+        console.log('업데이트 성공');
+        navigate(`/members/${memberId}`);
+      },
+      onError: (error) => {
+        console.error('업데이트 실패', error);
+      },
+    },
+  );
 
-  useEffect(() => {
-    fetchMembersData();
-  }, [fetchMembersData]);
-
-  const onChange = (name: string, value: string) => {
-    setState((prev) => ({ ...prev, [name]: value }));
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    mutation.mutate(state);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { name, value } = event.target;
+    const { name, value: rawValue } = event.target;
 
+    // 일반 입력 처리
+    let value = rawValue;
+
+    // 휴대폰 번호나 생년월일에 대한 처리
+    if (name === 'phone' || name === 'birthDate') {
+      value = rawValue.replace(/\D/g, ''); // 숫자만 남김
+
+      // 휴대폰 번호 처리
+      if (name === 'phone') {
+        if (value.length <= 7) {
+          value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        } else if (value.length <= 11) {
+          value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+        }
+      }
+      // 생년월일 처리
+      else {
+        if (value.length <= 6) {
+          value = value.replace(/(\d{4})(\d{1,2})/, '$1-$2');
+        } else if (value.length <= 8) {
+          value = value.replace(/(\d{4})(\d{2})(\d{1,2})/, '$1-$2-$3');
+        }
+      }
+    }
+
+    // Select 입력 처리 및 추가 입력 상태 변경
     if (event.target instanceof HTMLSelectElement) {
       if (name === 'job') {
         setShowJobInput(value === ' ');
-      }
-      if (name === 'acquisitionFunnel') {
+      } else if (name === 'acquisitionFunnel') {
         setShowAcqInput(value === ' ');
       }
     }
 
-    setState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // 직접 입력 값 넣기
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    // 직접 입력 처리
     if (name === 'jobInput') {
       setState((prev) => ({ ...prev, job: value }));
     } else if (name === 'acquisitionFunnelInput') {
@@ -88,44 +120,14 @@ const UpdateMembers = () => {
     }
   };
 
-  // 자동 하이픈
-  const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value: rawValue } = event.target;
-    let value = rawValue.replace(/\D/g, '');
-
-    // 휴대폰 번호 처리
-    if (name === 'phone') {
-      if (value.length > 11) return;
-
-      if (value.length <= 7) {
-        value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-      } else if (value.length <= 11) {
-        value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
-      }
-    }
-
-    // 생년월일 처리
-    else {
-      if (value.length > 8) return;
-
-      if (value.length <= 6) {
-        value = value.replace(/(\d{4})(\d{1,2})/, '$1-$2');
-      } else if (value.length <= 8) {
-        value = value.replace(/(\d{4})(\d{2})(\d{1,2})/, '$1-$2-$3');
-      }
-    }
-    setState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    updateMembers(state);
-    navigate(`/members/${memberId}`);
+  const handleSexChange = (selectedSex: string) => {
+    setState((prev) => ({ ...prev, sex: selectedSex }));
   };
 
   const allFieldsCompleted = state.birthDate && state.sex && state.name && state.phone;
 
-  console.log(state);
+  if (isLoading) return <div>loading...</div>;
+
   return (
     <>
       <SubHeader title="회원등록" />
@@ -146,12 +148,12 @@ const UpdateMembers = () => {
               width="w-full"
               required
             />
-            <SelectSex title="성별" defaultState={state.sex} onChange={(value) => onChange('sex', value)} />
+            <SelectSex title="성별" defaultState={state.sex} onChange={handleSexChange} />
             <Input
               type="text"
               name="birthDate"
               value={state.birthDate}
-              onChange={numberChange}
+              onChange={handleChange}
               label="생년월일"
               placeholder="0000-00-00"
               width="w-full"
@@ -161,7 +163,7 @@ const UpdateMembers = () => {
               type="text"
               name="phone"
               value={state.phone}
-              onChange={numberChange}
+              onChange={handleChange}
               label="휴대폰 번호"
               placeholder="010-0000-0000"
               width="w-full"
@@ -190,7 +192,7 @@ const UpdateMembers = () => {
                 type="text"
                 name="jobInput"
                 value={state.job}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 label="직업 (직접입력)"
                 width="w-full"
                 required
@@ -219,7 +221,7 @@ const UpdateMembers = () => {
                 type="text"
                 name="acquisitionFunnelInput"
                 value={state.acquisitionFunnel}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 label="방문 경로 (직접입력)"
                 width="w-full"
                 required

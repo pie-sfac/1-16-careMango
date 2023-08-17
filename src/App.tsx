@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import ScheduleDetailPage from '@pages/schedule/getScheduleDetail';
 import ScheduleUpdatePage from '@pages/schedule/updateSchedule';
 import CreateCounseling from '@pages/counseling/createCounseling';
@@ -29,42 +30,43 @@ import MyPage from '@pages/myPage';
 import SearchResults from '@components/common/SearchResults';
 import LoginRouter from '@pages/auth/LoginRouter';
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route element={<LoginRouter />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/schedule/personal/:scheduleId" element={<ScheduleDetailPage />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/schedules" element={<ScheduleApi />} />
-            <Route path="/schedule/personal/edit/:scheduleId" element={<ScheduleUpdatePage />} />
-            <Route path="/schedules/counseling/update/:scheduleId" element={<UpdateCounseling />} />
-            <Route path="/schedules/counseling/:scheduleId" element={<GetCounselingDetail />} />
-            <Route path="/schedules/counseling/new" element={<CreateCounseling />} />
-            <Route path="/tickets/center" element={<CenterTicketPage />} />
-            <Route path="/tickets/center/new" element={<CreateTicketPage />} />
-            <Route path="/tickets/:ticketId/center" element={<TicketDetailPage />} />
-            <Route path="/tickets/:ticketId/issued-tickets" element={<IssuedListPage />} />
-            <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />
-            <Route path="/schedule/privateLesson/new/searchPeople" element={<SearchPeople />} />
-            <Route path="/members" element={<GetMembers />} />
-            <Route path="/members/new" element={<CreateMembers />} />
-            <Route path="/members/new/register" element={<RegisterMembers />} />
-            <Route path="/members/update/:memberId" element={<UpdateMembers />} />
-            <Route path="/members/:memberId" element={<GetMembersDetail />} />
-            <Route path="/members/:memberId/issued-tickets" element={<IssuedTicketPage />} />
-            <Route path="/issued-tickets/:ticketId" element={<IssuedTicketDetail />} />
-            <Route path="/tickets/issue" element={<TicketListPage />} />
-            <Route path="/tickets/:ticketId/issue" element={<CreateIssuedTicket />} />
-            <Route path="/staffs" element={<ShowStaffs />} />
-            <Route path="/myPage" element={<MyPage />} />
-            <Route path="/search-results" element={<SearchResults />} />
-          </Route>
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route element={<LoginRouter />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/schedule/personal/:scheduleId" element={<ScheduleDetailPage />} />
+              <Route path="/schedule" element={<Schedule />} />
+              <Route path="/schedules" element={<ScheduleApi />} />
+              <Route path="/schedule/personal/edit/:scheduleId" element={<ScheduleUpdatePage />} />
+              <Route path="/schedules/counseling/update/:scheduleId" element={<UpdateCounseling />} />
+              <Route path="/schedules/counseling/:scheduleId" element={<GetCounselingDetail />} />
+              <Route path="/schedules/counseling/new" element={<CreateCounseling />} />
+              <Route path="/tickets/centerTicket" element={<CenterTicketPage />} />
+              <Route path="/tickets/centerTicket/new" element={<CreateTicketPage />} />
+              <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />
+              <Route path="/schedule/privateLesson/new/searchPeople" element={<SearchPeople />} />
+              <Route path="/members" element={<GetMembers />} />
+              <Route path="/members/new" element={<CreateMembers />} />
+              <Route path="/members/new/register" element={<RegisterMembers />} />
+              <Route path="/members/update/:memberId" element={<UpdateMembers />} />
+              <Route path="/members/:memberId" element={<GetMembersDetail />} />
+              <Route path="/members/:memberId/issued-tickets" element={<IssuedTicketPage />} />
+              <Route path="/tickets" element={<TicketListPage />} />
+              <Route path="/tickets/:ticketId" element={<IssuedTicketDetail />} />
+              <Route path="/staffs" element={<ShowStaffs />} />
+              <Route path="/myPage" element={<MyPage />} />
+              <Route path="/search-results" element={<SearchResults />} />
+            </Route>
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

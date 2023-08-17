@@ -5,14 +5,18 @@ import TicketItem from './TicketItem';
 
 type TabType = 'active' | 'deactive';
 
-const TicketList = () => {
-  const [ticketList, setTicketList] = useState<TicketsData[] | null>(null);
+const TicketList = ({ tab }: { tab: boolean }) => {
+  const [activeTicketList, setActiveTicketList] = useState<TicketsData[] | null>(null);
+  const [deactiveTicketList, setDeactiveTicketList] = useState<TicketsData[] | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('active');
 
   const getTickets = useCallback(async () => {
     const res = await axiosInstance.get('tickets');
-    setTicketList(res.data.tickets);
-    console.log(res.data.tickets);
+    const tickets = res.data.tickets;
+    const activeTickets = tickets.filter((ticket: TicketsData) => ticket.isActive === true);
+    const deActiveTickets = tickets.filter((ticket: TicketsData) => ticket.isActive === false);
+    setActiveTicketList(activeTickets);
+    setDeactiveTicketList(deActiveTickets);
   }, []);
 
   useEffect(() => {
@@ -21,26 +25,33 @@ const TicketList = () => {
 
   return (
     <>
-      <div className="flex w-48 mt-8 border-b tabs border-line-300">
-        <button
-          type="button"
-          className={`flex-1 py-2 px-4 ${
-            activeTab === 'active' ? 'border-b-2 border-primary-500 text-primary-500' : 'hover:bg-blue-50'
-          }`}
-          onClick={() => setActiveTab('active')}>
-          판매중{}
-        </button>
-        <button
-          type="button"
-          className={`flex-1 py-2 px-4 ${
-            activeTab === 'deactive' ? 'border-b-2 border-primary-500 text-primary-500' : 'hover:bg-blue-50'
-          }`}
-          onClick={() => setActiveTab('deactive')}>
-          판매종료
-        </button>
-      </div>
+      {tab && (
+        <div className="flex w-56 mt-8 border-b tabs border-line-300 text-text-400">
+          <button
+            type="button"
+            className={`flex-1 py-2 px-4 ${
+              activeTab === 'active' ? 'border-b-2 border-primary-500 text-primary-500' : 'hover:bg-blue-50'
+            }`}
+            onClick={() => setActiveTab('active')}>
+            {activeTicketList && <span>판매중 ({activeTicketList.length})</span>}
+          </button>
+          <button
+            type="button"
+            className={`flex-1 py-2 px-4 ${
+              activeTab === 'deactive' ? 'border-b-2 border-primary-500 text-primary-500' : 'hover:bg-blue-50'
+            }`}
+            onClick={() => setActiveTab('deactive')}>
+            {deactiveTicketList && <span>판매종료 ({deactiveTicketList.length})</span>}
+          </button>
+        </div>
+      )}
       <section className="flex flex-wrap items-center w-full gap-16 mt-4">
-        {ticketList && ticketList.map((ticket) => <TicketItem key={ticket.id} ticket={ticket} />)}
+        {activeTicketList &&
+          activeTab === 'active' &&
+          activeTicketList.map((ticket) => <TicketItem key={ticket.id} ticket={ticket} />)}
+        {deactiveTicketList &&
+          activeTab === 'deactive' &&
+          deactiveTicketList.map((ticket) => <TicketItem key={ticket.id} ticket={ticket} />)}
       </section>
     </>
   );

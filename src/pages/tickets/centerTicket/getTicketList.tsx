@@ -6,7 +6,7 @@ const CenterTicketPage = () => {
   const navigate = useNavigate();
 
   const onClickAdd = () => {
-    navigate(`/tickets/centerTicket/new`);
+    navigate(`/tickets/center/new`);
   };
 
   return (

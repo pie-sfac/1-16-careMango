@@ -46,6 +46,7 @@ const CreateTicketPage = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    setState((prev) => ({ ...prev, maxServiceCount: count }));
     console.log(state);
     createTicket(state);
   };

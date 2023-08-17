@@ -1,5 +1,4 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Card from '@components/common/Card/Card';
 import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
@@ -7,15 +6,22 @@ import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
 
 const TicketItem = ({ ticket }: { ticket: TicketsData }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
 
-  const goTicketDeatil = (ticketId: number) => {
-    navigate(`/tickets/${ticketId}`);
+  const goTicketDetail = (ticketId: number) => {
+    if (pathname.includes('issue')) {
+      navigate(`/tickets/${ticketId}/issue`); // 회원에게 수강권 부여
+    }
+    if (pathname.includes('center')) {
+      navigate(`/tickets/${ticketId}/center`); // 센터 수강권 상세
+    }
   };
 
   return (
     <Card>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-      <article className="w-[30rem] p-6 cursor-pointer" onClick={() => goTicketDeatil(ticket.id)}>
+      <article className="w-[30rem] p-6 cursor-pointer" onClick={() => goTicketDetail(ticket.id)}>
         <div className="flex items-start justify-between mb-8">
           <div>
             <p className="my-2 font-bold">{ticket.title}</p>

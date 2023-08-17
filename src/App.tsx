@@ -9,6 +9,8 @@ import Home from '@pages/home/home';
 import Schedule from '@pages/schedule/schedule';
 import ScheduleApi from '@pages/scheduleApi';
 import CenterTicketPage from '@pages/tickets/centerTicket/getTicketList';
+import TicketDetailPage from '@pages/tickets/centerTicket/getTicketDetail';
+import IssuedListPage from '@pages/tickets/centerTicket/getIssuedList';
 import CreateTicketPage from '@pages/tickets/centerTicket/createTicket';
 import CreatePrivateLesson from '@/pages/privateLesson/createPrivateLesson';
 import SearchPeople from '@pages/privateLesson/searchPeople/searchPeople';
@@ -19,8 +21,9 @@ import GetMembers from '@pages/members/getMembers';
 import GetMembersDetail from '@pages/members/getMembersDetail';
 import Layout from './components/layout/Layout';
 import IssuedTicketPage from '@pages/tickets/issuedTicket/getIssuedTicket';
-import TicketListPage from '@pages/tickets/issuedTicket/getTicketList';
 import IssuedTicketDetail from '@pages/tickets/issuedTicket/getIssuedTicketDetail';
+import TicketListPage from '@pages/tickets/issuedTicket/getTicketList';
+import CreateIssuedTicket from '@pages/tickets/issuedTicket/createIssuedTicket';
 import ShowStaffs from '@pages/staffs/getStaffs';
 import MyPage from '@pages/myPage';
 import SearchResults from '@components/common/SearchResults';
@@ -40,8 +43,10 @@ function App() {
             <Route path="/schedules/counseling/update/:scheduleId" element={<UpdateCounseling />} />
             <Route path="/schedules/counseling/:scheduleId" element={<GetCounselingDetail />} />
             <Route path="/schedules/counseling/new" element={<CreateCounseling />} />
-            <Route path="/tickets/centerTicket" element={<CenterTicketPage />} />
-            <Route path="/tickets/centerTicket/new" element={<CreateTicketPage />} />
+            <Route path="/tickets/center" element={<CenterTicketPage />} />
+            <Route path="/tickets/center/new" element={<CreateTicketPage />} />
+            <Route path="/tickets/:ticketId/center" element={<TicketDetailPage />} />
+            <Route path="/tickets/:ticketId/issued-tickets" element={<IssuedListPage />} />
             <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />
             <Route path="/schedule/privateLesson/new/searchPeople" element={<SearchPeople />} />
             <Route path="/members" element={<GetMembers />} />
@@ -50,8 +55,9 @@ function App() {
             <Route path="/members/update/:memberId" element={<UpdateMembers />} />
             <Route path="/members/:memberId" element={<GetMembersDetail />} />
             <Route path="/members/:memberId/issued-tickets" element={<IssuedTicketPage />} />
-            <Route path="/tickets" element={<TicketListPage />} />
-            <Route path="/tickets/:ticketId" element={<IssuedTicketDetail />} />
+            <Route path="/issued-tickets/:ticketId" element={<IssuedTicketDetail />} />
+            <Route path="/tickets/issue" element={<TicketListPage />} />
+            <Route path="/tickets/:ticketId/issue" element={<CreateIssuedTicket />} />
             <Route path="/staffs" element={<ShowStaffs />} />
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/search-results" element={<SearchResults />} />

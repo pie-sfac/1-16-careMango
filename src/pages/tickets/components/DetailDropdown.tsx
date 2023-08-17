@@ -54,8 +54,19 @@ const DetailDropDown = ({ isOpen, setIsOpen, isActive }: DropDownProps) => {
       },
     },
   );
+  const removeTicketMutation = useMutation(
+    async () => {
+      const res = await axiosInstance.delete(`/tickets/${ticketId}`);
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        navigate('/tickets/center');
+      },
+    },
+  );
 
-  const handleConfirmStatus = async () => {
+  const handleConfirmStatus = () => {
     if (isActive) {
       deActiveTicketMutation.mutate();
     }
@@ -64,18 +75,12 @@ const DetailDropDown = ({ isOpen, setIsOpen, isActive }: DropDownProps) => {
     }
   };
 
-  // 수강권 삭제
-  const handleConfirmRemove = async () => {
-    await axiosInstance.delete(`/tickets/${ticketId}`);
-    navigate('/tickets/center');
+  const handleConfirmRemove = () => {
+    removeTicketMutation.mutate();
   };
 
-  // 편집/ 수강권 삭제
-  const handleOptionClick = (option: string) => {
-    if (option === '편집') {
-    }
-    if (option === '수강권 삭제') {
-    }
+  const handleClickEdit = () => {
+    navigate(`/tickets/${ticketId}/edit`);
     setIsOpen(false);
   };
 
@@ -84,7 +89,7 @@ const DetailDropDown = ({ isOpen, setIsOpen, isActive }: DropDownProps) => {
       {isOpen && (
         <>
           <ul className="absolute right-0 w-48 text-left bg-white border border-gray-300 rounded-md shadow-md top-10">
-            <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => handleOptionClick('편집')}>
+            <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={handleClickEdit}>
               편집
             </li>
             <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={openStatusModal}>

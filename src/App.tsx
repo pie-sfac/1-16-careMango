@@ -28,6 +28,7 @@ import ShowStaffs from '@pages/staffs/getStaffs';
 import MyPage from '@pages/myPage';
 import SearchResults from '@components/common/SearchResults';
 import LoginRouter from '@pages/auth/LoginRouter';
+import UpdateTicket from '@pages/tickets/centerTicket/updateTicket';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/tickets/center/new" element={<CreateTicketPage />} />
             <Route path="/tickets/:ticketId/center" element={<TicketDetailPage />} />
             <Route path="/tickets/:ticketId/issued-tickets" element={<IssuedListPage />} />
+            <Route path="/tickets/:ticketId/edit" element={<UpdateTicket />} />
             <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />
             <Route path="/schedule/privateLesson/new/searchPeople" element={<SearchPeople />} />
             <Route path="/members" element={<GetMembers />} />

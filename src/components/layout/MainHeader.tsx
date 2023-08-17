@@ -50,7 +50,7 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
 
   const mainMenu = [
     { id: 'Members', content: '직원 관리', path: '/staffs' },
-    { id: 'Tickets', content: '수강권 관리', path: '/tickets/centerTicket' },
+    { id: 'Tickets', content: '수강권 관리', path: '/tickets/center' },
   ];
   // 마이 페이지 메뉴 항목 설정
   const myPageMenu = [
@@ -76,7 +76,7 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
   return (
     <header className="fixed top-0 left-0 flex justify-between w-full p-4 py-3 bg-white border-b base-px border-line-200">
       {showLogoutButton && (
-        <div className="absolute top-20 right-24 transform -translate-x-1/2 -translate-y-full p-2 bg-white border border-gray-300 rounded-md shadow-lg">
+        <div className="absolute p-2 transform -translate-x-1/2 -translate-y-full bg-white border border-gray-300 rounded-md shadow-lg top-20 right-24">
           <button onClick={handleLogout} type="button">
             로그아웃
           </button>

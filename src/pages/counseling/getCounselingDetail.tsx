@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
-import Card from '@components/common/Card';
+import Card from '@components/common/Card/Card';
 import Modal from '@components/common/Modal/Modal';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import CounselingScheduleBox from '@pages/counseling/components/CounselingScheduleBox';
 import CounselingScheduleDetail from '@pages/counseling/components/CounselingScheduleDetail';
 

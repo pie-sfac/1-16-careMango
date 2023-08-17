@@ -3,10 +3,10 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { StateType } from '@/types/members/members';
-import SubHeader from '@components/common/SubHeader';
 import Input from '@components/common/Input/Input';
 import Select from '@components/common/Select/Select';
 import SelectSex from '@pages/members/components/SelectSex';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import AgreeCondition from '@pages/members/components/AgreeCondition';
 
 const initialState: StateType = {

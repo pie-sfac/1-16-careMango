@@ -6,7 +6,7 @@ import { convertToDisplayData, Schedule } from '@/utils/scheduleUtils';
 import { axiosInstance } from '@/utils/apiInstance';
 import Modal from '@components/common/Modal/Modal';
 
-import SubHeader from './components/SubHeader';
+import SubHeader from './components/ScheduleHeader';
 import Legend from './components/Legend';
 import EventTable from './components/EventTable';
 

@@ -47,3 +47,9 @@ export interface ScheduleItemData {
     name: string;
   };
 }
+
+export interface ScheduleEditData {
+  memo: string;
+  startAt: string;
+  endAt: string;
+}

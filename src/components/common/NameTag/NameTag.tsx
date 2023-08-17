@@ -3,10 +3,14 @@ import React from 'react';
 interface NameTagProps {
   name: string;
   handleRemove?: () => void;
+  disabled?: boolean;
 }
 
-const NameTag = ({ name, handleRemove }: NameTagProps) => (
-  <div className="flex items-center justify-between p-2 border-2 border-gray-300 rounded-lg w-44">
+const NameTag = ({ name, handleRemove, disabled }: NameTagProps) => (
+  <div
+    className={`flex items-center justify-between p-2 border-2 border-gray-300 rounded-lg w-44 ${
+      disabled && `bg-gray-200 border-gray-300 cursor-not-allowed`
+    }`}>
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
       <g clipPath="url(#clip0_18_8149)">
         <circle cx="12" cy="12" r="11.625" fill="white" stroke="#CFCFCF" strokeWidth="0.75" />

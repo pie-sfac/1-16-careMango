@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { axiosInstance } from '@/utils/apiInstance';
 import { IssuedTicketsData } from '@/types/tickets/tickets';
-import SubHeader from '@components/common/SubHeader';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import IssuedTicketItem from '@pages/tickets/components/IssuedTicketItem';
 import { memberIdState } from '@/atoms/members/memberIdAtom';
 
@@ -15,7 +15,7 @@ const IssuedTicketPage = () => {
 
   const goTicketList = () => {
     if (memberId) setMemberId({ memberId });
-    navigate(`/tickets`);
+    navigate(`/tickets/issue`);
   };
 
   const getIssuedTickets = useCallback(async () => {
@@ -31,10 +31,10 @@ const IssuedTicketPage = () => {
   return (
     <>
       <SubHeader
-        title="수강권"
+        title="회원 수강권"
         rightBtn={
           <button className="pl-5 text-base" type="button" onClick={() => goTicketList()}>
-            부여
+            부여하기
           </button>
         }
       />

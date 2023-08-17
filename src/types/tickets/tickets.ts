@@ -55,3 +55,21 @@ export interface IssuedTicketData extends IssuedTicketsData {
     isActive: boolean;
   };
 }
+
+export interface IssuedTicketListData {
+  id: number;
+  owners: [
+    {
+      id: number;
+      name: string;
+      phone: string;
+    },
+  ];
+  privateTutor: {
+    id: number;
+    name: string;
+  };
+  remainingTimes: 0;
+  startAt: string;
+  endAt: string;
+}

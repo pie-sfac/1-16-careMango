@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
@@ -10,7 +11,6 @@ import { ReactComponent as Edit } from '@/assets/icons/Edit.svg';
 import MemberRecord from '@pages/members/components/MemberRecord';
 import MemberReview from '@pages/members/components/MemberReview';
 import MemberAlbum from '@pages/members/components/MemberAlbum';
-import { MembersDetail } from '@/types/members/membersDetail';
 
 type TabType = 'record' | 'review' | 'album';
 
@@ -19,23 +19,20 @@ const GetMembersDetail = () => {
   const { memberId } = useParams<{ memberId: string | undefined }>();
   const navigate = useNavigate();
 
-  const goMainMembers = () => {
-    navigate(`/members/${memberId}/issued-tickets`);
-  };
+  const goMainMembers = () => navigate(`/members/${memberId}/issued-tickets`);
+  const goUpdateMembers = () => navigate(`/members/update/${memberId}`);
 
-  const goUpdateMembers = () => {
-    navigate(`/members/update/${memberId}`);
-  };
-
-  const [memberDetail, setMemberDetail] = useState<MembersDetail | null>(null);
-  const getMemberDatail = async () => {
-    const res = await axiosInstance.get(`members/${memberId}`);
-    setMemberDetail(res.data);
-  };
-
-  useEffect(() => {
-    getMemberDatail();
-  }, []);
+  const { data: memberDetail, isLoading } = useQuery(
+    [`members`, memberId],
+    async () => {
+      if (!memberId) return null;
+      const res = await axiosInstance.get(`members/${memberId}`);
+      return res.data;
+    },
+    {
+      enabled: !!memberId,
+    },
+  );
 
   const memberInformation = [
     { id: 1, label: '이름', value: memberDetail?.name },
@@ -45,6 +42,14 @@ const GetMembersDetail = () => {
     { id: 5, label: '전화번호', value: memberDetail?.phone },
     { id: 6, label: '직업형태', value: memberDetail?.job },
   ];
+
+  const TabComponents = {
+    record: <MemberRecord />,
+    review: <MemberReview />,
+    album: <MemberAlbum />,
+  };
+
+  if (isLoading) return <div>loading...</div>;
 
   return (
     <>
@@ -105,9 +110,7 @@ const GetMembersDetail = () => {
           </button>
         </div>
 
-        {activeTab === 'record' && <MemberRecord />}
-        {activeTab === 'review' && <MemberReview />}
-        {activeTab === 'album' && <MemberAlbum />}
+        {TabComponents[activeTab]}
       </section>
     </>
   );

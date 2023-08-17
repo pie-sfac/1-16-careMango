@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
-import SelectDate from '@/components/common/SelectDate';
-import SelectTime from '@/components/common/SelectTime';
 import CompleteButton from '@/components/common/CompleteButton';
 import ButtonAddPeople from '@pages/privateLesson/components/ButtonAddPeople';
 import SubHeader from '@components/common/SubHeader/SubHeader';
@@ -28,18 +26,17 @@ const initialState: StateType = {
 };
 
 const CreatePrivateLesson = () => {
-  const [selectedStaffId, setSelectedStaffId] = useState(0);
   const [selectedMemberId, setSelectedMemberId] = useState(0);
   const [date, setDate] = useState('');
   const [state, setState] = useState<StateType>(initialState);
-  const [staffList, setStaffList] = useState<Staff | null>();
-  const [memberList, setMemberList] = useState<Member | null>();
-  const [ticketList, setTicketList] = useState<Tickets | null>();
+  const [staffList, setStaffList] = useState<Staff[] | null>();
+  const [memberList, setMemberList] = useState<Member[] | null>();
+  const [ticketList, setTicketList] = useState<Tickets[] | null>();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const onDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDate(event.target.value);
+    console.log(state);
   };
 
   const handleChange = (
@@ -61,29 +58,29 @@ const CreatePrivateLesson = () => {
     } else {
       setState((prev): StateType => ({ ...prev, [name]: value }));
     }
+    console.log(state);
   };
 
-  // setSelectedStaffId(location.state.selectedId);
-  // setSelectedMemberId(location.state.selectedId);
+  // 회원 선택
+  const selectMember = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMemberId(parseInt(event.target.value));
+    getIssuedTickets(parseInt(event.target.value));
+    console.log(state);
+  };
 
   const getStaff = async () => {
     const res = await axiosInstance.get('staffs');
-    const selectedStaff = res.data.datas.filter((elem: Staff) => elem.id === selectedStaffId);
-    console.log(res.data.datas);
-    setStaffList(selectedStaff[0]);
+    setStaffList(res.data.datas);
   };
 
   const getMembers = async () => {
     const res = await axiosInstance.get('members');
-    const selectedMember = res.data.datas.filter((elem: Member) => elem.id === selectedMemberId);
-    console.log(res.data.datas);
-
-    setMemberList(selectedMember[0]);
+    setMemberList(res.data.datas);
   };
 
   const getIssuedTickets = async (memberId: number) => {
     const res = await axiosInstance.get(`members/${memberId}/issued-tickets`);
-    console.log(res.data.issuedTickets);
+    // console.log(res.data.issuedTickets);
 
     setTicketList(res.data.issuedTickets);
   };
@@ -116,7 +113,10 @@ const CreatePrivateLesson = () => {
   useEffect(() => {
     getStaff();
     getMembers();
-    getIssuedTickets(176);
+
+    if (selectedMemberId) {
+      getIssuedTickets(selectedMemberId);
+    }
   }, []);
 
   return (
@@ -127,52 +127,43 @@ const CreatePrivateLesson = () => {
         <div className="flex">
           {/* <ButtonAddPeople title="강사 선택" value="staff" /> */}
           <form onSubmit={handleSubmit}>
-            <Select
-              name="userId"
-              options={[
-                { label: '선택해주세요', value: 0 },
-                { label: '스나이퍼', value: 2 },
-              ]}
-              value={state.userId}
-              onChange={handleChange}
-              label="강사 선택"
-              width="w-1/6"
-              required
-            />
-            {selectedStaffId ? <div>{staffList?.name}</div> : <div>없음</div>}
-            {/* <Select
-              name="member"
-              options={[
-                { label: '선택해주세요', value: 0 },
-                { label: '회원1', value: 176 },
-              ]}
-              value=""
-              onChange={handleChange}
-              label="회원선택"
-              width="w-1/6"
-              required
-            /> */}
-            {selectedMemberId ? <div>{memberList?.name}</div> : <div>없음</div>}
-            <Select
-              name="issuedTicketId"
-              options={[
-                { label: '선택해주세요', value: 0 },
-                { label: '테스트 수강권', value: 164 },
-              ]}
-              value={state.issuedTicketId}
-              onChange={handleChange}
-              label="수업(수강권) 선택"
-              width="w-1/2"
-              required
-            />
+            <label>
+              강사 선택
+              <select name="userId" onChange={handleChange} value={state.userId} required>
+                <option value={0}>선택하세요</option>
+                {staffList?.map((item: Staff) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              회원 선택
+              <select name="member" onChange={selectMember} required>
+                <option value={0}>선택하세요</option>
+                {memberList?.map((item: Member) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              수업(수강권) 선택
+              <select name="issuedTicketId" onChange={handleChange} required>
+                <option value={0}>선택하세요</option>
+                {ticketList?.map((item: Tickets) => (
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                  </option>
+                ))}
+              </select>
+            </label>
             <h2>참여 회원</h2>
-            <div>{memberList?.name}</div>
             <Input type="date" label="날짜 선택" value={date} onChange={onDateChange} required />
             <Input name="startAt" type="time" value={getTime(state.startAt)} onChange={handleChange} required /> ~
             <Input name="endAt" type="time" value={getTime(state.endAt)} onChange={handleChange} required />
-            {/* <SelectDate label="일자 선택" type="date" onChange={handleChange} /> */}
-            {/* <SelectTime title="시간 선택" onChange={onTimeChange} /> */}
-            {/* <CompleteButton state={state} title="저장" /> */}
             <button
               className={`my-5 py-3 rounded ${
                 allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'

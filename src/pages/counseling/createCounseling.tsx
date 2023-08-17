@@ -1,7 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { schedulesState, timeListState } from '@/atoms/counseling/counselingScheduleAtom';
+import { useRecoilValue } from 'recoil';
+import { timeListState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
 import Input from '@components/common/Input/Input';
@@ -23,7 +24,7 @@ const initialState: StateType = {
 const CreateCounseling = () => {
   const [state, setState] = useState<StateType>(initialState);
   const { userId, startAt, endAt, clientName, clientPhone } = state;
-  const setSchedules = useSetRecoilState(schedulesState);
+  const [_, setSchedules] = useState<StateType[]>([]);
   const timeList = useRecoilValue(timeListState);
   const [date, setDate] = useState('');
   const navigate = useNavigate();
@@ -53,7 +54,6 @@ const CreateCounseling = () => {
     }
   };
 
-  // 전화번호 입력 시 자동 하이픈
   const numberChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value: rawValue } = event.target;
     let value = rawValue.replace(/\D/g, '');
@@ -69,11 +69,27 @@ const CreateCounseling = () => {
     setState((prev) => ({ ...prev, clientPhone: value }));
   };
 
-  // 완료
+  const createCounseling = async (data: StateType) => {
+    const res = await axiosInstance.post('/schedules/counseling', data);
+    if (res.status === 200 || res.status === 201) {
+      console.log('성공');
+    }
+    return res.data;
+  };
+
+  const mutation = useMutation(createCounseling, {
+    onSuccess: (data) => {
+      setSchedules((prev: StateType[]) => [...prev, data]);
+      navigate('/schedules');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    // 선택한 시작시간과 종료시간이 겹치는지 확인
     const hasOverlap = timeList.some(([existingStart, existingEnd]) => {
       return (
         (new Date(existingStart) <= new Date(state.startAt) && new Date(state.startAt) < new Date(existingEnd)) ||
@@ -88,22 +104,13 @@ const CreateCounseling = () => {
       return;
     }
 
-    // 시작 시간이 끝나는 시간보다 늦는 지 확인
     if (new Date(state.startAt) >= new Date(state.endAt)) {
       alert('시작 시간이 끝나는 시간보다 늦습니다. 다시 입력해주세요.');
       return;
     }
-
-    try {
-      const res = await axiosInstance.post('/schedules/counseling', state);
-      setSchedules((prevSchedules) => [...prevSchedules, res.data]);
-      navigate('/schedules');
-    } catch (err) {
-      console.log(err);
-    }
+    mutation.mutate(state);
   };
 
-  // 필수 입력 값들이 채워지면 완료 버튼 활성화
   const allFieldsCompleted = userId && startAt && endAt && clientName && clientPhone;
 
   return (
@@ -158,8 +165,9 @@ const CreateCounseling = () => {
             className={`my-5 py-3 w-full rounded ${
               allFieldsCompleted ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
             }`}
-            type="button"
-            onClick={handleSubmit}>
+            type="submit"
+            onClick={handleSubmit}
+            disabled={mutation.isLoading}>
             완료
           </button>
         </form>

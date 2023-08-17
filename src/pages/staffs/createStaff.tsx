@@ -47,7 +47,7 @@ const CreateStaff = ({ onRegistered }: CreateStaffProps) => {
     getRoles();
   }, []);
 
-  const createStaff = async (staffData: StateType): Promise<StateType | undefined> => {
+  const addStaff = async (staffData: StateType): Promise<StateType | undefined> => {
     try {
       const res = await axiosInstance.post('/staffs', staffData);
       if (res.status === 200 || res.status === 201) {
@@ -72,7 +72,7 @@ const CreateStaff = ({ onRegistered }: CreateStaffProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(state);
-    createStaff(state);
+    addStaff(state);
   };
 
   const allFieldsCompleted = () => !!(state.name && state.password && state.loginId && state.phone && state.roles);

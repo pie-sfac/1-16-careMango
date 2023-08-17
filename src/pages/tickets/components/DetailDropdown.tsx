@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQueryClient, useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import Modal from '@components/common/Modal/Modal';
@@ -7,12 +8,13 @@ interface DropDownProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isActive: boolean;
-  getTicket: () => void;
 }
 
-const DetailDropDown = ({ isOpen, setIsOpen, isActive, getTicket }: DropDownProps) => {
+const DetailDropDown = ({ isOpen, setIsOpen, isActive }: DropDownProps) => {
   const { ticketId } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [removeModalOpen, setRemoveModalOpen] = useState(false);
 
@@ -29,17 +31,37 @@ const DetailDropDown = ({ isOpen, setIsOpen, isActive, getTicket }: DropDownProp
     setRemoveModalOpen(false);
   };
 
-  // 판매종료/ 판매가능
+  const deActiveTicketMutation = useMutation(
+    async () => {
+      const res = await axiosInstance.post(`/tickets/${ticketId}/deactivate`);
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['ticket', ticketId]);
+      },
+    },
+  );
+
+  const activeTicketMutation = useMutation(
+    async () => {
+      const res = await axiosInstance.post(`/tickets/${ticketId}/activate`);
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['ticket', ticketId]);
+      },
+    },
+  );
+
   const handleConfirmStatus = async () => {
     if (isActive) {
-      console.log('판매종료');
-      await axiosInstance.post(`/tickets/${ticketId}/deactivate`);
+      deActiveTicketMutation.mutate();
     }
     if (!isActive) {
-      console.log('판매가능');
-      await axiosInstance.post(`/tickets/${ticketId}/activate`);
+      activeTicketMutation.mutate();
     }
-    getTicket();
   };
 
   // 수강권 삭제

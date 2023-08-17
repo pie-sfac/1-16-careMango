@@ -1,30 +1,37 @@
 import Card from '@components/common/Card/Card';
 import SubHeader from '@components/common/SubHeader/SubHeader';
+import { useQuery } from 'react-query';
 import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
 import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
 import DetailDropDown from '../components/DetailDropdown';
 
 const TicketDetailPage = () => {
-  const [ticket, setTicket] = useState<TicketsData>();
   const { ticketId } = useParams();
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const getTicket = useCallback(async () => {
+  const {
+    data: ticket,
+    isLoading,
+    isError,
+  } = useQuery<TicketsData>(['ticket', ticketId], async () => {
     const res = await axiosInstance.get(`/tickets/${ticketId}`);
-    setTicket(res.data);
-    console.log(res.data);
-  }, [ticketId]);
+    return res.data;
+  });
 
-  useEffect(() => {
-    getTicket();
-  }, [getTicket]);
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error</span>;
+  }
 
   const goIssuedList = () => {
     navigate(`/tickets/${ticketId}/issued-tickets`);
@@ -41,9 +48,7 @@ const TicketDetailPage = () => {
         rightBtn={
           <span onClick={toggleDropdown} className="relative cursor-pointer">
             <MoreVert />
-            {ticket && (
-              <DetailDropDown isOpen={isOpen} setIsOpen={setIsOpen} isActive={ticket.isActive} getTicket={getTicket} />
-            )}
+            {ticket && <DetailDropDown isOpen={isOpen} setIsOpen={setIsOpen} isActive={ticket.isActive} />}
           </span>
         }
       />

@@ -9,6 +9,7 @@ import { ReactComponent as Plus } from '@/assets/icons/Plus.svg';
 import { ReactComponent as Minus } from '@/assets/icons/Minus.svg';
 import { CreateTicketType } from '@/types/tickets/tickets';
 import CompleteButton from '@components/common/CompleteButton';
+import { useMutation } from 'react-query';
 
 const CreateTicketPage = () => {
   const initialState = {
@@ -32,21 +33,24 @@ const CreateTicketPage = () => {
   const filteredState = { ...state };
   delete filteredState.maxServiceCount;
 
-  const createTicket = async (ticketData: CreateTicketType): Promise<CreateTicketType | undefined> => {
-    try {
-      const res = await axiosInstance.post('/tickets', ticketData);
-      const createdTicket = res.data;
-      navigate('/tickets/center');
-      return createdTicket;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const createTicketMutation = useMutation(
+    async (ticketData: CreateTicketType) => {
+      const res = await axiosInstance.put(`/tickets`, ticketData);
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        navigate('/tickets/center');
+      },
+      onError: () => {
+        console.log('error');
+      },
+    },
+  );
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(state);
-    createTicket(state);
+    createTicketMutation.mutate(state);
   };
 
   const decreaseCount = () => {

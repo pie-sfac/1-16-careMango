@@ -1,34 +1,57 @@
 import Card from '@components/common/Card/Card';
 import SubHeader from '@components/common/SubHeader/SubHeader';
+import { useQuery } from 'react-query';
 import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
-import { useCallback, useEffect, useState } from 'react';
+import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
+import DetailDropDown from '../components/DetailDropdown';
 
 const TicketDetailPage = () => {
-  const [ticket, setTicket] = useState<TicketsData>();
   const { ticketId } = useParams();
   const navigate = useNavigate();
 
-  const getTicket = useCallback(async () => {
-    const res = await axiosInstance.get(`/tickets/${ticketId}`);
-    setTicket(res.data);
-    console.log(res.data);
-  }, [ticketId]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    getTicket();
-  }, [getTicket]);
+  const {
+    data: ticket,
+    isLoading,
+    isError,
+  } = useQuery<TicketsData>(['ticket', ticketId], async () => {
+    const res = await axiosInstance.get(`/tickets/${ticketId}`);
+    return res.data;
+  });
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error</span>;
+  }
 
   const goIssuedList = () => {
     navigate(`/tickets/${ticketId}/issued-tickets`);
   };
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <>
-      <SubHeader title="수강권 상세" />
+      <SubHeader
+        title="수강권 상세"
+        rightBtn={
+          <span onClick={toggleDropdown} className="relative cursor-pointer">
+            <MoreVert />
+            {ticket && <DetailDropDown isOpen={isOpen} setIsOpen={setIsOpen} isActive={ticket.isActive} />}
+          </span>
+        }
+      />
       {ticket && (
         <main>
           <div className="flex items-center gap-2 mb-6">
@@ -58,7 +81,11 @@ const TicketDetailPage = () => {
                 </li>
                 <li>
                   <span className="inline-block mb-2 w-36 text-text-400">수강권 상태</span>{' '}
-                  {ticket.isActive ? '판매중' : '판매 종료'}
+                  {ticket.isActive ? (
+                    <span className="text-primary-500">판매중</span>
+                  ) : (
+                    <span className="text-erro">판매 종료</span>
+                  )}
                 </li>
               </ul>
               <Ticket />

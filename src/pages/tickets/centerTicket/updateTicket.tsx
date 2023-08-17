@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import Select from '@components/common/Select/Select';
@@ -7,23 +8,27 @@ import Input from '@components/common/Input/Input';
 import { axiosInstance } from '@/utils/apiInstance';
 import { ReactComponent as Plus } from '@/assets/icons/Plus.svg';
 import { ReactComponent as Minus } from '@/assets/icons/Minus.svg';
-import { CreateTicketType } from '@/types/tickets/tickets';
+import { CreateTicketType, TicketsData } from '@/types/tickets/tickets';
 import CompleteButton from '@components/common/CompleteButton';
-import { useMutation } from 'react-query';
 
-const CreateTicketPage = () => {
-  const initialState = {
-    lessonType: '',
-    title: '',
-    defaultTerm: 0,
-    defaultTermUnit: 'MONTH',
-    duration: 0,
-    defaultCount: 0,
-    maxServiceCount: 0,
-  };
-
-  const [state, setState] = useState<CreateTicketType>(initialState);
+const UpdateTicket = () => {
   const navigate = useNavigate();
+  const { ticketId } = useParams();
+  const { data } = useQuery<TicketsData>(['ticket', ticketId], async () => {
+    const res = await axiosInstance.get(`/tickets/${ticketId}`);
+    return res.data;
+  });
+
+  const initialState = {
+    lessonType: data?.lessonType || 'SINGLE',
+    title: data?.title || '',
+    defaultTerm: data?.defaultTerm || 0,
+    defaultTermUnit: data?.defaultTermUnit || 'MONTH',
+    duration: data?.bookableLessons[0]?.duration || 0,
+    defaultCount: data?.defaultCount || 0,
+    maxServiceCount: data?.maxServiceCount || 0,
+  };
+  const [state, setState] = useState<CreateTicketType>(initialState);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -33,9 +38,11 @@ const CreateTicketPage = () => {
   const filteredState = { ...state };
   delete filteredState.maxServiceCount;
 
-  const createTicketMutation = useMutation(
+  const editTicketMutation = useMutation(
     async (ticketData: CreateTicketType) => {
-      const res = await axiosInstance.put(`/tickets`, ticketData);
+      console.log(ticketData);
+      const res = await axiosInstance.put(`/tickets/${ticketId}`, ticketData);
+      console.log(res);
       return res.data;
     },
     {
@@ -43,14 +50,14 @@ const CreateTicketPage = () => {
         navigate('/tickets/center');
       },
       onError: () => {
-        console.log('error');
+        console.log('error : 수강권 상세 수정');
       },
     },
   );
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    createTicketMutation.mutate(state);
+    editTicketMutation.mutate(state);
   };
 
   const decreaseCount = () => {
@@ -84,7 +91,6 @@ const CreateTicketPage = () => {
             value={state.lessonType}
             onChange={handleChange}
             label="수업 유형"
-            required
             width="w-80"
           />
 
@@ -95,7 +101,6 @@ const CreateTicketPage = () => {
             onChange={handleChange}
             label="수강권명"
             placeholder="수강권명을 입력해주세요(15자이내)"
-            required
             width="w-80"
             maxLength={15}
           />
@@ -107,7 +112,7 @@ const CreateTicketPage = () => {
               value={state.defaultTerm}
               onChange={handleChange}
               label="수강권 기간"
-              placeholder={initialState.defaultTerm.toString()}
+              placeholder={initialState?.defaultTerm?.toString()}
               required
               width="w-56"
               unitSelect={
@@ -133,9 +138,7 @@ const CreateTicketPage = () => {
             value={state.duration}
             onChange={handleChange}
             label="시간"
-            placeholder={initialState.duration.toString()}
             unit="분"
-            required
             width="w-80"
           />
 
@@ -145,7 +148,6 @@ const CreateTicketPage = () => {
             value={state.defaultCount}
             onChange={handleChange}
             label="기본횟수"
-            placeholder={initialState.defaultCount.toString()}
             unit="회"
             required
             width="w-80"
@@ -156,8 +158,8 @@ const CreateTicketPage = () => {
             type="number"
             value={state.maxServiceCount}
             onChange={handleChange}
-            label="서비스 횟수"
             placeholder="0"
+            label="서비스 횟수"
             leftBtn={
               <button type="button" onClick={decreaseCount} className="mr-2 icon-btn">
                 <Minus />
@@ -180,4 +182,4 @@ const CreateTicketPage = () => {
     </>
   );
 };
-export default CreateTicketPage;
+export default UpdateTicket;

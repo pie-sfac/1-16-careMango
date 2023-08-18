@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=0:FD9500,100:FFFFFF)
+![header](https://capsule-render.vercel.app/api?type=waving&color=0:2C62EA,100:FFFFFF)
 
 
 
@@ -64,4 +64,4 @@
 <br/>
 <br/>
 
-![footer](https://capsule-render.vercel.app/api?section=footer&type=waving&color=0:FFFFFF,100:FD9500)
+![footer](https://capsule-render.vercel.app/api?section=footer&type=waving&color=0:FFFFFF,100:2C62EA)

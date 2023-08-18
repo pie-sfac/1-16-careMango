@@ -1,3 +1,5 @@
+import { Staff } from "@/types/staffs/staffs";
+
 export interface StateType {
   userId: number;
   memberId: number;
@@ -6,6 +8,7 @@ export interface StateType {
   memo: string;
   startAt: string;
   endAt: string;
+  selectedStaff?: Staff;
 }
 
 export interface UpdateStateType {

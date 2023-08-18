@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { StateType } from '@/types/counseling/counseling';
 import { Staff } from '@/types/staffs/staffs';
 import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
@@ -13,6 +14,15 @@ interface SelectStaffsProps {
 
 const SelectStaffs: React.FC<SelectStaffsProps> = ({ selectedStaff, setSelectedStaff, setState }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentLocationState = location.state as StateType | undefined;
+
+  useEffect(() => {
+    if (currentLocationState && currentLocationState.selectedStaff) {
+      setSelectedStaff(currentLocationState.selectedStaff);
+      setState((prev) => ({ ...prev, ...currentLocationState }));
+    }
+  }, [currentLocationState, setSelectedStaff, setState]);
 
   const goStaffList = () => navigate('/schedules/counseling/new/staffs');
 

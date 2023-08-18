@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
 import { Staff } from '@/types/staffs/staffs';
+import { StateType } from '@/types/counseling/counseling';
 import { ReactComponent as Back } from '@/assets/icons/Back.svg';
 import { ReactComponent as Profile40 } from '@/assets/icons/Profile_40.svg';
 
 const GetStaffsList = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const location = useLocation();
+  const previousState = location.state as StateType | undefined;
 
   const { data: staffsList } = useQuery('staffs', async () => {
     const res = await axiosInstance.get('staffs');
@@ -23,8 +26,14 @@ const GetStaffsList = () => {
 
   const navigate = useNavigate();
   const handleBackClick = () => navigate(-1);
-  const handleStaffSelect = (staff: Staff) =>
-    navigate('/schedules/counseling/new', { state: { selectedStaff: staff } });
+  const handleStaffSelect = (staff: Staff) => {
+    navigate('/schedules/counseling/new', {
+      state: {
+        ...previousState,
+        selectedStaff: staff,
+      },
+    });
+  };
 
   return (
     <div>

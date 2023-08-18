@@ -4,8 +4,8 @@
 
 <div align="center">
 
-![team16](./public/images/logo.svg)
-  
+    <img src="https://raw.githubusercontent.com/pie-sfac/1-16-careMango/188-readme-enhancement/public/images/logo.svg" alt="team16" width="300px">
+
 # team16_아프지망고(careMango)
 
 ## 유데미 x 스나이퍼팩토리 x 웅진 10주 완성! 프로젝트 캠프

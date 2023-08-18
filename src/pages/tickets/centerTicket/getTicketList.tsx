@@ -17,7 +17,7 @@ const CenterTicketPage = () => {
           + 수강권 추가
         </button>
       </section>
-      <TicketList />
+      <TicketList tab />
     </>
   );
 };

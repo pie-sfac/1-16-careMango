@@ -174,7 +174,7 @@ function ScheduleCalendar() {
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               visibleWeeksCount: 5,
               isAlways6Weeks: false,
-              visibleEventCount: 1,
+              visibleEventCount: 3,
             }}
             week={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],

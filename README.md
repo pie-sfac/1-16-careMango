@@ -4,7 +4,7 @@
 
 <div align="center">
 
-    <img src="https://raw.githubusercontent.com/pie-sfac/1-16-careMango/188-readme-enhancement/public/images/logo.svg" alt="team16" width="300px">
+    <img src="https://raw.githubusercontent.com/pie-sfac/1-16-careMango/188-readme-enhancement/public/images/logo.svg" alt="team16" width="300" />
 
 # team16_아프지망고(careMango)
 

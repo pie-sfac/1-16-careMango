@@ -1,4 +1,3 @@
-import React from 'react';
 import { ReactComponent as EmptyAlbum } from '@/assets/icons/EmptyAlbum.svg';
 
 const MemberAlbum = () => (

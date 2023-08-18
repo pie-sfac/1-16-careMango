@@ -1,4 +1,3 @@
-import React from 'react';
 import { ReactComponent as EmptyMessage } from '@/assets/icons/EmptyMessage.svg';
 
 const MemberReview = () => (

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ReactComponent as EmptyPerson } from '@/assets/icons/EmptyPerson.svg';
 
 const NoMemebers = () => (

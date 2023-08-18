@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
@@ -6,7 +6,13 @@ import { Staff } from '@/types/staffs/staffs';
 import { ReactComponent as Back } from '@/assets/icons/Back.svg';
 import { ReactComponent as Profile40 } from '@/assets/icons/Profile_40.svg';
 
-const GetStaffsList = () => {
+interface GetStaffsListProps {
+  setSelectedStaff: React.Dispatch<React.SetStateAction<Staff | null>>;
+  setPrivateTutorId?: React.Dispatch<React.SetStateAction<number>>;
+  setShowComponentForm: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const GetStaffsList = ({ setSelectedStaff, setPrivateTutorId, setShowComponentForm }: GetStaffsListProps) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const { data: staffsList } = useQuery('staffs', async () => {
@@ -23,8 +29,15 @@ const GetStaffsList = () => {
 
   const navigate = useNavigate();
   const handleBackClick = () => navigate(-1);
-  const handleStaffSelect = (staff: Staff) =>
-    navigate('/schedules/counseling/new', { state: { selectedStaff: staff } });
+  const handleStaffSelect = (staff: Staff) => {
+    if (staff && staff.id) {
+      setSelectedStaff(staff);
+      if (setPrivateTutorId) {
+        setPrivateTutorId(staff.id);
+      }
+      setShowComponentForm(true);
+    }
+  };
 
   return (
     <div>

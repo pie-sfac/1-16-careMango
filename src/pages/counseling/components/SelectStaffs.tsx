@@ -3,22 +3,30 @@ import { StateType } from '@/types/counseling/counseling';
 import { Staff } from '@/types/staffs/staffs';
 import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
 import { ReactComponent as Delete24 } from '@/assets/icons/Delete_24.svg';
-import { useNavigate } from 'react-router-dom';
 
 interface SelectStaffsProps {
   selectedStaff: Staff | null;
   setSelectedStaff: React.Dispatch<React.SetStateAction<Staff | null>>;
-  setState: React.Dispatch<React.SetStateAction<StateType>>;
+  setState?: React.Dispatch<React.SetStateAction<StateType>>;
+  setPrivateTutorId?: React.Dispatch<React.SetStateAction<number>>;
+  setShowComponentForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SelectStaffs: React.FC<SelectStaffsProps> = ({ selectedStaff, setSelectedStaff, setState }) => {
-  const navigate = useNavigate();
-
-  const goStaffList = () => navigate('/schedules/counseling/new/staffs');
+const SelectStaffs: React.FC<SelectStaffsProps> = ({
+  selectedStaff,
+  setSelectedStaff,
+  setState,
+  setPrivateTutorId,
+  setShowComponentForm,
+}) => {
+  const handleClick = () => {
+    setShowComponentForm(false);
+  };
 
   const clearSelectedStaff = () => {
     setSelectedStaff(null);
-    setState((prev) => ({ ...prev, userId: 0 }));
+    setState && setState((prev) => ({ ...prev, userId: 0 }));
+    setPrivateTutorId && setPrivateTutorId(0);
   };
 
   return (
@@ -33,7 +41,7 @@ const SelectStaffs: React.FC<SelectStaffsProps> = ({ selectedStaff, setSelectedS
           className={`p-3 mr-4 border border-solid rounded-xl text-primary-300 border-primary-300 ${
             selectedStaff !== null ? 'bg-bg-100 border-bg-300 text-gray-300 cursor-not-allowed' : ''
           }`}
-          onClick={goStaffList}
+          onClick={handleClick}
           disabled={selectedStaff !== null}>
           선택하기 +
         </button>

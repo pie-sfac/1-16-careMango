@@ -4,7 +4,7 @@
 
 <div align="center">
 
-![team16](./public/images/team16.png)
+![team16](./public/images/logo.svg)
   
 # team16_아프지망고(careMango)
 

@@ -6,7 +6,7 @@ import { convertToDisplayData, Schedule } from '@/utils/scheduleUtils';
 import { axiosInstance } from '@/utils/apiInstance';
 import Modal from '@components/common/Modal/Modal';
 
-import SubHeader from './components/ScheduleHeader';
+import ScheduleHeader from './components/ScheduleHeader';
 import Legend from './components/Legend';
 import EventTable from './components/EventTable';
 
@@ -99,12 +99,7 @@ function ScheduleCalendar() {
     }
   }, [currentDate]);
 
-  const calendars = [
-    {
-      id: 'cal1',
-      name: 'Personal',
-    },
-  ];
+  const calendars = [{}];
 
   const getDuration = (start: string, end: string): string => {
     const startDate = new Date(start);
@@ -145,11 +140,23 @@ function ScheduleCalendar() {
 
   const cancelledEvents = events.filter((event) => event.attendance === '결석').length;
 
-  const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2); // 소수점 둘째 자리까지 표시
+  const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2);
+
+  const myTheme = {
+    common: {
+      backgroundColor: 'white',
+    },
+    week: {
+      today: {
+        color: 'blue',
+      },
+    },
+    month: {},
+  };
 
   return (
     <div className="flex flex-col justify-between">
-      <SubHeader
+      <ScheduleHeader
         currentDate={currentDate}
         onDateChange={handleDateChange}
         view={view}
@@ -159,13 +166,15 @@ function ScheduleCalendar() {
         onOpenModal={handleOpen}
       />
       <main className="flex gap-3">
-        <div className="flex-1 rounded-xl overflow-hidden h-full">
+        <div className="rounded-xl overflow-hidden w-full h-full">
           <Calendar
             height="40rem"
             view={view}
             month={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
               visibleWeeksCount: 5,
+              isAlways6Weeks: false,
+              visibleEventCount: 3,
             }}
             week={{
               dayNames: ['일', '월', '화', '수', '목', '금', '토'],
@@ -176,23 +185,31 @@ function ScheduleCalendar() {
             calendars={calendars}
             events={events}
             ref={calendarRef}
+            theme={myTheme}
+            // gridSelection={false}
+            isReadOnly={true}
           />
         </div>
-        <aside className="w-64 p-4 bg-white border-l rounded-lg box-content">
-          <div className="h-full overflow-auto">
+        <aside className="w-96 p-4 bg-white rounded-lg box-content">
+          <div className="h-full">
             <div className="mb-4">
               <p className="mb-2 text-lg font-semibold">{getFormattedDate(currentDate)}</p>
 
-              <ul className="flex mb-2 space-x-4">
-                <li className="inline-block text-sm">총 일정 : {totalEvents}건</li>
-                <li className="inline-block text-sm">취소 일정 : {cancelledEvents}건</li>
-                <li className="inline-block text-sm">취소율 : {cancellationRate}%</li>
+              <ul className="flex space-x-4">
+                <li className="inline-block text-xs">총 일정 : {totalEvents}건</li>
+                <li className="inline-block text-xs">취소 일정 : {cancelledEvents}건</li>
+                <li className="inline-block text-xs">취소율 : {cancellationRate}%</li>
               </ul>
             </div>
 
             <Legend />
 
-            <EventTable events={events} renderAttendance={renderAttendance} getDuration={getDuration} />
+            <EventTable
+              events={events}
+              renderAttendance={renderAttendance}
+              getDuration={getDuration}
+              currentDate={currentDate}
+            />
           </div>
         </aside>
       </main>

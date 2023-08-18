@@ -7,10 +7,11 @@ type StaffsType = StaffsData['datas'][number];
 
 const StaffListItem = ({ staffs }: { staffs: StaffsType }) => {
   const navigate = useNavigate();
+  const goStaffDetail = () => navigate(`/staffs/${staffs.id}`);
 
   return (
-    <button type="button">
-      <div className="flex items-center justify-between p-3 my-1 bg-white rounded-md base-font">
+    <button type="button" onClick={goStaffDetail}>
+      <div key={staffs.id} className="flex items-center justify-between p-3 my-1 bg-white rounded-md base-font">
         <div className="flex">
           <Profile24 />
           <p className="flex items-center justify-center ml-4 font-bold">{staffs.name}</p>

@@ -4,7 +4,7 @@ import { ReactComponent as Edit } from '@/assets/icons/Edit.svg';
 import MembersItem from '@pages/members/components/MembersItem';
 import { axiosInstance } from '@/utils/apiInstance';
 import { useNavigate, useParams } from 'react-router-dom';
-import { StaffsDetail } from '@/types/staffs/staffsDetail';
+import { StaffsDetail, PrescriptionReview } from '@/types/staffs/staffsDetail';
 import { Member } from '@/types/members/members';
 import NoMemebers from '@pages/members/components/NoMembers';
 import SubHeader from '@components/common/SubHeader/SubHeader';
@@ -12,6 +12,7 @@ import SubHeader from '@components/common/SubHeader/SubHeader';
 const GetStaffDetailPage = () => {
   const [staffInfo, setStaffInfo] = useState<StaffsDetail | null>(null);
   const [teachingMembers, setTeachingMembers] = useState<Member[] | null>(null);
+  const [reviews, setReviews] = useState<PrescriptionReview | null>(null);
   const { staffId } = useParams<{ staffId: string | undefined }>();
   const navigate = useNavigate();
 
@@ -29,8 +30,9 @@ const GetStaffDetailPage = () => {
     <>
       <SubHeader title="직원 정보" />
       <div className="flex justify-between">
-        <div>
+        <div className="flex">
           <h1 className="main-title">직원 정보</h1>
+          <p>{staffInfo?.createdAt} 등록</p>
         </div>
         <div>
           <button className="mr-4">권한 설정</button>
@@ -54,14 +56,29 @@ const GetStaffDetailPage = () => {
       </div>
       <div className="mt-8">
         <div className="flex items-center">
-          <h2>개인 수업 회원</h2>
-          <p className="text-primary-500"></p>
+          <h2 className="small-title">개인 수업 회원</h2>
+          <p className="text-primary-500">{staffInfo?.members.length}</p>
         </div>
       </div>
       <div>
         <ul className="flex flex-col">
           {teachingMembers && teachingMembers.length > 0 ? (
             teachingMembers.map((member: Member) => <MembersItem key={member.id} members={member} />)
+          ) : (
+            <NoMemebers />
+          )}
+        </ul>
+      </div>
+      <div className="mt-8">
+        <div className="flex items-center">
+          <h2 className="small-title">만족도 및 후기</h2>
+          <p className="text-primary-500">{staffInfo?.prescriptionReviews.length}</p>
+        </div>
+      </div>
+      <div>
+        <ul>
+          {staffInfo?.prescriptionReviews && staffInfo.prescriptionReviews.length > 0 ? (
+            staffInfo?.prescriptionReviews.map((review: PrescriptionReview) => <div>review.rating</div>)
           ) : (
             <NoMemebers />
           )}

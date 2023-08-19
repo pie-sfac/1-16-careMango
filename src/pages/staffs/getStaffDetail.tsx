@@ -16,6 +16,8 @@ const GetStaffDetailPage = () => {
   const { staffId } = useParams<{ staffId: string | undefined }>();
   const navigate = useNavigate();
 
+  const goUpdateStaff = () => navigate(`/staffs/updateInfo/${staffId}`);
+
   const getStaffDetail = async () => {
     const res = await axiosInstance.get(`staffs/${staffId}`);
     setStaffInfo(res.data);
@@ -50,7 +52,7 @@ const GetStaffDetailPage = () => {
             <p className="ml-2">{staffInfo?.active ? '재직중' : '퇴사'}</p>
           </div>
         </div>
-        <button>
+        <button onClick={goUpdateStaff}>
           <Edit />
         </button>
       </div>

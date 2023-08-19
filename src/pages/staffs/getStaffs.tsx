@@ -5,6 +5,7 @@ import { Staff } from '@/types/staffs/staffs';
 import StaffListItem from '@pages/staffs/components/StaffListItem';
 import { ReactComponent as Search } from '@/assets/icons/Search.svg';
 import CreateStaff from './createStaff';
+import NoMemebers from '@pages/members/components/NoMembers';
 
 const ShowStaffs = () => {
   const [staffList, setStaffList] = useState<Staff[] | null>(null);
@@ -77,7 +78,7 @@ const ShowStaffs = () => {
         {displayedStaffs && displayedStaffs.length > 0 ? (
           displayedStaffs.map((staffs) => <StaffListItem key={staffs.id} staffs={staffs} />)
         ) : (
-          <div>직원이 없습니다.</div>
+          <NoMemebers />
         )}
       </ul>
     </div>

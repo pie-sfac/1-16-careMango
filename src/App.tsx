@@ -29,6 +29,7 @@ import ShowStaffs from '@pages/staffs/getStaffs';
 import MyPage from '@pages/myPage';
 import SearchResults from '@components/common/SearchResults';
 import GetStaffDetailPage from '@pages/staffs/getStaffDetail';
+import UpdateStaffInfoPage from '@pages/staffs/updateStaffInfo';
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
             <Route path="/members/:memberId" element={<GetMembersDetail />} />
             <Route path="/staffs" element={<ShowStaffs />} />
             <Route path="/staffs/:staffId" element={<GetStaffDetailPage />} />
+            <Route path="/staffs/updateInfo/:staffId" element={<UpdateStaffInfoPage />} />
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/search-results" element={<SearchResults />} />
           </Route>

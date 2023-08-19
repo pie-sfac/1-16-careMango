@@ -34,8 +34,6 @@ const ScheduleApi = () => {
   const goCreateSchedule = () => navigate('/schedule/personal/new');
   const goCheckCounseling = (scheduleId: number) => navigate(`counseling/${scheduleId}`);
 
-  console.log(scheduleList);
-
   if (isLoading) return <div>loading...</div>;
 
   return (

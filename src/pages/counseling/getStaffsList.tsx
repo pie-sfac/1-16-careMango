@@ -3,20 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
 import { Staff } from '@/types/staffs/staffs';
-import { StateType } from '@/types/counseling/counseling';
 import { ReactComponent as Back } from '@/assets/icons/Back.svg';
 import { ReactComponent as Profile40 } from '@/assets/icons/Profile_40.svg';
 
 interface GetStaffsListProps {
   setSelectedStaff: React.Dispatch<React.SetStateAction<Staff | null>>;
   setPrivateTutorId?: React.Dispatch<React.SetStateAction<number>>;
+  setUserId?: React.Dispatch<React.SetStateAction<number>>;
   setShowComponentForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const GetStaffsList = ({ setSelectedStaff, setPrivateTutorId, setShowComponentForm }: GetStaffsListProps) => {
+const GetStaffsList = ({
+  setSelectedStaff,
+  setPrivateTutorId,
+  setUserId,
+  setShowComponentForm,
+}: GetStaffsListProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const location = useLocation();
-  const previousState = location.state as StateType | undefined;
 
   const { data: staffsList } = useQuery('staffs', async () => {
     const res = await axiosInstance.get('staffs');
@@ -37,6 +40,9 @@ const GetStaffsList = ({ setSelectedStaff, setPrivateTutorId, setShowComponentFo
       setSelectedStaff(staff);
       if (setPrivateTutorId) {
         setPrivateTutorId(staff.id);
+      }
+      if (setUserId) {
+        setUserId(staff.id);
       }
       setShowComponentForm(true);
     }
@@ -62,7 +68,6 @@ const GetStaffsList = ({ setSelectedStaff, setPrivateTutorId, setShowComponentFo
         {displayedStaffs && displayedStaffs.length > 0 ? (
           displayedStaffs.map((staffs: Staff) => (
             <button key={staffs.id} type="button" onClick={() => handleStaffSelect(staffs)}>
-              {/* <button key={staffs.id} type="button" onClick={handleBackClick}> */}
               <div className="flex items-center justify-between my-1 base-font">
                 <div className="flex my-2">
                   <Profile40 />

@@ -40,7 +40,6 @@ const GetCounselingDetail = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/schedules');
   };
 
   if (!counselingData) return <p>loading...</p>;

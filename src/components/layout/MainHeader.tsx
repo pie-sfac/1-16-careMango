@@ -53,11 +53,11 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
     { id: 'Tickets', content: '수강권 관리', path: '/tickets/center' },
   ];
   // 마이 페이지 메뉴 항목 설정
-  const myPageMenu = [
-    // { id: 'MyInfo', content: '내 정보', path: '/myPage/myInfo' },
-    // { id: 'Notices', content: '공지사항', path: '/myPage/notices' },
-    // { id: 'AppSettings', content: '앱 설정', path: '/myPage/appSettings' },
-    // { id: 'OperatingData', content: '운영 데이터', path: '/myPage/operatingData' },
+  const myPageMenu: never[] = [
+    //   { id: 'MyInfo', content: '내 정보', path: '/myPage/myInfo' },
+    //   { id: 'Notices', content: '공지사항', path: '/myPage/notices' },
+    //   { id: 'AppSettings', content: '앱 설정', path: '/myPage/appSettings' },
+    //   { id: 'OperatingData', content: '운영 데이터', path: '/myPage/operatingData' },
   ];
 
   // 현재 경로에 따라 메뉴 항목을 결정

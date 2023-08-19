@@ -1,4 +1,5 @@
 import { Schedule } from '@/utils/scheduleUtils';
+import { useNavigate } from 'react-router-dom';
 
 interface EventTableProps {
   events: Schedule[];
@@ -8,6 +9,8 @@ interface EventTableProps {
 }
 
 function EventTable({ events, renderAttendance, getDuration, currentDate }: EventTableProps) {
+  const navigate = useNavigate();
+
   const filteredEvents = events.filter((event) => {
     const eventDate = new Date(event.start);
     return (
@@ -16,6 +19,15 @@ function EventTable({ events, renderAttendance, getDuration, currentDate }: Even
       eventDate.getFullYear() === currentDate.getFullYear()
     );
   });
+
+  const goToEventPage = (event: Schedule) => {
+    if (event.category === 'counseling') {
+      // 여기서는 상담 카테고리를 예로 들었습니다. 실제 카테고리 값으로 대체해야 합니다.
+      navigate(`/counseling/${event.id}`);
+    } else {
+      navigate(`/schedule/personal/${event.id}`);
+    }
+  };
 
   return (
     <div className="h-[50vh] overflow-y-auto">
@@ -30,7 +42,7 @@ function EventTable({ events, renderAttendance, getDuration, currentDate }: Even
         </thead>
         <tbody>
           {filteredEvents.map((event) => (
-            <tr key={event.id}>
+            <tr key={event.id} onClick={() => goToEventPage(event)} style={{ cursor: 'pointer' }}>
               <td className="px-4 py-2 text-xs border">{renderAttendance(event.attendance)}</td>
               <td className="px-4 py-2 text-xs border">{getDuration(event.start, event.end)}</td>
               <td className="px-4 py-2 text-xs border">{event.title}</td>

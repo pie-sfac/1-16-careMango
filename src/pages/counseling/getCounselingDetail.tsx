@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
@@ -40,7 +40,6 @@ const GetCounselingDetail = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/schedules');
   };
 
   if (!counselingData) return <p>loading...</p>;

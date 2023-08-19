@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import register from '@/assets/images/Graphic_Member_registered.png';
 import { ReactComponent as Close } from '@/assets/icons/Close.svg';

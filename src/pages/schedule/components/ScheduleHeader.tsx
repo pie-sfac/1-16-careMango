@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { ReactComponent as Search } from '@/assets/icons/Search.svg';
-import { ReactComponent as Setting } from '@/assets/icons/Setting.svg';
+// import { ReactComponent as Search } from '@/assets/icons/Search.svg';
+// import { ReactComponent as Setting } from '@/assets/icons/Setting.svg';
 import Statistics from './Statistics';
 
 type Props = {

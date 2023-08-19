@@ -8,15 +8,35 @@ import { StaffsDetail, PrescriptionReview } from '@/types/staffs/staffsDetail';
 import { Member } from '@/types/members/members';
 import NoMemebers from '@pages/members/components/NoMembers';
 import SubHeader from '@components/common/SubHeader/SubHeader';
+import Modal from '@components/common/Modal/Modal';
 
 const GetStaffDetailPage = () => {
   const [staffInfo, setStaffInfo] = useState<StaffsDetail | null>(null);
   const [teachingMembers, setTeachingMembers] = useState<Member[] | null>(null);
   const [reviews, setReviews] = useState<PrescriptionReview | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const { staffId } = useParams<{ staffId: string | undefined }>();
   const navigate = useNavigate();
 
   const goUpdateStaff = () => navigate(`/staffs/updateInfo/${staffId}`);
+
+  const handleConfirmModal = () => {
+    resignStaff();
+    navigate('/staffs');
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const onClickResign = () => {
+    setShowModal(true);
+  };
+
+  const resignStaff = async () => {
+    const res = await axiosInstance.post(`staffs/${staffId}/resign`);
+    console.log(res);
+  };
 
   const getStaffDetail = async () => {
     const res = await axiosInstance.get(`staffs/${staffId}`);
@@ -39,7 +59,7 @@ const GetStaffDetailPage = () => {
         <div>
           <button className="mr-4">권한 설정</button>
           <button className="mr-4">비밀번호 초기화</button>
-          <button>직원 퇴사 처리</button>
+          <button onClick={onClickResign}>직원 퇴사 처리</button>
         </div>
       </div>
       <div className="flex items-center justify-between p-4 border-2 rounded-xl">
@@ -86,6 +106,20 @@ const GetStaffDetailPage = () => {
           )}
         </ul>
       </div>
+      <Modal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmModal}
+        width="w-6/12"
+        content={
+          <div className="flex flex-col items-center">
+            <p className="font-bold">{staffInfo?.name}님을</p>
+            <p className="font-bold">퇴사 처리하시겠습니까?</p>
+            <br />
+            <p>퇴사 후, {staffInfo?.name}님의 정보는 조회만 가능합니다.</p>
+          </div>
+        }
+      />
     </>
   );
 };

@@ -186,8 +186,8 @@ function ScheduleCalendar() {
             events={events}
             ref={calendarRef}
             theme={myTheme}
-            // gridSelection={false}
-            isReadOnly={true}
+            // gridSelection={true}
+            // isReadOnly={false}
           />
         </div>
         <aside className="w-96 p-4 bg-white rounded-lg box-content">

@@ -13,7 +13,7 @@ type Props = {
   onOpenModal: () => void;
 };
 
-const SubHeader: React.FC<Props> = ({
+const ScheduleHeader: React.FC<Props> = ({
   currentDate,
   onDateChange,
   view,
@@ -22,8 +22,6 @@ const SubHeader: React.FC<Props> = ({
   cancelledEvents,
   onOpenModal,
 }) => {
-  const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2); // 소수점 둘째 자리까지 표시
-
   const formatDateForUsage = (date: Date): string => {
     const yyyy = date.getFullYear().toString();
     const mm = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -74,4 +72,4 @@ const SubHeader: React.FC<Props> = ({
   );
 };
 
-export default SubHeader;
+export default ScheduleHeader;

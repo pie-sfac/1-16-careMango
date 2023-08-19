@@ -138,7 +138,7 @@ function ScheduleCalendar() {
 
   const totalEvents = events.length;
 
-  const cancelledEvents = events.filter((event) => event.attendance === '결석').length;
+  const cancelledEvents = events.filter((event) => event.isCanceled === true).length;
 
   const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2);
 

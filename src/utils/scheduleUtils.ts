@@ -11,6 +11,7 @@ export interface Schedule {
   duration?: string;
   memberName?: string;
   remainingTimes?: string;
+  isCanceled?: boolean;
 }
 
 export const convertToDisplayData = (apiResponse: {
@@ -32,6 +33,7 @@ export const convertToDisplayData = (apiResponse: {
       duration: '',
       memberName: counseling.client.name,
       remainingTimes: '',
+      isCanceled: counseling.isCanceled,
     });
   });
 
@@ -50,6 +52,7 @@ export const convertToDisplayData = (apiResponse: {
       duration: '',
       memberName: privateSchedule.tutor.name,
       remainingTimes: '',
+      isCanceled: privateSchedule.isCanceled,
     });
   });
 

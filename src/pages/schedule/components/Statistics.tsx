@@ -10,8 +10,8 @@ const Statistics: React.FC<Props> = ({ totalEvents, cancelledEvents }) => {
 
   return (
     <div className="flex items-center gap-3">
-      <span>이번 달 : </span>
-      <span className="font-bold">박사장</span>
+      {/* <span>이번 달 : </span> */}
+      {/* <span className="font-bold">박사장</span> */}
       <span>총 일정 : </span>
       <span className="font-bold">{totalEvents}건</span>
       <span>취소 일정 : </span>

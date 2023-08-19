@@ -22,7 +22,6 @@ function EventTable({ events, renderAttendance, getDuration, currentDate }: Even
 
   const goToEventPage = (event: Schedule) => {
     if (event.category === 'counseling') {
-      // 여기서는 상담 카테고리를 예로 들었습니다. 실제 카테고리 값으로 대체해야 합니다.
       navigate(`/counseling/${event.id}`);
     } else {
       navigate(`/schedule/personal/${event.id}`);

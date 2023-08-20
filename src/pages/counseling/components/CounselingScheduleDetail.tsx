@@ -45,7 +45,7 @@ const CounselingScheduleDetail = ({ itemData }: CounselingScheduleDetailProps) =
   // 새로 입력된 상담 기록 데이터 api로 보내기
   const updateCounseling = useMutation(
     async (updateData: UpdateStateType) => {
-      const response = await axiosInstance.put(`schedules/counseling/${scheduleId}`, updateData);
+      const response = await axiosInstance.put(`schedule/counseling/${scheduleId}`, updateData);
       return response.data;
     },
     {

@@ -18,7 +18,7 @@ const GetCounselingDetail = () => {
     return { hours, minutes };
   };
 
-  const goUpdateCounseling = () => navigate(`/schedules/counseling/update/${scheduleId}`);
+  const goUpdateCounseling = () => navigate(`/schedule/counseling/update/${scheduleId}`);
 
   const { data: counselingData } = useQuery(
     ['counselingDetail', scheduleId],

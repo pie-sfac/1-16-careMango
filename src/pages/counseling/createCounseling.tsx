@@ -91,7 +91,7 @@ const CreateCounseling = () => {
   const mutation = useMutation(createCounseling, {
     onSuccess: (data) => {
       setSchedules((prev: StateType[]) => [...prev, data]);
-      navigate('/schedules');
+      navigate('/schedule');
     },
     onError: (error) => {
       console.log(error);

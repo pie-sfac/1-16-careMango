@@ -46,10 +46,10 @@ function ScheduleCalendar() {
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
-  // const handleConfirm = () => {
-  //   console.log('Modal confirmed');
-  //   handleClose();
-  // };
+  const handleConfirm = () => {
+    console.log('Modal confirmed');
+    handleClose();
+  };
 
   const navigate = useNavigate();
 
@@ -244,8 +244,9 @@ function ScheduleCalendar() {
           </div>
         }
         onClose={handleClose}
-        // onConfirm={handleConfirm}
+        onConfirm={handleConfirm}
         width={'w-1/2'}
+        pageContext="schedule"
       />
     </div>
   );

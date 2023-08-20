@@ -19,6 +19,8 @@ export const convertToDisplayData = (apiResponse: {
   counselingSchedules: CounselingSchedule[];
   privateSchedules: PrivateSchedule[];
 }): Schedule[] => {
+  console.log(apiResponse);
+
   const displayData: Schedule[] = [];
 
   // Convert counseling schedules
@@ -36,12 +38,29 @@ export const convertToDisplayData = (apiResponse: {
       remainingTimes: '',
       isCanceled: counseling.isCanceled,
     });
-    console.log(displayData);
+    // console.log(displayData);
   });
 
   // Convert private schedules
   apiResponse.privateSchedules.forEach((privateSchedule) => {
-    const attendance = privateSchedule.isCanceled ? '결석' : '출석';
+    let attendance = '결석';
+
+    if (privateSchedule.attendanceHistories && privateSchedule.attendanceHistories.length > 0) {
+      const status = privateSchedule.attendanceHistories[0].status;
+
+      switch (status) {
+        case 'PRESENT':
+          attendance = '출석';
+          break;
+        case 'WAIT':
+          attendance = '예약';
+          break;
+        case 'ABSENT':
+        default:
+          attendance = '결석';
+          break;
+      }
+    }
 
     displayData.push({
       id: privateSchedule.id.toString(),
@@ -56,7 +75,7 @@ export const convertToDisplayData = (apiResponse: {
       remainingTimes: '',
       isCanceled: privateSchedule.isCanceled,
     });
-    console.log(displayData);
+    // console.log(displayData);
   });
 
   return displayData;

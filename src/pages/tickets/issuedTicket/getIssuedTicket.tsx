@@ -8,11 +8,16 @@ import IssuedTicketItem from '@pages/tickets/components/IssuedTicketItem';
 import { memberIdState } from '@/atoms/members/memberIdAtom';
 import { ReactComponent as EmptyMembership } from '@/assets/icons/EmptyMembership.svg';
 
-const IssuedTicketPage = () => {
-  const [issuedList, setIssuedList] = useState<IssuedTicketsData[] | null>(null);
+type TabType = 'active' | 'deactive';
+
+const IssuedTicketPage = ({ tab }: { tab?: boolean }) => {
   const navigate = useNavigate();
   const { memberId } = useParams<{ memberId: string | undefined }>();
   const setMemberId = useSetRecoilState(memberIdState);
+
+  const [activeTicketList, setActiveTicketList] = useState<IssuedTicketsData[] | null>(null);
+  const [deactiveTicketList, setDeactiveTicketList] = useState<IssuedTicketsData[] | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>('active');
 
   const goTicketList = () => {
     if (memberId) setMemberId({ memberId });
@@ -21,8 +26,11 @@ const IssuedTicketPage = () => {
 
   const getIssuedTickets = useCallback(async () => {
     const res = await axiosInstance.get(`/members/${memberId}/issued-tickets`);
-    setIssuedList(res.data.issuedTickets);
-    console.log(res.data.issuedTickets);
+    const tickets = res.data.issuedTickets;
+    const activeTickets = tickets.filter((ticket: IssuedTicketsData) => !ticket.isCanceled);
+    const deActiveTickets = tickets.filter((ticket: IssuedTicketsData) => ticket.isCanceled);
+    setActiveTicketList(activeTickets);
+    setDeactiveTicketList(deActiveTickets);
   }, [memberId]);
 
   useEffect(() => {
@@ -39,15 +47,41 @@ const IssuedTicketPage = () => {
           </button>
         }
       />
-      <section className="flex flex-wrap items-center w-full gap-16 mt-20">
-        {!issuedList?.length && (
-          <div className="flex-col w-full flex-center">
-            <EmptyMembership />
-            <p className="p-3 my-1 base-font text-text-400">수강권을 부여해주세요.</p>
-          </div>
-        )}
-        {issuedList &&
-          issuedList.map((ticket: IssuedTicketsData) => <IssuedTicketItem key={ticket.id} ticket={ticket} />)}
+
+      {!activeTicketList?.length && (
+        <div className="flex-col w-full mt-16 flex-center">
+          <EmptyMembership />
+          <p className="p-3 my-1 base-font text-text-400">수강권을 부여해주세요.</p>
+        </div>
+      )}
+
+      {tab && activeTicketList?.length && (
+        <div className="flex w-56 mt-8 border-b tabs border-line-300 text-text-400">
+          <button
+            type="button"
+            className={`flex-1 py-2 px-4 ${
+              activeTab === 'active' ? 'border-b-2 border-primary-500 text-primary-500' : 'hover:bg-blue-50'
+            }`}
+            onClick={() => setActiveTab('active')}>
+            {activeTicketList && <span>이용중 ({activeTicketList.length})</span>}
+          </button>
+          <button
+            type="button"
+            className={`flex-1 py-2 px-4 ${
+              activeTab === 'deactive' ? 'border-b-2 border-primary-500 text-primary-500' : 'hover:bg-blue-50'
+            }`}
+            onClick={() => setActiveTab('deactive')}>
+            {deactiveTicketList && <span>종료됨 ({deactiveTicketList.length})</span>}
+          </button>
+        </div>
+      )}
+      <section className="flex flex-wrap items-center w-full mt-4">
+        {activeTicketList &&
+          activeTab === 'active' &&
+          activeTicketList.map((ticket) => <IssuedTicketItem key={ticket.id} ticket={ticket} />)}
+        {deactiveTicketList &&
+          activeTab === 'deactive' &&
+          deactiveTicketList.map((ticket) => <IssuedTicketItem key={ticket.id} ticket={ticket} disabled />)}
       </section>
     </>
   );

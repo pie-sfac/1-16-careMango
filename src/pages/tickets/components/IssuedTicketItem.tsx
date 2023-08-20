@@ -10,7 +10,12 @@ import { useState } from 'react';
 import { getDay } from '@/utils/date';
 import { useMutation, useQueryClient } from 'react-query';
 
-const IssuedTicketItem = ({ ticket }: { ticket: IssuedTicketsData }) => {
+interface IssuedTicketItemProps {
+  ticket: IssuedTicketsData;
+  disabled?: boolean;
+}
+
+const IssuedTicketItem = ({ ticket, disabled }: IssuedTicketItemProps) => {
   const navigate = useNavigate();
   const issuedTicketId = ticket.id;
   const goIssuedTicketDetail = () => {
@@ -74,7 +79,7 @@ const IssuedTicketItem = ({ ticket }: { ticket: IssuedTicketsData }) => {
 
   return (
     <Card>
-      <article className="w-[30rem] flex justify-between">
+      <article className={`${disabled && 'text-text-400'} w-[30rem] flex justify-between`}>
         <div
           className={`px-6 py-8 cursor-pointer ${ticket.isSuspended && 'text-text-400'}`}
           onClick={goIssuedTicketDetail}>

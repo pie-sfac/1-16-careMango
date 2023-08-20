@@ -34,7 +34,7 @@ const UpdateCounseling = () => {
 
   const location = useLocation() as { state: { selectedStaff: Staff } };
 
-  const { data, refetch } = useQuery(['schedules', scheduleId], async () => {
+  const { data, refetch } = useQuery(['schedule', scheduleId], async () => {
     const res = await axiosInstance.get(`schedules/counseling/${scheduleId}`);
     if (res.data) {
       setState({
@@ -64,10 +64,10 @@ const UpdateCounseling = () => {
       onSuccess: (data) => {
         refetch();
         console.log('업데이트=', state.userId);
-        navigate('/schedules/counseling', { state: { refetch: true } });
+        navigate('/schedule/counseling', { state: { refetch: true } });
         const updatedCounseling = data.data;
         setSchedules((prevSchedules) => [...prevSchedules, updatedCounseling]);
-        navigate('/schedules');
+        navigate('/schedule');
       },
       onError: (error) => {
         console.error(error);

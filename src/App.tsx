@@ -40,9 +40,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/schedules" element={<ScheduleApi />} />
-            <Route path="/schedules/counseling/update/:scheduleId" element={<UpdateCounseling />} />
-            <Route path="/schedules/counseling/:scheduleId" element={<GetCounselingDetail />} />
-            <Route path="/schedules/counseling/new" element={<CreateCounseling />} />
+            <Route path="/schedule/counseling/update/:scheduleId" element={<UpdateCounseling />} />
+            <Route path="/schedule/counseling/:scheduleId" element={<GetCounselingDetail />} />
+            <Route path="/schedule/counseling/new" element={<CreateCounseling />} />
             <Route path="/schedule/personal/:scheduleId" element={<ScheduleDetailPage />} />
             <Route path="/schedule/personal/edit/:scheduleId" element={<ScheduleUpdatePage />} />
             <Route path="/tickets/center" element={<CenterTicketPage />} />

@@ -22,7 +22,7 @@ function EventTable({ events, renderAttendance, getDuration, currentDate }: Even
 
   const goToEventPage = (event: Schedule) => {
     if (event.attendance === '상담') {
-      navigate(`/schedules/counseling/${event.id}`);
+      navigate(`/schedule/counseling/${event.id}`);
     } else {
       navigate(`/schedule/personal/${event.id}`);
     }
@@ -30,7 +30,7 @@ function EventTable({ events, renderAttendance, getDuration, currentDate }: Even
 
   return (
     <div className="h-[50vh] overflow-y-auto">
-      <table className=" w-full">
+      <table className="w-full ">
         <thead>
           <tr>
             <th className="text-xs">출결</th>

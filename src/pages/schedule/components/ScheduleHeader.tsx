@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { ReactComponent as Search } from '@/assets/icons/Search.svg';
-import { ReactComponent as Setting } from '@/assets/icons/Setting.svg';
+// import { ReactComponent as Search } from '@/assets/icons/Search.svg';
+// import { ReactComponent as Setting } from '@/assets/icons/Setting.svg';
 import Statistics from './Statistics';
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
   onOpenModal: () => void;
 };
 
-const SubHeader: React.FC<Props> = ({
+const ScheduleHeader: React.FC<Props> = ({
   currentDate,
   onDateChange,
   view,
@@ -22,8 +22,6 @@ const SubHeader: React.FC<Props> = ({
   cancelledEvents,
   onOpenModal,
 }) => {
-  const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2); // 소수점 둘째 자리까지 표시
-
   const formatDateForUsage = (date: Date): string => {
     const yyyy = date.getFullYear().toString();
     const mm = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -33,7 +31,7 @@ const SubHeader: React.FC<Props> = ({
 
   return (
     <div className="flex items-center justify-between p-4">
-      <div className="flex items-center gap-4">
+      <div>
         <input
           type="date"
           value={formatDateForUsage(currentDate)} // YYYY-MM-DD 형식
@@ -41,13 +39,18 @@ const SubHeader: React.FC<Props> = ({
           className="text-lg font-semibold focus:outline-none rounded-sm"
         />
       </div>
-      <div>
+      {/* <div>
         <select name="selectManager" id="manager" className="p-1 border rounded">
           <option value="">관리자명</option>
         </select>
-      </div>
+      </div> */}
       <div>
-        <select name="selectView" id="calendarView" className="p-1 border rounded" onChange={onViewChange} value={view}>
+        <select
+          name="selectView"
+          id="calendarView"
+          className="p-1 border rounded w-40"
+          onChange={onViewChange}
+          value={view}>
           <option value="month">월</option>
           <option value="week">주</option>
           <option value="day">일</option>
@@ -56,14 +59,14 @@ const SubHeader: React.FC<Props> = ({
 
       <Statistics totalEvents={totalEvents} cancelledEvents={cancelledEvents} />
 
-      <div className="flex items-center gap-4">
+      {/* <div className="flex items-center">
         <button type="button" className="focus:outline-none">
           <Search />
         </button>
         <button type="button" className="focus:outline-none">
           <Setting />
         </button>
-      </div>
+      </div> */}
       <button
         type="submit"
         className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
@@ -74,4 +77,4 @@ const SubHeader: React.FC<Props> = ({
   );
 };
 
-export default SubHeader;
+export default ScheduleHeader;

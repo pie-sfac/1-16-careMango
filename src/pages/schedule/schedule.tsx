@@ -1,10 +1,17 @@
 import { ChangeEvent, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query'; // 추가
+import { useRecoilState } from 'recoil'; // 추가
+import { timeListState } from '@/atoms/counseling/counselingScheduleAtom'; // 추가
+
 import Calendar from '@toast-ui/react-calendar';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 import { convertToDisplayData, Schedule } from '@/utils/scheduleUtils';
 import { axiosInstance } from '@/utils/apiInstance';
 import Modal from '@components/common/Modal/Modal';
+
+import { SchedulApiData } from '@/types/scheduleApi';
+import { CounselingDetail } from '@/types/counseling/counselingDetail';
 
 import ScheduleHeader from './components/ScheduleHeader';
 import Legend from './components/Legend';
@@ -55,8 +62,26 @@ function ScheduleCalendar() {
 
   const navigate = useNavigate();
 
+  const fetchSchedules = async (): Promise<SchedulApiData> => {
+    const from = '2023-01-21';
+    const to = '2023-12-31';
+    let apiUrl = `schedules?from=${from}&to=${to}`;
+
+    const res = await axiosInstance.get(apiUrl);
+    return {
+      ...res.data,
+      counselingSchedules: res.data.counselingSchedules.filter((item: CounselingDetail) => !item.isCanceled),
+    };
+  };
+
+  const { data: scheduleList } = useQuery('schedules', fetchSchedules);
+
+  const [timeList, setTimeList] = useRecoilState(timeListState);
+
   const goCreateCounseling = () => {
-    navigate('/schedules/counseling/new');
+    const timeListData = scheduleList?.counselingSchedules?.map((e) => [e.startAt, e.endAt]) || [];
+    setTimeList(timeListData);
+    navigate('counseling/new');
   };
 
   // const goCheckSchedule = () => {

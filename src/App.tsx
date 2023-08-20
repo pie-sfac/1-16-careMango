@@ -51,7 +51,7 @@ function App() {
             <Route path="/tickets/:ticketId/edit" element={<UpdateTicket />} />
             <Route path="/tickets/:ticketId/issued-tickets" element={<IssuedListPage />} />
             <Route path="/tickets/:ticketId/issue" element={<CreateIssuedTicket />} />
-            <Route path="/members/:memberId/issued-tickets" element={<IssuedTicketPage />} />
+            <Route path="/members/:memberId/issued-tickets" element={<IssuedTicketPage tab />} />
             <Route path="/issued-tickets/:ticketId" element={<IssuedTicketDetail />} />
             <Route path="/tickets/issue" element={<TicketListPage />} />
             <Route path="/schedule/privateLesson/new" element={<CreatePrivateLesson />} />

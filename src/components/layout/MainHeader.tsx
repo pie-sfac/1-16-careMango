@@ -71,7 +71,7 @@ const MainHeader = () => {
   }, [token]);
 
   return (
-    <header className="fixed top-0 left-0 flex justify-between w-full p-4 py-3 bg-white border-b base-px border-line-200">
+    <header className="fixed top-0 left-0 z-50 flex justify-between w-full p-4 py-3 bg-white border-b base-px border-line-200">
       {showLogoutButton && (
         <div className="absolute p-2 transform -translate-x-1/2 -translate-y-full bg-white border border-gray-300 rounded-md shadow-lg top-20 right-24">
           <button onClick={handleLogout} type="button">

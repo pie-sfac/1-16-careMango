@@ -13,11 +13,10 @@ import Modal from '@components/common/Modal/Modal';
 import { SchedulApiData } from '@/types/scheduleApi';
 import { CounselingDetail } from '@/types/counseling/counselingDetail';
 
+import { ReactComponent as Excercise } from '@/assets/icons/Exercise.svg';
 import ScheduleHeader from './components/ScheduleHeader';
 import Legend from './components/Legend';
 import EventTable from './components/EventTable';
-
-import { ReactComponent as Dumbbell } from '@/assets/icons/Dumbbell.svg';
 
 function ScheduleCalendar() {
   const calendarRef = useRef<any>(null);
@@ -193,7 +192,7 @@ function ScheduleCalendar() {
         onOpenModal={handleOpen}
       />
       <main className="flex gap-3">
-        <div className="rounded-xl overflow-hidden w-full h-full">
+        <div className="w-full h-full overflow-hidden rounded-xl">
           <Calendar
             height="40rem"
             view={view}
@@ -217,7 +216,7 @@ function ScheduleCalendar() {
             // isReadOnly={false}
           />
         </div>
-        <aside className="w-96 p-4 bg-white rounded-lg box-content">
+        <aside className="box-content p-4 bg-white rounded-lg w-96">
           <div className="h-full">
             <div className="mb-4">
               <p className="mb-2 text-lg font-semibold">{getFormattedDate(currentDate)}</p>
@@ -244,31 +243,30 @@ function ScheduleCalendar() {
         isOpen={isOpen}
         content={
           <div>
-            <p className="font-bold">일정 생성</p>
-            <p className="text-sm">일정을 생성해주세요.</p>
-            <div className="flex justify-evenly m-8 gap-5 h-72">
+            <div className="m-3">
+              <p className="font-bold">일정 생성</p>
+              <p className="mt-2 mb-5 text-sm">일정을 생성해주세요.</p>
+            </div>
+            <div className="flex gap-5 m-3 h-60 justify-evenly">
               <button
                 type="button"
                 onClick={goCreateSchedule}
-                className="px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
+                className="flex flex-col justify-start w-full px-8 py-10 border-2 shadow text-start rounded-2xl">
                 <div className="relative w-full h-full">
-                  <p>개인 수업</p>
-                  <p>일정 생성</p>
-                  <div className="absolute bottom-0 right-0 bg-bg-100 w-10 h-10 rounded-full flex justify-center items-center">
-                    <Dumbbell />
-                  </div>
+                  <p className="font-bold">개인 수업</p>
+                  <p className="text-sm">일정 생성</p>
+                  <Excercise className="absolute bottom-0 right-0" />
                 </div>
               </button>
               <button
                 type="button"
                 onClick={goCreateCounseling}
-                className="px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
+
+                className="flex flex-col justify-start w-full px-8 py-10 border-2 shadow text-start rounded-2xl">
                 <div className="relative w-full h-full">
-                  <p>상담</p>
-                  <p>일정 생성</p>
-                  <div className="absolute bottom-0 right-0 bg-bg-100  w-10 h-10 rounded-full flex justify-center items-center">
-                    <Dumbbell />
-                  </div>
+                  <p className="font-bold">상담</p>
+                  <p className="text-sm">일정 생성</p>
+                  <Excercise className="absolute bottom-0 right-0" />
                 </div>
               </button>
             </div>

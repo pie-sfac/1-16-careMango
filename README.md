@@ -23,6 +23,7 @@
 | [안승지](https://github.com/s-ja)      | [김지효](https://github.com/ji-dawn)      | [이윤주](https://github.com/lyeejj)      | [김유은](https://github.com/YueunKim)      |
 | -------------------------------------- | ----------------------------------------- | ---------------------------------------- | ------------------------------------------ |
 | ![안승지](https://github.com/s-ja.png) | ![김지효](https://github.com/ji-dawn.png) | ![이윤주](https://github.com/lyeejj.png) | ![김유은](https://github.com/YueunKim.png) |
+|                                  |                                     |                                    | - 상담 일정 관리 CRUD <br/> - 회원 관리 CRU
 
 <br/>
 
@@ -82,21 +83,44 @@ password: team16!!
 - [tui-calendar](https://ui.toast.com/tui-calendar)
 - PoinT Api for SFAC React Project
 
-<br/>
-
-## 담당 역할
-
-|  이름  |              역할              |
-| :----: | :----------------------------: |
-| 안승지 ||
-| 김지효 ||
-| 이윤주 ||
-| 김유은 ||
-
 
 <br/>
 
 ## 주요 기능
+
+### 1. 일정 관리
+
+#### 개인 일정 관리
+
+<br/>
+
+#### 상담 일정 관리
+
+- 상담 일정 생성, 조회, 변경, 취소가 가능합니다.
+- 유효성 검사 및 처리 기능이 있습니다. (일정 및 시간 중복 확인, 연락처 형식 조절, 필수 입력값 확인, 로딩 및 에러 처리)
+<details>
+  <summary>구현 화면</summary>
+  <div markdown="1">
+    <img src="https://github.com/pie-sfac/1-16-careMango/assets/65431814/703d54bc-455f-405b-a506-48ddaef0d2e4" width="3000">
+  </div>
+</details>
+
+
+<br/>
+
+
+### 2. 회원 관리
+ 
+- 회원 생성, 조회, 변경이 가능합니다
+- 유효성 검사 및 처리 기능이 있습니다. (연락처와 생년월일 형식 조절, 필수 입력값 확인, 로딩 및 에러 처리)
+- 회원 목록 조회 페이지에서 회원 이름, 연락처로 검색이 가능하며 한 페이지당 10명의 회원 목록만 보여집니다.
+
+<details>
+  <summary>구현 화면</summary>
+  <div markdown="2">
+    <img src="https://github.com/pie-sfac/1-16-careMango/assets/65431814/874f9651-3d41-4e89-b16c-be2718d64c79" width="3000">
+  </div>
+</details> 
 
 <br/>
 

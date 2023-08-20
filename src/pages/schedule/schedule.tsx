@@ -46,10 +46,10 @@ function ScheduleCalendar() {
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
-  const handleConfirm = () => {
-    console.log('Modal confirmed');
-    handleClose();
-  };
+  // const handleConfirm = () => {
+  //   console.log('Modal confirmed');
+  //   handleClose();
+  // };
 
   const navigate = useNavigate();
 
@@ -57,17 +57,17 @@ function ScheduleCalendar() {
     navigate('/schedules/counseling/new');
   };
 
-  const goCheckSchedule = () => {
-    navigate('/schedule/personal/1');
-  };
+  // const goCheckSchedule = () => {
+  //   navigate('/schedule/personal/1');
+  // };
 
   const goCreateSchedule = () => {
     navigate('/schedule/privateLesson/new');
   };
 
-  const goCheckCounseling = () => {
-    navigate('/schedules/counseling/174');
-  };
+  // const goCheckCounseling = () => {
+  //   navigate('/schedules/counseling/174');
+  // };
 
   const [events, setEvents] = useState<Schedule[]>([]);
 
@@ -216,35 +216,36 @@ function ScheduleCalendar() {
       <Modal
         isOpen={isOpen}
         content={
-          <div className="flex items-center h-64">
-            <button
-              type="button"
-              onClick={goCreateSchedule}
-              className="w-64 h-64 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-              개인 수업 일정 생성
-            </button>
-            {/* <button
-              type="button"
-              onClick={goCheckSchedule}
-              className="w-64 h-32 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-              개인 수업 일정 조회(mock 데이터)
-            </button> */}
-            <button
-              type="button"
-              onClick={goCreateCounseling}
-              className="w-64 h-64 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-              상담 일정 생성
-            </button>
-            {/* <button
-              type="button"
-              onClick={goCheckCounseling}
-              className="w-64 h-32 px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-              상담 일정 조회
-            </button> */}
+          <div>
+            <p className="font-bold">일정 생성</p>
+            <p className="text-sm">일정을 생성해주세요.</p>
+            <div className="flex justify-evenly m-8 gap-5 h-72">
+              <button
+                type="button"
+                onClick={goCreateSchedule}
+                className=" bg-bg-100 px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
+                <div className="relative w-full h-full">
+                  <p>개인 수업</p>
+                  <p>개인 수업 suppoting msg</p>
+                  <div className="absolute bottom-0 right-0 bg-bg-300 w-8 h-8 rounded-full"></div>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={goCreateCounseling}
+                className=" bg-bg-100 px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
+                <div className="relative w-full h-full">
+                  <p>상담</p>
+                  <p>상담 suppoting msg</p>
+                  <div className="absolute bottom-0 right-0 bg-bg-300 w-8 h-8 rounded-full"></div>
+                </div>
+              </button>
+            </div>
           </div>
         }
         onClose={handleClose}
-        onConfirm={handleConfirm}
+        // onConfirm={handleConfirm}
+        width={'w-1/2'}
       />
     </div>
   );

@@ -138,7 +138,7 @@ function ScheduleCalendar() {
 
   const totalEvents = events.length;
 
-  const cancelledEvents = events.filter((event) => event.attendance === '결석').length;
+  const cancelledEvents = events.filter((event) => event.isCanceled === true).length;
 
   const cancellationRate = ((cancelledEvents / totalEvents) * 100).toFixed(2);
 
@@ -186,8 +186,8 @@ function ScheduleCalendar() {
             events={events}
             ref={calendarRef}
             theme={myTheme}
-            // gridSelection={false}
-            isReadOnly={true}
+            // gridSelection={true}
+            // isReadOnly={false}
           />
         </div>
         <aside className="w-96 p-4 bg-white rounded-lg box-content">
@@ -220,27 +220,27 @@ function ScheduleCalendar() {
             <button
               type="button"
               onClick={goCreateSchedule}
-              className="w-64 h-32 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+              className="w-64 h-64 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               개인 수업 일정 생성
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={goCheckSchedule}
               className="w-64 h-32 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               개인 수업 일정 조회(mock 데이터)
-            </button>
+            </button> */}
             <button
               type="button"
               onClick={goCreateCounseling}
-              className="w-64 h-32 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+              className="w-64 h-64 px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               상담 일정 생성
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={goCheckCounseling}
               className="w-64 h-32 px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
               상담 일정 조회
-            </button>
+            </button> */}
           </div>
         }
         onClose={handleClose}

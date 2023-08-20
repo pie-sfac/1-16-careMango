@@ -40,9 +40,7 @@ const UpdateTicket = () => {
 
   const editTicketMutation = useMutation(
     async (ticketData: CreateTicketType) => {
-      console.log(ticketData);
       const res = await axiosInstance.put(`/tickets/${ticketId}`, ticketData);
-      console.log(res);
       return res.data;
     },
     {

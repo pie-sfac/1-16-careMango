@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import SubHeader from '@components/common/SubHeader/SubHeader';
 import { axiosInstance } from '@/utils/apiInstance';
 import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
-import Input from '@components/common/Input/Input';
 import { calculateDate, getDay, getDay2 } from '@/utils/date';
+import { memberIdState } from '@/atoms/members/memberIdAtom';
+import { Staff } from '@/types/staffs/staffs';
 import { ReactComponent as Plus } from '@/assets/icons/Plus.svg';
 import { ReactComponent as Minus } from '@/assets/icons/Minus.svg';
-import { memberIdState } from '@/atoms/members/memberIdAtom';
+import SubHeader from '@components/common/SubHeader/SubHeader';
+import Input from '@components/common/Input/Input';
 import Modal from '@components/common/Modal/Modal';
 import SelectStaffs from '@pages/counseling/components/SelectStaffs';
-import { Staff } from '@/types/staffs/staffs';
 import GetStaffsList from '@pages/counseling/getStaffsList';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 interface IssuedTicketData {
   memberIds: number[];
@@ -65,7 +65,7 @@ const CreateIssuedTicket = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['ticket', ticketId]);
         window.alert('수강권이 부여되었습니다!');
-        navigate(`members/${memberId}/issued-tickets`);
+        navigate(`/members/${memberId.memberId}/issued-tickets`);
       },
     },
   );

@@ -1,28 +1,32 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { axiosInstance } from '@/utils/apiInstance';
 import { TicketsData } from '@/types/tickets/tickets';
 import TicketItem from './TicketItem';
 import { ReactComponent as EmptyMembership } from '@/assets/icons/EmptyMembership.svg';
+import { useQuery } from 'react-query';
 
 type TabType = 'active' | 'deactive';
 
 const TicketList = ({ tab }: { tab?: boolean }) => {
-  const [activeTicketList, setActiveTicketList] = useState<TicketsData[] | null>(null);
-  const [deactiveTicketList, setDeactiveTicketList] = useState<TicketsData[] | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('active');
 
-  const getTickets = useCallback(async () => {
+  const fetchTickets = async () => {
     const res = await axiosInstance.get('tickets');
-    const tickets = res.data.tickets;
-    const activeTickets = tickets.filter((ticket: TicketsData) => ticket.isActive === true);
-    const deActiveTickets = tickets.filter((ticket: TicketsData) => ticket.isActive === false);
-    setActiveTicketList(activeTickets);
-    setDeactiveTicketList(deActiveTickets);
-  }, []);
+    return res.data.tickets;
+  };
 
-  useEffect(() => {
-    getTickets();
-  }, [getTickets]);
+  const { data: tickets, isLoading, isError } = useQuery<TicketsData[]>('tickets', fetchTickets);
+
+  const activeTicketList = tickets?.filter((ticket: TicketsData) => ticket.isActive === true) || [];
+  const deactiveTicketList = tickets?.filter((ticket: TicketsData) => ticket.isActive === false) || [];
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error</p>;
+  }
 
   return (
     <>

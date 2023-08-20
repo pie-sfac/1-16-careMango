@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ScheduleItemData } from '@/types/schedule/schedule';
 import { ReactComponent as Profile } from '@/assets/icons/Profile_24.svg';
 import Modal from '@components/common/Modal/Modal';
 import { axiosInstance } from '@/utils/apiInstance';
+import { useMutation, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 interface ScheduleDetailProps {
   itemData: ScheduleItemData;
-  fetchCheckSchedule: () => Promise<void>;
   attendanceHistoryId: number;
 }
 
-const ScheduleDetail = ({ itemData, fetchCheckSchedule, attendanceHistoryId }: ScheduleDetailProps) => {
+const ScheduleDetail = ({ itemData, attendanceHistoryId }: ScheduleDetailProps) => {
   const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
   const [absenceModalOpen, setAbsenceModalOpen] = useState(false);
+  const { scheduleId } = useParams();
+  const queryClient = useQueryClient();
 
   const openAttendanceModal = () => {
     setAttendanceModalOpen(true);
@@ -28,18 +31,32 @@ const ScheduleDetail = ({ itemData, fetchCheckSchedule, attendanceHistoryId }: S
     setAbsenceModalOpen(false);
   };
 
-  const handleConfirmAttendance = async () => {
-    console.log('출석 버튼이 눌렸습니다.');
-    const res = await axiosInstance.post(`/attendance-histories/${attendanceHistoryId}/check-present`);
-    console.log(res.data);
-    fetchCheckSchedule();
+  const attendanceMutation = useMutation(
+    async (attendanceHistoryId: number) => {
+      await axiosInstance.post(`/attendance-histories/${attendanceHistoryId}/check-present`);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['schedule', scheduleId]);
+      },
+    },
+  );
+  const handleConfirmAttendance = () => {
+    attendanceMutation.mutate(attendanceHistoryId);
   };
 
+  const absenceMutation = useMutation(
+    async (attendanceHistoryId: number) => {
+      await axiosInstance.post(`/attendance-histories/${attendanceHistoryId}/check-absent`);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['schedule', scheduleId]);
+      },
+    },
+  );
   const handleConfirmAbsence = async () => {
-    console.log('결석 버튼이 눌렸습니다.');
-    const res = await axiosInstance.post(`/attendance-histories/${attendanceHistoryId}/check-absent`);
-    console.log(res.data);
-    fetchCheckSchedule();
+    absenceMutation.mutate(attendanceHistoryId);
   };
 
   const attendanceStatus = (status: string) => {

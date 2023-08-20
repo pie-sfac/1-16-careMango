@@ -1,9 +1,8 @@
-import React from 'react';
 import { ScheduleItemData } from '@/types/schedule/schedule';
 import { getDay, getTime } from '@/utils/date';
 
 const ScheduleBox = ({ itemData }: { itemData: ScheduleItemData }) => (
-  <section className="relative h-40 bg-bg-100">
+  <section className="relative h-40 bg-bg-100 mx-[-1.5rem] lg:mx-[-3rem] base-px">
     <div className="flex items-center justify-between py-4">
       <h1 className="main-title">개인수업일정</h1>
       <p className="text-xs text-text-400">
@@ -11,7 +10,7 @@ const ScheduleBox = ({ itemData }: { itemData: ScheduleItemData }) => (
       </p>
     </div>
 
-    <div className="absolute left-0 w-full top-24">
+    <div className="absolute left-0 w-full top-24 base-px">
       <h2 className="small-title">수업 정보</h2>
       <div className="flex items-center justify-start h-16 p-6 gap-7 card-border base-font">
         <div className="flex gap-4">

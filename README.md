@@ -6,25 +6,17 @@
 
 ![team16](./public/images/logo.svg)
 
-# team16_아프지망고(careMango)
-## [Wiki ](https://github.com/pie-sfac/1-16-careMango/wiki)
+## team16_아프지망고(careMango)
+### [Wiki ](https://github.com/pie-sfac/1-16-careMango/wiki)
   
 </div>
 
 ## 프로젝트 정보
+- 센터 내 직원, 회원, 수강권, 일정 관리 등의 기능이 구현된 태블릿 기반 CRM 서비스를 React기반의 웹플랫폼 형태로 제작해 <br/>서비스의 크로스플랫폼 지원
+- 개발 목표 : 수업 관리 시스템 제작 (PC)
+- 개발 기간 : 2023.07.17 ~ 2023.08.10
 
-> **Piehealthcare - PoinT**
-<br/>**센터의 기록 템플릿 관리 및 아카이브 링크(링크 보관함) 관리 기능 제작** 
-<br/>**개발기간: 2023.07.17 ~ 2023.08.10**
-
-<br />
-
-1. 플랫폼 다양성 및 접근성 확대
-2. 유지보수 및 업데이트 효율성 향상
-3. 새로운 기능 및 확장성 확보
-4. 사용자 경험 개선
-
-
+<br/>
 
 ## 팀원
 

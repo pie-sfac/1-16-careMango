@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import Select from '@components/common/Select/Select';
@@ -40,9 +40,7 @@ const UpdateTicket = () => {
 
   const editTicketMutation = useMutation(
     async (ticketData: CreateTicketType) => {
-      console.log(ticketData);
       const res = await axiosInstance.put(`/tickets/${ticketId}`, ticketData);
-      console.log(res);
       return res.data;
     },
     {

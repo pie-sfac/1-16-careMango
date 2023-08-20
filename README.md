@@ -23,7 +23,7 @@
 | [안승지](https://github.com/s-ja)      | [김지효](https://github.com/ji-dawn)      | [이윤주](https://github.com/lyeejj)      | [김유은](https://github.com/YueunKim)      |
 | -------------------------------------- | ----------------------------------------- | ---------------------------------------- | ------------------------------------------ |
 | ![안승지](https://github.com/s-ja.png) | ![김지효](https://github.com/ji-dawn.png) | ![이윤주](https://github.com/lyeejj.png) | ![김유은](https://github.com/YueunKim.png) |
-|                                  |                                     | - 일정 상세 관리(RUD) <br/> - 수강권 부여/관리(CRUD) <br/> - 레이아웃 <br/> | - 상담 일정 관리 CRUD <br/> - 회원 관리 CRU
+|                                  | - 일정 상세 관리(C) <br/> - 직원 관리CRUD                                    | - 일정 상세 관리(RUD) <br/> - 수강권 부여/관리(CRUD) <br/> - 레이아웃 <br/> | - 상담 일정 관리 CRUD <br/> - 회원 관리 CRU
 
 <br/>
 
@@ -91,9 +91,14 @@ password: team16!!
 ### 1. 일정 관리
 
 #### 개인 일정 상세 관리
-- 개인일정을 조회/변경합니다.
+- 개인일정을 생성/조회/변경합니다.
 - 개인일정 상세조회를 통해 일정을 변경할 수 있고 일정 취소가 가능합니다.
 - 일정의 출석/결석 버튼을 통한 출결체크가 가능합니다.
+<details>
+  <summary>개인일정 생성</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/52726195/ef237a5a-5d5f-452c-88c8-544c1c4d3c1e' />
+</details>
 <details>
   <summary>개인일정 상세조회 / 변경</summary>
 
@@ -175,6 +180,15 @@ password: team16!!
 
   <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/72495998/0d029e56-b87c-46a5-9095-41c998d646e1' />
   <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/72495998/0b240e82-4e4b-4081-b4d8-30ab9a98e63c' />
+</details>
+
+### 4. 직원 관리
+- 직원 생성, 조회, 변경, 삭제(퇴사)가 가능합니다.
+- 직원 목록 조회 페이지에서 검색이 가능합니다.
+
+<details>
+  <summary>구현 화면</summary>
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/52726195/eccff43a-da3f-4e3c-867c-451fbad89a5f'/>
 </details>
 
 ![footer](https://capsule-render.vercel.app/api?section=footer&type=waving&color=0:FFFFFF,100:2C62EA)

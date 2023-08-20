@@ -4,6 +4,7 @@ import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import Input from '@components/common/Input/Input';
+import Select from '@components/common/Select/Select';
 import { Staff } from '@/types/staffs/staffs';
 import { Member } from '@/types/members/members';
 import { Tickets } from '@/types/tickets/tickets';
@@ -119,58 +120,61 @@ const CreatePrivateLesson = () => {
   return (
     <>
       <SubHeader title="일정생성" />
+
       <div className="flex flex-col">
         <h1 className="main-title">개인 수업</h1>
-        <div className="flex">
-          {/* <ButtonAddPeople title="강사 선택" value="staff" /> */}
-          <form onSubmit={handleSubmit}>
-            <label>
-              강사 선택
-              <select name="userId" onChange={handleChange} value={state.userId} required>
-                <option value={0}>선택하세요</option>
-                {staffList?.map((item: Staff) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              회원 선택
-              <select name="member" onChange={selectMember} required>
-                <option value={0}>선택하세요</option>
-                {memberList?.map((item: Member) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              수업(수강권) 선택
-              <select name="issuedTicketId" onChange={handleChange} required>
-                <option value={0}>선택하세요</option>
-                {ticketList?.map((item: Tickets) => (
-                  <option key={item.id} value={item.id}>
-                    {item.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <h2>참여 회원</h2>
-            <Input type="date" label="날짜 선택" value={date} onChange={onDateChange} required />
+        {/* <ButtonAddPeople title="강사 선택" value="staff" /> */}
+        <form onSubmit={handleSubmit}>
+          <label className="block mt-10 bm-2">
+            강사 선택
+            <br />
+            <select className="input-select" name="userId" onChange={handleChange} value={state.userId} required>
+              <option value={0}>선택하세요</option>
+              {staffList?.map((item: Staff) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block mt-10 bm-2">
+            회원 선택
+            <br />
+            <select className="input-select" name="member" onChange={selectMember} required>
+              <option value={0}>선택하세요</option>
+              {memberList?.map((item: Member) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block mt-10 bm-2">
+            수업(수강권) 선택
+            <br />
+            <select className="input-select" name="issuedTicketId" onChange={handleChange} required>
+              <option value={0}>선택하세요</option>
+              {ticketList?.map((item: Tickets) => (
+                <option key={item.id} value={item.id}>
+                  {item.title}
+                </option>
+              ))}
+            </select>
+          </label>
+          <Input type="date" label="날짜 선택" value={date} onChange={onDateChange} required />
+          <div className="flex items-center">
             <Input name="startAt" type="time" value={getTime(state.startAt)} onChange={handleChange} required /> ~
             <Input name="endAt" type="time" value={getTime(state.endAt)} onChange={handleChange} required />
-            <button
-              className={`my-5 py-3 rounded ${
-                allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
-              }`}
-              type="submit"
-              onClick={handleSubmit}>
-              완료
-            </button>
-          </form>
-        </div>
+          </div>
+          <button
+            className={`my-5 py-3 w-full rounded ${
+              allFieldsCompleted() ? 'bg-primary-500 text-white' : 'bg-bg-100 text-text-400 pointer-events-none'
+            }`}
+            type="submit"
+            onClick={handleSubmit}>
+            완료
+          </button>
+        </form>
       </div>
     </>
   );

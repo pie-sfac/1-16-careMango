@@ -1,32 +1,33 @@
 import React from 'react';
+import { ReactComponent as Close } from '@/assets/icons/Close.svg';
 
 interface ModalProps {
   isOpen: boolean;
   content: React.ReactNode;
   onClose: () => void;
-  onConfirm: () => void;
+  // onConfirm: () => void;
+  // onlyConfirm?: boolean;
   width?: string;
   isDisabled?: boolean;
-  onlyConfirm?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
   content,
   onClose,
-  onConfirm,
+  // onConfirm,
+  // onlyConfirm = false,
+  // isDisabled = false,
   width,
-  isDisabled = false,
-  onlyConfirm = false,
 }) => {
   if (!isOpen) {
     return null;
   }
 
-  const handleConfirm = () => {
-    onConfirm();
-    onClose();
-  };
+  // const handleConfirm = () => {
+  //   onConfirm();
+  //   onClose();
+  // };
 
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -46,7 +47,7 @@ const Modal: React.FC<ModalProps> = ({
       onKeyDown={handleKeyDown}
       tabIndex={0}>
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
-      <div className="p-10 bg-white rounded shadow-md" onClick={stopPropagation}>
+      {/* <div className="p-10 bg-white rounded shadow-md" onClick={stopPropagation}>
         {content}
         <div className="flex justify-end mt-4">
           {!onlyConfirm && (
@@ -62,6 +63,16 @@ const Modal: React.FC<ModalProps> = ({
             확인
           </button>
         </div>
+      </div> */}
+
+      <div className={`${width} p-5 bg-white rounded-2xl shadow-md relative`} onClick={stopPropagation}>
+        <button
+          className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center"
+          onClick={onClose}
+          type="button">
+          <Close />
+        </button>
+        {content}
       </div>
     </div>
   );

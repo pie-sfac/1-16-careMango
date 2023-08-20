@@ -13,4 +13,14 @@ export default defineConfig({
       { find: '@', replacement: '/src' },
     ],
   },
+  build: {
+    rollupOptions: {
+      onwarn(warning, warnHandler) {
+        // if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+        if (warning.message.includes('is declared but its value is never read.')) return;
+        warnHandler(warning);
+        // return;
+      },
+    },
+  },
 });

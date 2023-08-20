@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '@/atoms/user/userAtom';
 import { ReactComponent as Logo } from '@/assets/icons/Logo.svg';
@@ -8,16 +8,14 @@ import { ReactComponent as Notifications } from '@/assets/icons/Notifications.sv
 import { axiosInstance } from '@/utils/apiInstance';
 import { accessTokenState } from '@/atoms/token/accessTokenAtom';
 
-type MainHeaderProps = {
-  menu?: boolean;
-};
-
-const MainHeader = ({ menu }: MainHeaderProps) => {
+const MainHeader = () => {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
 
   const toggleLogoutButton = useCallback(() => {
     setShowLogoutButton((prev) => !prev);
   }, []);
+
+  const [isSubMenuOpen, setSubMenuOpen] = useState('');
 
   const handleLogout = useCallback(() => {
     // API를 통해 로그아웃 요청
@@ -49,19 +47,19 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
   const token = useRecoilValue(accessTokenState);
 
   const mainMenu = [
-    { id: 'Members', content: '직원 관리', path: '/staffs' },
-    { id: 'Tickets', content: '수강권 관리', path: '/tickets/center' },
+    { id: 'Home', content: '홈', path: '/' },
+    { id: 'Schedules', content: '일정관리', path: '/schedule' },
+    { id: 'Members', content: '회원 관리', path: '/members' },
+    {
+      id: 'Center',
+      content: '센터 관리',
+      subMenu: [
+        { id: 'Tickets', content: '수강권 관리', path: '/tickets/center' },
+        { id: 'Staffs', content: '직원 관리', path: '/staffs' },
+      ],
+    },
+    { id: 'MyPage', content: '마이페이지', path: '/myPage' },
   ];
-  // 마이 페이지 메뉴 항목 설정
-  const myPageMenu = [
-    { id: 'MyInfo', content: '내 정보', path: '/myPage/myInfo' },
-    { id: 'Notices', content: '공지사항', path: '/myPage/notices' },
-    { id: 'AppSettings', content: '앱 설정', path: '/myPage/appSettings' },
-    { id: 'OperatingData', content: '운영 데이터', path: '/myPage/operatingData' },
-  ];
-
-  // 현재 경로에 따라 메뉴 항목을 결정
-  const currentMenu = useLocation().pathname.includes('/myPage') ? myPageMenu : mainMenu;
 
   const getUserData = async () => {
     const res = await axiosInstance.get('me');
@@ -70,7 +68,6 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
 
   useEffect(() => {
     getUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   return (
@@ -87,16 +84,32 @@ const MainHeader = ({ menu }: MainHeaderProps) => {
           <Logo />
         </button>
 
-        {menu && (
-          <ul className="gap-8 font-semibold cursor-pointer flex-center">
-            {currentMenu.map(({ id, content, path }) => (
-              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-              <li key={id} onClick={() => navigate(path)}>
-                {content}
-              </li>
-            ))}
-          </ul>
-        )}
+        <ul className="gap-8 font-semibold cursor-pointer flex-center">
+          {mainMenu.map(({ id, content, path, subMenu }) => (
+            <li key={id} className="relative group" onMouseEnter={() => setSubMenuOpen(id)}>
+              {!subMenu ? (
+                <Link to={path} className="p-2 transition duration-300 rounded hover:bg-bg-100">
+                  <span>{content}</span>
+                </Link>
+              ) : (
+                <span className="p-2 transition duration-300 rounded hover:bg-bg-100">{content}</span>
+              )}
+              {subMenu && isSubMenuOpen === id && (
+                <ul
+                  className="absolute left-0 mt-2 bg-white border border-gray-300 rounded shadow-md w-28"
+                  onMouseLeave={() => setSubMenuOpen('')}>
+                  {subMenu.map(({ id: subId, content: subContent, path: subPath }) => (
+                    <li key={subId}>
+                      <Link to={subPath} className="block px-4 py-2 hover:bg-bg-100">
+                        {subContent}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
       </nav>
 
       <div className="flex-center">

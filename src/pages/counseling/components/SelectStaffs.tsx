@@ -1,5 +1,3 @@
-import React from 'react';
-import { StateType } from '@/types/counseling/counseling';
 import { Staff } from '@/types/staffs/staffs';
 import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
 import { ReactComponent as Delete24 } from '@/assets/icons/Delete_24.svg';
@@ -7,16 +5,16 @@ import { ReactComponent as Delete24 } from '@/assets/icons/Delete_24.svg';
 interface SelectStaffsProps {
   selectedStaff: Staff | null;
   setSelectedStaff: React.Dispatch<React.SetStateAction<Staff | null>>;
-  setState?: React.Dispatch<React.SetStateAction<StateType>>;
   setPrivateTutorId?: React.Dispatch<React.SetStateAction<number>>;
+  setUserId?: React.Dispatch<React.SetStateAction<number>>;
   setShowComponentForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SelectStaffs: React.FC<SelectStaffsProps> = ({
   selectedStaff,
   setSelectedStaff,
-  setState,
   setPrivateTutorId,
+  setUserId,
   setShowComponentForm,
 }) => {
   const handleClick = () => {
@@ -25,8 +23,8 @@ const SelectStaffs: React.FC<SelectStaffsProps> = ({
 
   const clearSelectedStaff = () => {
     setSelectedStaff(null);
-    setState && setState((prev) => ({ ...prev, userId: 0 }));
     setPrivateTutorId && setPrivateTutorId(0);
+    setUserId && setUserId(0);
   };
 
   return (
@@ -38,8 +36,10 @@ const SelectStaffs: React.FC<SelectStaffsProps> = ({
       <div className="flex">
         <button
           type="button"
-          className={`p-3 mr-4 border border-solid rounded-xl text-primary-300 border-primary-300 ${
-            selectedStaff !== null ? 'bg-bg-100 border-bg-300 text-gray-300 cursor-not-allowed' : ''
+          className={`p-3 mr-4 border border-solid rounded-xl ${
+            selectedStaff !== null
+              ? 'bg-bg-100 border-bg-300 text-gray-300 cursor-not-allowed'
+              : 'text-primary-300 border-primary-300 '
           }`}
           onClick={handleClick}
           disabled={selectedStaff !== null}>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { CounselingDetail } from '@/types/counseling/counselingDetail';
 import { getDay, getTime } from '@/utils/date';
 

@@ -1,32 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import axios from 'axios';
 import { axiosInstance } from '@/utils/apiInstance';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Card from '@components/common/Card/Card';
 import SubHeader from '@components/common/SubHeader/SubHeader';
-import { ScheduleItemData } from '@/types/schedule/schedule';
 import ScheduleBox from '@pages/schedule/components/ScheduleBox';
-import ScheduleDetail from '@pages/schedule/components/ScheduleDetail';
-import { itemDataState } from '@/atoms/schedule/itemDataAtom';
+import ScheduleDetail from './components/ScheduleDetail';
 import Modal from '@components/common/Modal/Modal';
+import { getTime } from '@/utils/date';
 
 const ScheduleDetailPage = () => {
-  const [itemData, setItemData] = useRecoilState(itemDataState);
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
-  const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  const fetchCheckSchedule = useCallback(async () => {
-    const res = await axios.get('http://localhost:5173/data/scheduleData.json');
-    // const res = await axiosInstance.get(`schedules/private-lesson/${scheduleId}`);
-    const scheduleData = res.data;
-    console.log(scheduleData);
-    setItemData(scheduleData);
-    setAttendanceHistoryId(scheduleData.attendanceHistories[0].id);
-    // }, [scheduleId, setItemData]);
-  }, [setItemData]);
+  const queryClient = useQueryClient();
 
   const goEditSchedule = () => {
     navigate(`/schedule/personal/edit/${scheduleId}`);
@@ -39,21 +26,42 @@ const ScheduleDetailPage = () => {
     setCancelModalOpen(false);
   };
 
-  const handleConfirmCancel = async () => {
-    console.log('일정 취소');
-    const res = await axiosInstance.post(`/schedules/${scheduleId}/cancel`);
-    console.log(res.data);
+  const cancelScheduleMutation = useMutation(
+    async (scheduleId: string) => {
+      await axiosInstance.post(`/schedules/${scheduleId}/cancel`);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['schedule', scheduleId]);
+      },
+    },
+  );
+  const handleConfirmCancel = () => {
+    scheduleId && cancelScheduleMutation.mutate(scheduleId);
   };
 
-  useEffect(() => {
-    fetchCheckSchedule();
-  }, [fetchCheckSchedule]);
+  const fetchCheckSchedule = async () => {
+    const res = await axiosInstance.get(`schedules/private-lesson/${scheduleId}`);
+    return res.data;
+  };
 
-  if (!itemData) return <p>loading...</p>;
+  const { data: itemData, isLoading, isError } = useQuery(['schedule', scheduleId], fetchCheckSchedule);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+  if (isError) {
+    return <p>Error</p>;
+  }
+
+  const attendanceHistoryId = itemData.attendanceHistories[0].id;
+
   return (
     <>
       <SubHeader
-        title="11시 서태지"
+        title={`${getTime(itemData.startAt).split(':')[0]}시 ${getTime(itemData.startAt).split(':')[1]}분 ${
+          itemData.attendanceHistories[0].member.name
+        }`}
         rightBtn={
           <div>
             <button className="pl-5 text-base" type="button" onClick={() => goEditSchedule()}>
@@ -75,14 +83,10 @@ const ScheduleDetailPage = () => {
       <ScheduleBox itemData={itemData} />
 
       <section className="mt-20 base-font">
-        <h2 className="small-title">참여회원(1)</h2>
+        <h2 className="small-title">참여회원</h2>
         <div className="flex items-center">
           <Card>
-            <ScheduleDetail
-              itemData={itemData}
-              fetchCheckSchedule={fetchCheckSchedule}
-              attendanceHistoryId={attendanceHistoryId}
-            />
+            <ScheduleDetail itemData={itemData} attendanceHistoryId={attendanceHistoryId} />
           </Card>
         </div>
       </section>

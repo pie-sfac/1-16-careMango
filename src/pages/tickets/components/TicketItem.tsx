@@ -4,24 +4,31 @@ import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
 
-const TicketItem = ({ ticket }: { ticket: TicketsData }) => {
+interface TicketItemProps {
+  ticket: TicketsData;
+  disabled?: boolean;
+}
+
+const TicketItem = ({ ticket, disabled = false }: TicketItemProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
 
   const goTicketDetail = (ticketId: number) => {
     if (pathname.includes('issue')) {
-      navigate(`/tickets/${ticketId}/issue`); // 회원에게 수강권 부여
+      navigate(`/tickets/${ticketId}/issue`);
     }
     if (pathname.includes('center')) {
-      navigate(`/tickets/${ticketId}/center`); // 센터 수강권 상세
+      navigate(`/tickets/${ticketId}/center`);
     }
   };
 
   return (
     <Card>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-      <article className="w-[30rem] p-6 cursor-pointer" onClick={() => goTicketDetail(ticket.id)}>
+      <article
+        className={`${disabled && 'text-text-400'} w-[30rem] p-6 cursor-pointer`}
+        onClick={() => goTicketDetail(ticket.id)}>
         <div className="flex items-start justify-between mb-8">
           <div>
             <p className="my-2 font-bold">{ticket.title}</p>
@@ -29,7 +36,9 @@ const TicketItem = ({ ticket }: { ticket: TicketsData }) => {
               <span className="inline-block w-20 text-text-400">부여</span> {ticket.issuedTicketCount}건
             </p>
           </div>
-          <span className="text-sm text-primary-500">{LessonTypeEnum[ticket.lessonType]}</span>
+          <span className={`text-sm ${!disabled ? 'text-primary-500' : 'text-text-400'}`}>
+            {LessonTypeEnum[ticket.lessonType]}
+          </span>
         </div>
 
         <div className="flex items-end justify-between">

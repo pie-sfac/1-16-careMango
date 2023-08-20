@@ -10,6 +10,8 @@ import ScheduleHeader from './components/ScheduleHeader';
 import Legend from './components/Legend';
 import EventTable from './components/EventTable';
 
+import { ReactComponent as Dumbbell } from '@/assets/icons/Dumbbell.svg';
+
 function ScheduleCalendar() {
   const calendarRef = useRef<any>(null);
 
@@ -223,21 +225,25 @@ function ScheduleCalendar() {
               <button
                 type="button"
                 onClick={goCreateSchedule}
-                className=" bg-bg-100 px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
+                className="px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
                 <div className="relative w-full h-full">
                   <p>개인 수업</p>
-                  <p>개인 수업 suppoting msg</p>
-                  <div className="absolute bottom-0 right-0 bg-bg-300 w-8 h-8 rounded-full"></div>
+                  <p>일정 생성</p>
+                  <div className="absolute bottom-0 right-0 bg-bg-100 w-10 h-10 rounded-full flex justify-center items-center">
+                    <Dumbbell />
+                  </div>
                 </div>
               </button>
               <button
                 type="button"
                 onClick={goCreateCounseling}
-                className=" bg-bg-100 px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
+                className="px-8 py-10 text-start rounded-2xl shadow border-2 flex flex-col justify-start w-full">
                 <div className="relative w-full h-full">
                   <p>상담</p>
-                  <p>상담 suppoting msg</p>
-                  <div className="absolute bottom-0 right-0 bg-bg-300 w-8 h-8 rounded-full"></div>
+                  <p>일정 생성</p>
+                  <div className="absolute bottom-0 right-0 bg-bg-100  w-10 h-10 rounded-full flex justify-center items-center">
+                    <Dumbbell />
+                  </div>
                 </div>
               </button>
             </div>

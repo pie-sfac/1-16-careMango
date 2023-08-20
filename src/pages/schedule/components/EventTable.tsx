@@ -21,8 +21,8 @@ function EventTable({ events, renderAttendance, getDuration, currentDate }: Even
   });
 
   const goToEventPage = (event: Schedule) => {
-    if (event.category === 'counseling') {
-      navigate(`/counseling/${event.id}`);
+    if (event.attendance === '상담') {
+      navigate(`/schedules/counseling/${event.id}`);
     } else {
       navigate(`/schedule/personal/${event.id}`);
     }

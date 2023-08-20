@@ -6,6 +6,7 @@ import { IssuedTicketsData } from '@/types/tickets/tickets';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import IssuedTicketItem from '@pages/tickets/components/IssuedTicketItem';
 import { memberIdState } from '@/atoms/members/memberIdAtom';
+import { ReactComponent as EmptyMembership } from '@/assets/icons/EmptyMembership.svg';
 
 const IssuedTicketPage = () => {
   const [issuedList, setIssuedList] = useState<IssuedTicketsData[] | null>(null);
@@ -39,7 +40,12 @@ const IssuedTicketPage = () => {
         }
       />
       <section className="flex flex-wrap items-center w-full gap-16 mt-20">
-        {!issuedList?.length && <span>수강권을 부여해주세요</span>}
+        {!issuedList?.length && (
+          <div className="flex-col w-full flex-center">
+            <EmptyMembership />
+            <p className="p-3 my-1 base-font text-text-400">수강권을 부여해주세요.</p>
+          </div>
+        )}
         {issuedList &&
           issuedList.map((ticket: IssuedTicketsData) => <IssuedTicketItem key={ticket.id} ticket={ticket} />)}
       </section>

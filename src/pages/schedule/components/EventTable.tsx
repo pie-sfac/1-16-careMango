@@ -5,7 +5,7 @@ interface EventTableProps {
   events: Schedule[];
   renderAttendance: (attendance?: string) => JSX.Element;
   getDuration: (start: string, end: string) => string;
-  currentDate: Date; // 이 줄 추가
+  currentDate: Date;
 }
 
 function EventTable({ events, renderAttendance, getDuration, currentDate }: EventTableProps) {

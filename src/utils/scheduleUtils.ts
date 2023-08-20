@@ -46,7 +46,6 @@ export const convertToDisplayData = (apiResponse: {
   // Convert private schedules
   apiResponse.privateSchedules.forEach((privateSchedule) => {
     if (!privateSchedule.isCanceled) {
-      // 취소되지 않은 개인 스케줄만 추가
       let attendance = '결석';
 
       if (privateSchedule.attendanceHistories && privateSchedule.attendanceHistories.length > 0) {

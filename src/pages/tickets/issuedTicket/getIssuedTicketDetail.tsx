@@ -4,23 +4,29 @@ import { IssuedTicketData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
 import { getDay } from '@/utils/date';
-import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
+import { useQuery } from 'react-query';
 
 const IssuedTicketDetail = () => {
-  const [ticket, setTicket] = useState<IssuedTicketData>();
-  const { ticketId } = useParams();
+  const { ticketId: issuedTicketId } = useParams();
 
-  const getIssuedTicket = useCallback(async () => {
-    const res = await axiosInstance.get(`/issued-tickets/${ticketId}`);
-    setTicket(res.data);
-    console.log(res.data);
-  }, [ticketId]);
+  const {
+    data: ticket,
+    isLoading,
+    isError,
+  } = useQuery<IssuedTicketData>(['issuedTicket', issuedTicketId], async () => {
+    const res = await axiosInstance.get(`/issued-tickets/${issuedTicketId}`);
+    return res.data;
+  });
 
-  useEffect(() => {
-    getIssuedTicket();
-  }, [getIssuedTicket]);
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error</span>;
+  }
 
   return (
     <>

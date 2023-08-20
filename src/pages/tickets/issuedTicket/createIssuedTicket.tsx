@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import { axiosInstance } from '@/utils/apiInstance';
@@ -14,6 +14,7 @@ import Modal from '@components/common/Modal/Modal';
 import SelectStaffs from '@pages/counseling/components/SelectStaffs';
 import { Staff } from '@/types/staffs/staffs';
 import GetStaffsList from '@pages/counseling/getStaffsList';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 interface IssuedTicketData {
   memberIds: number[];
@@ -24,22 +25,19 @@ interface IssuedTicketData {
 }
 
 const CreateIssuedTicket = () => {
-  const [ticket, setTicket] = useState<TicketsData | null>(null);
   const { ticketId } = useParams<{ ticketId: string | undefined }>();
+  const queryClient = useQueryClient();
+  const location = useLocation() as { state: { selectedStaff: Staff } };
+  const navigate = useNavigate();
 
   const [startAt, setStartAt] = useState(getDay());
   const [endAt, setEndAt] = useState('');
   const [serviceCount, setServiceCount] = useState(0);
-
   const [privateTutorId, setPrivateTutorId] = useState(0);
   const [selectedStaff, setSelectedStaff] = useState<null | Staff>(null);
-  const location = useLocation() as { state: { selectedStaff: Staff } };
 
   const memberId = useRecoilValue(memberIdState);
-  console.log(memberId);
-
   const [modalOpen, setModalOpen] = useState(false);
-
   const [showComponentForm, setShowComponentForm] = useState(true);
 
   const openModal = () => {
@@ -49,25 +47,45 @@ const CreateIssuedTicket = () => {
     setModalOpen(false);
   };
 
-  // 수강권 상세 조회
-  const getTicket = useCallback(async () => {
+  const {
+    data: ticket,
+    isLoading,
+    isError,
+  } = useQuery<TicketsData>(['ticket', ticketId], async () => {
     const res = await axiosInstance.get(`tickets/${ticketId}`);
-    setTicket(res.data);
-    console.log(res.data);
-    const term = res.data.defaultTerm;
-    const termUnit = res.data.defaultTermUnit;
-    const calculatedEndAt = calculateDate(startAt, termUnit, term);
-    setEndAt(getDay2(calculatedEndAt));
-    setServiceCount(res.data.maxServiceCount);
-  }, [ticketId, startAt]);
+    return res.data;
+  });
+
+  const issueTicketMutation = useMutation(
+    async (data: IssuedTicketData) => {
+      const res = await axiosInstance.post(`/tickets/${ticketId}/issue`, data);
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['ticket', ticketId]);
+        window.alert('수강권이 부여되었습니다!');
+        navigate(`members/${memberId}/issued-tickets`);
+      },
+    },
+  );
 
   useEffect(() => {
-    getTicket();
     if (location.state && location.state.selectedStaff) {
       setSelectedStaff(location.state.selectedStaff);
       setPrivateTutorId(location.state.selectedStaff.id);
     }
-  }, [getTicket]);
+  }, []);
+
+  useEffect(() => {
+    if (ticket) {
+      const term = ticket.defaultTerm;
+      const termUnit = ticket.defaultTermUnit;
+      const calculatedEndAt = calculateDate(startAt, termUnit, term);
+      setEndAt(getDay2(calculatedEndAt));
+      setServiceCount(ticket.maxServiceCount);
+    }
+  }, [ticket, startAt]);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -87,12 +105,15 @@ const CreateIssuedTicket = () => {
       startAt,
       endAt,
     };
-    console.log(data);
-    const res = await axiosInstance.post(`/tickets/${ticketId}/issue`, data);
-    console.log(res);
-    // eslint-disable-next-line no-alert
-    window.alert('수강권이 부여되었습니다!');
+    await issueTicketMutation.mutateAsync(data);
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+  if (isError) {
+    return <p>Error</p>;
+  }
 
   return (
     <>
@@ -109,8 +130,6 @@ const CreateIssuedTicket = () => {
               <div className="flex flex-col flex-wrap h-96">
                 <Input name="title" type="text" value={ticket.title} label="수강권명" width="w-80" />
 
-                {/* 수강권 유효기간 맞춰서 기간설정 필요 */}
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                 <label htmlFor="start" className="block mt-10 mb-2">
                   유효기간 <span className="text-primary-300">*</span>
                 </label>

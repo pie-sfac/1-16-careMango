@@ -1,13 +1,13 @@
-import Card from '@components/common/Card/Card';
-import SubHeader from '@components/common/SubHeader/SubHeader';
+import { useState } from 'react';
+import { axiosInstance } from '@/utils/apiInstance';
 import { useQuery } from 'react-query';
 import { TicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
 import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
-import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { axiosInstance } from '@/utils/apiInstance';
+import Card from '@components/common/Card/Card';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import DetailDropDown from '../components/DetailDropdown';
 
 const TicketDetailPage = () => {

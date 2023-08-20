@@ -36,11 +36,15 @@ const GetCounselingDetail = () => {
     },
   });
 
-  const handleConfirmModal = () => cancelCounselingMutation.mutate();
-
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleConfirmModal = () => {
+    cancelCounselingMutation.mutateAsync().then(() => {
+      navigate('/schedule');
+    });
   };
+
+  const handleCloseModal = () => setShowModal(false);
+
+  const goSchedule = () => setShowModal(true);
 
   if (!counselingData) return <p>loading...</p>;
 
@@ -55,7 +59,7 @@ const GetCounselingDetail = () => {
             <button className="pl-5 text-base" type="button" onClick={goUpdateCounseling}>
               변경
             </button>
-            <button className="pl-5 text-base" type="button" onClick={() => setShowModal(true)}>
+            <button className="pl-5 text-base" type="button" onClick={goSchedule}>
               취소
             </button>
           </div>

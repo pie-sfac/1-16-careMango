@@ -3,7 +3,7 @@ import React, { ChangeEvent } from 'react';
 interface SelectProps {
   name: string;
   options: { value: string | number; label: string }[];
-  value: string | number;
+  value: string | number | undefined;
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   label?: string;
   required?: boolean;

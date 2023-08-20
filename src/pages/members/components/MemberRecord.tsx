@@ -3,22 +3,19 @@ import { useState } from 'react';
 interface RecordType {
   date: string;
   template: string;
-  name: string;
 }
 
 const MemberRecord = () => {
   const [activeTab, setActiveTab] = useState('문진');
 
   const initialMujinRecord: RecordType = {
-    date: '2022-00-00',
+    date: '2023-08-11',
     template: '문진 템플릿',
-    name: '김파이',
   };
 
   const initialCheochiRecord: RecordType = {
-    date: '2022-00-00',
+    date: '2023-08-11',
     template: '처치 템플릿',
-    name: '김파이',
   };
 
   const [mujinRecords, setMujinRecords] = useState<RecordType[]>([initialMujinRecord]);
@@ -26,9 +23,8 @@ const MemberRecord = () => {
 
   const addNewRecord = () => {
     const newRecord: RecordType = {
-      date: '2022-00-00',
+      date: '2023-08-11',
       template: activeTab === '문진' ? '문진 템플릿' : '처치 템플릿',
-      name: '김파이',
     };
 
     if (activeTab === '문진') {
@@ -63,7 +59,6 @@ const MemberRecord = () => {
                   <p className="mr-5">{record.date}</p>
                   <p>{record.template}</p>
                 </div>
-                <p className="px-2 py-1 mr-5 rounded-md bg-bg-100">{record.name}</p>
               </div>
             ))
           : cheochiRecords.map((record, index) => (
@@ -72,7 +67,6 @@ const MemberRecord = () => {
                   <p className="mr-5">{record.date}</p>
                   <p>{record.template}</p>
                 </div>
-                <p className="px-2 py-1 mr-5 rounded-md bg-bg-100">{record.name}</p>
               </div>
             ))}
       </div>

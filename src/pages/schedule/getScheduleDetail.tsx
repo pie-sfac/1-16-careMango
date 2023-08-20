@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/utils/apiInstance';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Card from '@components/common/Card/Card';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import ScheduleBox from '@pages/schedule/components/ScheduleBox';
 import ScheduleDetail from './components/ScheduleDetail';
 import Modal from '@components/common/Modal/Modal';
 import { getTime } from '@/utils/date';
-import { useQuery } from 'react-query';
 
 const ScheduleDetailPage = () => {
   const { scheduleId } = useParams<{ scheduleId: string | undefined }>();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const goEditSchedule = () => {
     navigate(`/schedule/personal/edit/${scheduleId}`);
@@ -25,10 +26,18 @@ const ScheduleDetailPage = () => {
     setCancelModalOpen(false);
   };
 
-  const handleConfirmCancel = async () => {
-    console.log('일정 취소');
-    const res = await axiosInstance.post(`/schedules/${scheduleId}/cancel`);
-    console.log(res.data);
+  const cancelScheduleMutation = useMutation(
+    async (scheduleId: string) => {
+      await axiosInstance.post(`/schedules/${scheduleId}/cancel`);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['schedule', scheduleId]);
+      },
+    },
+  );
+  const handleConfirmCancel = () => {
+    scheduleId && cancelScheduleMutation.mutate(scheduleId);
   };
 
   const fetchCheckSchedule = async () => {
@@ -77,11 +86,7 @@ const ScheduleDetailPage = () => {
         <h2 className="small-title">참여회원</h2>
         <div className="flex items-center">
           <Card>
-            <ScheduleDetail
-              itemData={itemData}
-              fetchCheckSchedule={fetchCheckSchedule}
-              attendanceHistoryId={attendanceHistoryId}
-            />
+            <ScheduleDetail itemData={itemData} attendanceHistoryId={attendanceHistoryId} />
           </Card>
         </div>
       </section>

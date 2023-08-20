@@ -6,10 +6,10 @@ import { timeListState } from '@/atoms/counseling/counselingScheduleAtom';
 import { axiosInstance } from '@/utils/apiInstance';
 import { getTime } from '@/utils/date';
 import { Staff } from '@/types/staffs/staffs';
+import { StateType } from '@/types/counseling/counseling';
 import Input from '@components/common/Input/Input';
 import InputMemo from '@pages/counseling/components/InputMemo';
 import SelectStaffs from './components/SelectStaffs';
-import { StateType } from '@/types/counseling/counseling';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import GetStaffsList from '@pages/counseling/getStaffsList';
 

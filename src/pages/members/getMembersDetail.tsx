@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { axiosInstance } from '@/utils/apiInstance';
 import SubHeader from '@components/common/SubHeader/SubHeader';
-import { ReactComponent as MoreVert } from '@/assets/icons/MoreVert.svg';
 import { ReactComponent as Document } from '@/assets/icons/Document.svg';
 import { ReactComponent as Message } from '@/assets/icons/Message.svg';
 import { ReactComponent as Profile40 } from '@/assets/icons/Profile_40.svg';
@@ -53,14 +52,7 @@ const GetMembersDetail = () => {
 
   return (
     <>
-      <SubHeader
-        title="회원 정보"
-        rightBtn={
-          <button type="button">
-            <MoreVert />
-          </button>
-        }
-      />
+      <SubHeader title="회원 정보" />
       <div className="flex justify-between">
         <h1 className="main-title">회원 정보</h1>
         <div className="flex items-center">

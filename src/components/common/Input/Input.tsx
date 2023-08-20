@@ -50,7 +50,7 @@ const Input: React.FC<InputProps> = ({
         </label>
       )}
       {required ? (
-        <div className="relative flex items-center justify-start">
+        <div className="flex items-center justify-start ">
           {leftBtn}
           <input
             className={`${align} ${width} input-select mr-1`}
@@ -68,7 +68,7 @@ const Input: React.FC<InputProps> = ({
           {unitSelect}
         </div>
       ) : (
-        <div className="relative flex items-center justify-start">
+        <div className="flex items-center justify-start">
           {leftBtn}
           <input
             className={`${align} ${width} input-select mr-1 bg-gray-200 border-gray-300 cursor-not-allowed`}

@@ -1,3 +1,4 @@
+// import { useState } from 'react';
 import { Staff } from '@/types/staffs/staffs';
 import { ReactComponent as Profile24 } from '@/assets/icons/Profile_24.svg';
 import { ReactComponent as Delete24 } from '@/assets/icons/Delete_24.svg';
@@ -18,6 +19,9 @@ const SelectStaffs: React.FC<SelectStaffsProps> = ({
   setShowComponentForm,
 }) => {
   const handleClick = () => {
+    if (setUserId) {
+      setUserId(selectedStaff?.id || 0);
+    }
     setShowComponentForm(false);
   };
 

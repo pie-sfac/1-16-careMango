@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { axiosInstance } from '@/utils/apiInstance';
@@ -7,6 +7,7 @@ import SubHeader from '@components/common/SubHeader/SubHeader';
 import IssuedTicketItem from '@pages/tickets/components/IssuedTicketItem';
 import { memberIdState } from '@/atoms/members/memberIdAtom';
 import { ReactComponent as EmptyMembership } from '@/assets/icons/EmptyMembership.svg';
+import { useQuery } from 'react-query';
 
 type TabType = 'active' | 'deactive';
 
@@ -14,9 +15,6 @@ const IssuedTicketPage = ({ tab }: { tab?: boolean }) => {
   const navigate = useNavigate();
   const { memberId } = useParams<{ memberId: string | undefined }>();
   const setMemberId = useSetRecoilState(memberIdState);
-
-  const [activeTicketList, setActiveTicketList] = useState<IssuedTicketsData[] | null>(null);
-  const [deactiveTicketList, setDeactiveTicketList] = useState<IssuedTicketsData[] | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('active');
 
   const goTicketList = () => {
@@ -24,18 +22,25 @@ const IssuedTicketPage = ({ tab }: { tab?: boolean }) => {
     navigate(`/tickets/issue`);
   };
 
-  const getIssuedTickets = useCallback(async () => {
+  const {
+    data: issuedTicketsData,
+    isLoading,
+    isError,
+  } = useQuery(['issuedTickets', memberId], async () => {
     const res = await axiosInstance.get(`/members/${memberId}/issued-tickets`);
-    const tickets = res.data.issuedTickets;
-    const activeTickets = tickets.filter((ticket: IssuedTicketsData) => !ticket.isCanceled);
-    const deActiveTickets = tickets.filter((ticket: IssuedTicketsData) => ticket.isCanceled);
-    setActiveTicketList(activeTickets);
-    setDeactiveTicketList(deActiveTickets);
-  }, [memberId]);
+    return res.data.issuedTickets;
+  });
 
-  useEffect(() => {
-    getIssuedTickets();
-  }, [getIssuedTickets]);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error</p>;
+  }
+
+  const activeTicketList = issuedTicketsData.filter((ticket: IssuedTicketsData) => !ticket.isCanceled);
+  const deactiveTicketList = issuedTicketsData.filter((ticket: IssuedTicketsData) => ticket.isCanceled);
 
   return (
     <>
@@ -75,13 +80,15 @@ const IssuedTicketPage = ({ tab }: { tab?: boolean }) => {
           </button>
         </div>
       )}
-      <section className="flex flex-wrap items-center w-full mt-4">
+      <section className="flex flex-wrap items-center w-full gap-16 mt-4">
         {activeTicketList &&
           activeTab === 'active' &&
-          activeTicketList.map((ticket) => <IssuedTicketItem key={ticket.id} ticket={ticket} />)}
+          activeTicketList.map((ticket: IssuedTicketsData) => <IssuedTicketItem key={ticket.id} ticket={ticket} />)}
         {deactiveTicketList &&
           activeTab === 'deactive' &&
-          deactiveTicketList.map((ticket) => <IssuedTicketItem key={ticket.id} ticket={ticket} disabled />)}
+          deactiveTicketList.map((ticket: IssuedTicketsData) => (
+            <IssuedTicketItem key={ticket.id} ticket={ticket} disabled />
+          ))}
       </section>
     </>
   );

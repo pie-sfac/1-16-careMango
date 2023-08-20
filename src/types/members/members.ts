@@ -26,15 +26,9 @@ export interface StateType {
   birthDate: string;
   phone: string;
   sex: string;
-  job: string;
-  acqusitionFunnel: string;
-  acquisitionFunnel: string;
-  // toss: [
-  //   {
-  //     id: number;
-  //     agree: boolean;
-  //   },
-  // ];
+  job?: string;
+  acqusitionFunnel?: string;
+  acquisitionFunnel?: string;
 }
 export interface UpdateStateType {
   name: string;

@@ -1,22 +1,31 @@
 import { axiosInstance } from '@/utils/apiInstance';
+import { useQuery } from 'react-query';
 import SubHeader from '@components/common/SubHeader/SubHeader';
 import { IssuedTicketListData } from '@/types/tickets/tickets';
-import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const IssuedListPage = () => {
-  const [issuedList, setIssuedList] = useState<IssuedTicketListData[] | Array<any>>([]);
   const { ticketId } = useParams();
 
-  const getList = useCallback(async () => {
+  const fetchIssuedList = async () => {
     const res = await axiosInstance.get(`/tickets/${ticketId}/issued-tickets`);
-    setIssuedList(res.data.datas);
-    console.log(res.data.datas);
-  }, [ticketId]);
+    return res.data.datas;
+  };
 
-  useEffect(() => {
-    getList();
-  }, [getList]);
+  const {
+    data: issuedList,
+    isLoading,
+    isError,
+  } = useQuery<IssuedTicketListData[] | Array<any>>(['issuedList', ticketId], fetchIssuedList);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error</p>;
+  }
+
   return (
     <>
       <SubHeader title="부여내역" />

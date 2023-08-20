@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import { axiosInstance } from '@/utils/apiInstance';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import SubHeader from '@components/common/SubHeader/SubHeader';
 import { LessonTypeEnum, TermUnitEnum } from '@/enums/Ticket';
+import { CreateTicketType } from '@/types/tickets/tickets';
+import SubHeader from '@components/common/SubHeader/SubHeader';
 import Select from '@components/common/Select/Select';
 import Input from '@components/common/Input/Input';
-import { axiosInstance } from '@/utils/apiInstance';
+import CompleteButton from '@components/common/CompleteButton';
 import { ReactComponent as Plus } from '@/assets/icons/Plus.svg';
 import { ReactComponent as Minus } from '@/assets/icons/Minus.svg';
-import { CreateTicketType } from '@/types/tickets/tickets';
-import CompleteButton from '@components/common/CompleteButton';
-import { useMutation } from 'react-query';
 
 const CreateTicketPage = () => {
   const initialState = {

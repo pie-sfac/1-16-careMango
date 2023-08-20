@@ -49,7 +49,7 @@ export interface ScheduleItemData {
 }
 
 export interface ScheduleEditData {
-  memo: string;
+  memo?: string;
   startAt: string;
   endAt: string;
 }

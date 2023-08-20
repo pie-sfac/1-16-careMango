@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface NameTagProps {
   name: string;
   handleRemove?: () => void;

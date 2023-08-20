@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-// import { useNavigate } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 
 import '@/index.css';

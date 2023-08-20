@@ -65,7 +65,6 @@ const ScheduleUpdateForm = ({ itemData, isLoading, isError }: ScheduleUpdateForm
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const updateState = { ...state, memo: '' };
-    console.log('put호출', updateState);
     mutate(updateState, {
       onSuccess: () => {
         window.alert('변경되었습니다');

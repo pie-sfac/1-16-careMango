@@ -62,7 +62,7 @@ const TicketList = ({ tab }: { tab?: boolean }) => {
           activeTicketList.map((ticket) => <TicketItem key={ticket.id} ticket={ticket} />)}
         {deactiveTicketList &&
           activeTab === 'deactive' &&
-          deactiveTicketList.map((ticket) => <TicketItem key={ticket.id} ticket={ticket} />)}
+          deactiveTicketList.map((ticket) => <TicketItem key={ticket.id} ticket={ticket} disabled />)}
       </section>
     </>
   );

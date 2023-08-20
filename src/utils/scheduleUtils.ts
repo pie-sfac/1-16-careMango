@@ -26,7 +26,6 @@ export const convertToDisplayData = (apiResponse: {
   // Convert counseling schedules
   apiResponse.counselingSchedules.forEach((counseling) => {
     if (!counseling.isCanceled) {
-      // 취소되지 않은 상담만 추가
       displayData.push({
         id: counseling.id.toString(),
         calendarId: '1',

@@ -55,7 +55,7 @@ const UpdateCounseling = () => {
       setSelectedStaff(location.state.selectedStaff);
     }
     setState((prev) => ({ ...prev, userId: Id }));
-  }, [Id]);
+  }, [location.state, Id]);
 
   // 변경 api 연결
   const mutation = useMutation(
@@ -63,7 +63,7 @@ const UpdateCounseling = () => {
     {
       onSuccess: (data) => {
         refetch();
-        console.log('업데이트=', state);
+        console.log('업데이트=', state.userId);
         navigate('/schedules/counseling', { state: { refetch: true } });
         const updatedCounseling = data.data;
         setSchedules((prevSchedules) => [...prevSchedules, updatedCounseling]);

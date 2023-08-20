@@ -1,33 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import NameTag from '@components/common/NameTag/NameTag';
 import { getDay, getTime } from '@/utils/date';
-import Input from '@components/common/Input/Input';
-import { ScheduleEditData } from '@/types/schedule/schedule';
+import { ScheduleEditData, ScheduleItemData } from '@/types/schedule/schedule';
 import { axiosInstance } from '@/utils/apiInstance';
-import CompleteButton from '@components/common/CompleteButton';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
+import Input from '@components/common/Input/Input';
+import NameTag from '@components/common/NameTag/NameTag';
 import Select from '@components/common/Select/Select';
+import CompleteButton from '@components/common/CompleteButton';
 
-const ScheduleUpdateForm = () => {
+interface ScheduleUpdateFormProps {
+  itemData: ScheduleItemData;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+const ScheduleUpdateForm = ({ itemData, isLoading, isError }: ScheduleUpdateFormProps) => {
   const { scheduleId } = useParams();
   const [state, setState] = useState<ScheduleEditData>({ startAt: '', endAt: '' });
   const [date, setDate] = useState('');
   const [time, setTime] = useState({ startAt: '', endAt: '' });
   const navigate = useNavigate();
-
-  const fetchCheckSchedule = async () => {
-    const res = await axiosInstance.get(`schedules/private-lesson/${scheduleId}`);
-    return res.data;
-  };
-
-  const { data: itemData, isLoading, isError } = useQuery(['schedule', scheduleId], fetchCheckSchedule);
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-  if (isError) {
-    return <p>Error</p>;
-  }
 
   useEffect(() => {
     if (!isLoading && !isError && itemData) {

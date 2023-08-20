@@ -74,7 +74,7 @@ $ npm run dev
 ```
 
 ### ID / PASSWORD
-id: tema16<br/>
+id: team16<br/>
 password: team16!!
 
 <br/>

@@ -1,14 +1,14 @@
-import Card from '@components/common/Card/Card';
+import { useState } from 'react';
+import { axiosInstance } from '@/utils/apiInstance';
+import { useMutation, useQueryClient } from 'react-query';
 import { IssuedTicketsData } from '@/types/tickets/tickets';
 import { LessonTypeEnum } from '@/enums/Ticket';
 import { ReactComponent as Ticket } from '@/assets/icons/Ticket.svg';
 import { ReactComponent as TicketIn } from '@/assets/icons/TicketIn.svg';
-import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '@/utils/apiInstance';
+import { useNavigate, useParams } from 'react-router-dom';
+import Card from '@components/common/Card/Card';
 import Modal from '@components/common/Modal/Modal';
-import { useState } from 'react';
 import { getDay } from '@/utils/date';
-import { useMutation, useQueryClient } from 'react-query';
 
 interface IssuedTicketItemProps {
   ticket: IssuedTicketsData;
@@ -21,6 +21,7 @@ const IssuedTicketItem = ({ ticket, disabled }: IssuedTicketItemProps) => {
   const goIssuedTicketDetail = () => {
     navigate(`/issued-tickets/${issuedTicketId}`);
   };
+  const { memberId } = useParams<{ memberId: string | undefined }>();
 
   const [suspendModalOpen, setSuspendModalOpen] = useState(false);
   const [refundModalOpen, setRefundModalOpen] = useState(false);
@@ -47,7 +48,7 @@ const IssuedTicketItem = ({ ticket, disabled }: IssuedTicketItemProps) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['issuedTicket', issuedTicketId]);
+        queryClient.invalidateQueries(['issuedTickets', memberId]);
       },
     },
   );
@@ -59,7 +60,7 @@ const IssuedTicketItem = ({ ticket, disabled }: IssuedTicketItemProps) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['issuedTicket', issuedTicketId]);
+        queryClient.invalidateQueries(['issuedTickets', memberId]);
       },
     },
   );

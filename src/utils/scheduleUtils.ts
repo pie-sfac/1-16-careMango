@@ -1,6 +1,7 @@
 import { CounselingSchedule, PrivateSchedule } from '@/types/scheduleApi';
 
 export interface Schedule {
+  [x: string]: any;
   id: string;
   calendarId: string;
   title: string;
@@ -35,6 +36,7 @@ export const convertToDisplayData = (apiResponse: {
       remainingTimes: '',
       isCanceled: counseling.isCanceled,
     });
+    console.log(displayData);
   });
 
   // Convert private schedules
@@ -54,6 +56,7 @@ export const convertToDisplayData = (apiResponse: {
       remainingTimes: '',
       isCanceled: privateSchedule.isCanceled,
     });
+    console.log(displayData);
   });
 
   return displayData;

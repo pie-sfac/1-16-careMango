@@ -191,4 +191,23 @@ password: team16!!
   <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/52726195/eccff43a-da3f-4e3c-867c-451fbad89a5f'/>
 </details>
 
+### 5. 로그인
+
+- 관리자 / 직원을 구분하여 로그인 할 수 있습니다.
+
+<details>
+  <summary>관리자 로그인</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/08a0eba6-c2e6-4b5b-95eb-53eec7aabe99' />
+</details>
+
+<details>
+  <summary>직원 로그인</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/a4113263-3882-4de3-8397-5a0b955bb372' />
+</details>
+
+
+<br/>
+
 ![footer](https://capsule-render.vercel.app/api?section=footer&type=waving&color=0:FFFFFF,100:2C62EA)

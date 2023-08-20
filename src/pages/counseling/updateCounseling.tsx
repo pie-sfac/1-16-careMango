@@ -64,10 +64,9 @@ const UpdateCounseling = () => {
       onSuccess: (data) => {
         refetch();
         console.log('업데이트=', state.userId);
-        navigate('/schedule/counseling', { state: { refetch: true } });
+        navigate(`/schedule/counseling/${scheduleId}`, { state: { refetch: true } });
         const updatedCounseling = data.data;
         setSchedules((prevSchedules) => [...prevSchedules, updatedCounseling]);
-        navigate('/schedule');
       },
       onError: (error) => {
         console.error(error);

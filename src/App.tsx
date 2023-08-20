@@ -17,7 +17,7 @@ import IssuedTicketPage from '@pages/tickets/issuedTicket/getIssuedTicket';
 import IssuedTicketDetail from '@pages/tickets/issuedTicket/getIssuedTicketDetail';
 import TicketListPage from '@pages/tickets/issuedTicket/getTicketList';
 import CreateIssuedTicket from '@pages/tickets/issuedTicket/createIssuedTicket';
-import CreatePrivateLesson from '@/pages/privateLesson/createPrivateLesson';
+import CreatePrivateLesson from '@pages/schedule/createPrivateLesson';
 import SearchPeople from '@pages/privateLesson/searchPeople/searchPeople';
 import CreateMembers from '@pages/members/createMembers';
 import RegisterMembers from '@pages/members/registerMembers';

@@ -213,7 +213,7 @@ function ScheduleCalendar() {
             ref={calendarRef}
             theme={myTheme}
             // gridSelection={true}
-            // isReadOnly={false}
+            isReadOnly={true}
           />
         </div>
         <aside className="box-content p-4 bg-white rounded-lg w-96">
@@ -261,7 +261,6 @@ function ScheduleCalendar() {
               <button
                 type="button"
                 onClick={goCreateCounseling}
-
                 className="flex flex-col justify-start w-full px-8 py-10 border-2 shadow text-start rounded-2xl">
                 <div className="relative w-full h-full">
                   <p className="font-bold">상담</p>

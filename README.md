@@ -191,4 +191,79 @@ password: team16!!
   <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/52726195/eccff43a-da3f-4e3c-867c-451fbad89a5f'/>
 </details>
 
+### 5. 로그인 / 로그아웃
+
+- 관리자 / 직원을 구분하여 로그인 할 수 있습니다.
+- 계정 이름을 클릭하여 로그아웃 버튼을 활성화 시킬 수 있습니다.
+
+<details>
+  <summary>관리자 로그인</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/08a0eba6-c2e6-4b5b-95eb-53eec7aabe99' />
+</details>
+<details>
+  <summary>직원 로그인</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/a4113263-3882-4de3-8397-5a0b955bb372' />
+</details>
+<details>
+  <summary>로그아웃</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/faf08147-cd49-46ac-8cd9-991c3bca98a9' />
+</details>
+
+### 6. 메인 페이지
+
+- 일정관리 / 회원관리 / 직원관리 화면으로 접근이 가능합니다.
+- 오늘의 총 일정 수, 센터 전체 회원 수, 센터의 전체 직원 수를 확인하여 표시합니다.
+
+<details>
+  <summary>메인 페이지</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/d9be6655-b108-417c-b1fb-587d138f2903' />
+</details>
+
+### 7. schedule 페이지
+
+- 상단 input.date 를 통해서 날짜를 조정할 수 있습니다.
+- 월간, 주간, 일간 뷰를 선택하여 변경할 수 있습니다.
+- 입력한 날짜를 기준으로 한달 동안의 총 일정, 취소 일정, 취소율 을 표시합니다.
+- 일정 생성 버튼을 통해 개인 일정과 상담 일정의 생성 페이지로 접근이 가능합니다.
+- 서버에서 일정 정보를 받아와 tui.calendar를 통해 달력 화면에 표시합니다.
+- 상단 input.date 를 통해 입력한 날짜의 일정을 우측 사이드바에 표시합니다.
+- 우측 사이드바를 통해 일정의 상세 페이지로 이동이 가능합니다.
+
+<details>
+  <summary>날짜 설정</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/c19de110-b475-4e0d-a170-c559980f3008' />  
+</details>
+<details>
+  <summary>뷰 설정</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/f6488d49-d063-43d5-9769-7b3c51060824' />
+</details>
+<details>
+  <summary>일정 생성 버튼</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/883c9349-ce9f-4ba7-9f34-435ebffb6800' />
+</details>
+<details>
+  <summary>일정의 상세 페이지로 이동</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/79e30ffb-9cb4-490b-8827-bc1098ce9566' />
+</details>
+
+### 8. 마이 페이지
+
+- 로그인한 계정의 정보를 확인할 수 있습니다.
+
+<details>
+  <summary>마이 페이지</summary>
+
+  <img width="800px" src='https://github.com/pie-sfac/1-16-careMango/assets/69342971/1e563f3e-8642-4500-adc1-8acecacd8b2c' />
+</details>
+
+<br/>
+
 ![footer](https://capsule-render.vercel.app/api?section=footer&type=waving&color=0:FFFFFF,100:2C62EA)
